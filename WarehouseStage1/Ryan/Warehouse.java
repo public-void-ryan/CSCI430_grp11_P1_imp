@@ -31,12 +31,9 @@ public class Warehouse implements Serializable {
         }
     }
 
-    public Product addProduct(String name, String id, int stock) {
-        Product product = new Product(name, id, stock);
-        if (productList.insertProduct(product)) {
-            return product;
-        }
-        return null;
+    public void addProduct(String name, String id, int stock) {
+        Product product = new Product(id, name, 0.0, stock);
+        productList.addProduct(product);
     }
 
     public Client addClient(String name, String address, String phone) {
@@ -48,7 +45,7 @@ public class Warehouse implements Serializable {
     }
 
     public Iterator<Product> getProducts() {
-        return productList.getProducts();
+        return productList.getProducts().iterator();
     }
 
     public Iterator<Client> getClients() {
