@@ -12,27 +12,27 @@ public class Warehouse {
         transactions = new ArrayList<>();
     }
 
-    // Add a new client to the system
+    // Add new client to the system
     public void addClient(Client client) {
         clients.addClient(client);
     }
 
-    // Add a new product to the system using ProductList
+    // Add product to the system using ProductList
     public void addProduct(Product product) {
         products.addProduct(product);
     }
 
-    // Find a product by ID using ProductList
+    // Find product by ID using ProductList
     public Product findProduct(String productId) {
         return products.findProduct(productId);
     }
 
-    // Add a product to a client's wishlist (now using Product's own wishlist)
+    // Add a product to a client's wishlist
     public void addToWishlist(Client client, Product product) {
         product.addToWishlist(client); // Use Product's method to add client to its wishlist
     }
 
-    // Add a product to a client's waitlist (now using Product's own waitlist)
+    // Add a product to a client's waitlist
     public void addToWaitlist(Client client, Product product) {
         product.addToWaitlist(client); // Use Product's method to add client to its waitlist
     }
@@ -53,7 +53,7 @@ public class Warehouse {
         }
     }
 
-    // Query the status of a transaction
+    // status of a transaction
     public Transaction getTransactionStatus(int transactionId) {
         for (Transaction transaction : transactions) {
             if (transaction.getId() == transactionId) {
@@ -63,12 +63,12 @@ public class Warehouse {
         return null;
     }
 
-    // A method to retrieve all products
+    // retrieve all products
     public List<Product> getAllProducts() {
         return products.getProducts();
     }
 
-    // A method to retrieve all clients
+    // retrieve all clients
     public List<Client> getAllClients() {
         return clients.getClients();
     }
