@@ -17,15 +17,9 @@ public class Warehouse {
         clients.addClient(client);
     }
 
-<<<<<<< HEAD
-    public void addProduct(String name, String id, int stock) {
-        Product product = new Product(id, name, 0.0, stock);
-        productList.addProduct(product);
-=======
     // Add a new product to the system using ProductList
     public void addProduct(Product product) {
         products.addProduct(product);
->>>>>>> 357d302 (ignore .class files.)
     }
 
     // Find a product by ID using ProductList
@@ -33,14 +27,9 @@ public class Warehouse {
         return products.findProduct(productId);
     }
 
-<<<<<<< HEAD
-    public Iterator<Product> getProducts() {
-        return productList.getProducts().iterator();
-=======
     // Add a product to a client's wishlist (now using Product's own wishlist)
     public void addToWishlist(Client client, Product product) {
         product.addToWishlist(client); // Use Product's method to add client to its wishlist
->>>>>>> 357d302 (ignore .class files.)
     }
 
     // Add a product to a client's waitlist (now using Product's own waitlist)
