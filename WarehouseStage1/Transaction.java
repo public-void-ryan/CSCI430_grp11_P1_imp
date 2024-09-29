@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static int nextId = 0;
+    private static transient int nextId = 0; // Marked as transient
     private int id;
     private Client client;
     private Product product;

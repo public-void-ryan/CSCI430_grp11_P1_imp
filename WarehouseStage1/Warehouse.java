@@ -9,7 +9,7 @@ public class Warehouse implements Serializable {
     private ProductList products;
     private List<Transaction> transactions;
 
-    private static final String DATA_FILE = "WarehouseData.ser"; // Save file
+    private static final String DATA_FILE = "WarehouseData"; // Save file
 
     private Warehouse() {
         clients = new ClientList();
