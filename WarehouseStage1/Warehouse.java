@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Warehouse implements Serializable {
@@ -78,5 +79,14 @@ public class Warehouse implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             return null;
         }
+    }
+
+    public Iterator<Client> getAllClients() {
+        return clients.getClients();
+    }
+
+    public List<Product> getAllProducts() {
+
+        return products.getProducts();
     }
 }

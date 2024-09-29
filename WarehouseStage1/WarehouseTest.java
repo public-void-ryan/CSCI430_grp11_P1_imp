@@ -126,7 +126,7 @@ public class WarehouseTest {
         Client client2 = new Client("Bob");
         warehouse.addClient(client1);
         warehouse.addClient(client2);
-        Iterator<Client> clients = warehouse.getAllClients();
+        Iterator<Client> clients = warehouse.getClients();
         boolean foundClient1 = false;
         boolean foundClient2 = false;
         while (clients.hasNext()) {
