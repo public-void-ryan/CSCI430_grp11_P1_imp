@@ -1,7 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Wishlist {
+public class Wishlist implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Product> wishlist;
 
     public Wishlist() {
