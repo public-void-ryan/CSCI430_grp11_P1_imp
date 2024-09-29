@@ -5,7 +5,7 @@ public class WaitlistTest {
         // Test adding a client
         Client client1 = new Client("Client1");
         waitlist.addClient(client1);
-        if (waitlist.clients.contains(client1)) {
+        if (waitlist.getClients().contains(client1)) { // Use getClients() method
             System.out.println("Test passed: Client1 is in the waitlist");
         } else {
             System.out.println("Test failed: Client1 should be in the waitlist");
@@ -13,7 +13,7 @@ public class WaitlistTest {
 
         // Test removing a client
         waitlist.removeClient(client1);
-        if (!waitlist.clients.contains(client1)) {
+        if (!waitlist.getClients().contains(client1)) { // Use getClients() method
             System.out.println("Test passed: Client1 is not in the waitlist");
         } else {
             System.out.println("Test failed: Client1 should not be in the waitlist");
@@ -24,12 +24,12 @@ public class WaitlistTest {
         Client client3 = new Client("Client3");
         waitlist.addClient(client2);
         waitlist.addClient(client3);
-        if (waitlist.clients.contains(client2)) {
+        if (waitlist.getClients().contains(client2)) { // Use getClients() method
             System.out.println("Test passed: Client2 is in the waitlist");
         } else {
             System.out.println("Test failed: Client2 should be in the waitlist");
         }
-        if (waitlist.clients.contains(client3)) {
+        if (waitlist.getClients().contains(client3)) { // Use getClients() method
             System.out.println("Test passed: Client3 is in the waitlist");
         } else {
             System.out.println("Test failed: Client3 should be in the waitlist");
@@ -37,12 +37,12 @@ public class WaitlistTest {
 
         // Test removing one of the multiple clients
         waitlist.removeClient(client2);
-        if (!waitlist.clients.contains(client2)) {
+        if (!waitlist.getClients().contains(client2)) { // Use getClients() method
             System.out.println("Test passed: Client2 is not in the waitlist");
         } else {
             System.out.println("Test failed: Client2 should not be in the waitlist");
         }
-        if (waitlist.clients.contains(client3)) {
+        if (waitlist.getClients().contains(client3)) { // Use getClients() method
             System.out.println("Test passed: Client3 is still in the waitlist");
         } else {
             System.out.println("Test failed: Client3 should still be in the waitlist");
@@ -74,15 +74,4 @@ class Client {
     public int hashCode() {
         return name.hashCode();
     }
-
-    public Warehouse getWishlist() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWishlist'");
-    }
-
-    public Object getId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getId'");
-    }
-
 }

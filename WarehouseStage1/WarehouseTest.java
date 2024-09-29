@@ -17,7 +17,7 @@ public class WarehouseTest {
     }
 
     public static void setUp() {
-        warehouse = new Warehouse();
+        warehouse = Warehouse.instance(); // Use the singleton instance
     }
 
     public static void testAddClient() {
@@ -66,7 +66,7 @@ public class WarehouseTest {
         warehouse.addClient(client);
         warehouse.addProduct(product);
         warehouse.addToWaitlist(client, product);
-        if (product.getWaitlist().clients.contains(client)) { // Accessing clients field directly
+        if (product.getWaitlist().getClients().contains(client)) { // Use getClients() method
             System.out.println("testAddToWaitlist passed");
         } else {
             System.out.println("testAddToWaitlist failed");
@@ -95,8 +95,8 @@ public class WarehouseTest {
         // Process the order
         warehouse.processOrder(client, "6", 2);
 
-        // Retrieve the transaction ID dynamically
-        Transaction transaction = warehouse.getTransactionStatus(1); // Assuming ID starts from 1
+        // Retrieve the transaction by ID (assuming IDs start from 1)
+        Transaction transaction = warehouse.getTransactionStatus(1);
 
         if (transaction != null &&
                 transaction.getClient().equals(client) &&
