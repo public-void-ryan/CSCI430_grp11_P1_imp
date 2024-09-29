@@ -8,7 +8,7 @@ public class ClientList implements Serializable {
     private List<Client> clients = new LinkedList<>();
     private static ClientList clientList;
 
-    private ClientList() {
+    public ClientList() {
     }
 
     public static ClientList instance() {
