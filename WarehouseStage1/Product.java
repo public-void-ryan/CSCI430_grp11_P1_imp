@@ -1,4 +1,7 @@
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String _id;
     private String _name;
     private double _price;
@@ -41,27 +44,6 @@ public class Product {
 
     public void setStockLevel(int newStock) {
         _stockLevel = newStock;
-    }
-
-    public void addToWishlist(Client client) {
-        _wishlist.addProduct(this);
-    }
-
-    public void removeFromWishlist(Client client) {
-        _wishlist.removeProduct(this);
-    }
-
-    public void addToWaitlist(Client client) {
-        _waitlist.addClient(client);
-
-    }
-
-    public Waitlist getWaitlist() {
-        return _waitlist;
-    }
-
-    public void removeFromWaitlist(Client client) {
-        _waitlist.removeClient(client);
     }
 
     @Override
