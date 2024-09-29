@@ -1,4 +1,7 @@
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static int nextId = 0;
     private int id;
     private Client client;
@@ -26,5 +29,10 @@ public class Transaction {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{id=" + id + ", client=" + client + ", product=" + product + ", quantity=" + quantity + "}";
     }
 }
