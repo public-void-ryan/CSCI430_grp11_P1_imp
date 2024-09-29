@@ -75,8 +75,4 @@ class Client {
         return name.hashCode();
     }
 
-    public Warehouse getWishlist() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWishlist'");
-    }
 }
