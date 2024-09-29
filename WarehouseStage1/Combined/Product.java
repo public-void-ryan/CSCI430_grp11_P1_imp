@@ -44,11 +44,11 @@ public class Product {
     }
 
     public void addToWishlist(Client client) {
-        _wishlist.addProduct(client, product);
+        _wishlist.addProduct(this);
     }
 
     public void removeFromWishlist(Client client) {
-        _wishlist.removeClient(client);
+        _wishlist.removeProduct(this);
     }
 
     public void addToWaitlist(Client client) {

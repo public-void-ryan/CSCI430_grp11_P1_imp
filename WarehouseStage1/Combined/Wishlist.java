@@ -12,6 +12,10 @@ public class Wishlist {
         wishlist.add(product);
     }
 
+    public void removeProduct(Product product) {
+        wishlist.remove(product);
+    }
+
     public List<Product> getWishlist() {
         return new ArrayList<>(wishlist);
     }
