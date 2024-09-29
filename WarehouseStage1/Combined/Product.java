@@ -53,6 +53,11 @@ public class Product {
 
     public void addToWaitlist(Client client) {
         _waitlist.addClient(client);
+
+    }
+
+    public Waitlist getWaitlist() {
+        return _waitlist;
     }
 
     public void removeFromWaitlist(Client client) {

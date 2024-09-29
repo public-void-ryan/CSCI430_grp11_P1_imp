@@ -6,10 +6,13 @@ public class Client implements Serializable {
     private String id;
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
+    private Wishlist wishlist;
+    private Waitlist waitlist;
 
     public Client(String name) {
         this.name = name;
         this.id = CLIENT_STRING + idCounter++;
+        this.wishlist = new Wishlist();
     }
 
     public String getName() {
@@ -22,6 +25,10 @@ public class Client implements Serializable {
 
     public boolean equals(String id) {
         return this.id.equals(id);
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
     }
 
     @Override

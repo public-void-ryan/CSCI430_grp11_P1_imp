@@ -30,15 +30,14 @@ public class Warehouse {
 
     // Add a product to a client's wishlist
     public void addToWishlist(Client client, Product product) {
-        product.addToWishlist(client); // Use Product's method to add client to its wishlist
+        client.getWishlist().addProduct(product); // Add product to the client's wishlist
     }
 
-    // Add a product to a client's waitlist
+    // Add a client to a product's waitlist
     public void addToWaitlist(Client client, Product product) {
-        product.addToWaitlist(client); // Use Product's method to add client to its waitlist
+        product.getWaitlist().addClient(client); // Add client to the product's waitlist
     }
 
-    // Process an order for a client
     public void processOrder(Client client, String productId, int quantity) {
         Product product = findProduct(productId); // Find product using ProductList
         if (product != null) {
@@ -54,7 +53,6 @@ public class Warehouse {
         }
     }
 
-    // status of a transaction
     public Transaction getTransactionStatus(int transactionId) {
         for (Transaction transaction : transactions) {
             if (transaction.getId() == transactionId) {

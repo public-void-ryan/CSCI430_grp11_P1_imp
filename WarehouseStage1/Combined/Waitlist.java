@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Waitlist {
-    private List<Client> clients;
+    protected List<Client> clients;
 
     public Waitlist() {
         clients = new ArrayList<>();
