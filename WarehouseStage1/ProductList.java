@@ -1,11 +1,13 @@
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ProductList {
+public class ProductList implements Serializable {
+    private static final long serialVersionUID = 1L; // Added serialVersionUID for version control
     private List<Product> _products;
 
     public ProductList() {
-        _products = new ArrayList<Product>();
+        _products = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
@@ -13,8 +15,8 @@ public class ProductList {
     }
 
     public Product findProduct(String id) {
-        for(Product product : _products) {
-            if(product.id().equals(id)) {
+        for (Product product : _products) {
+            if (product.id().equals(id)) {
                 return product;
             }
         }
