@@ -7,7 +7,6 @@ public class Client implements Serializable {
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
     private Wishlist wishlist;
-    private Waitlist waitlist;
 
     public Client(String name) {
         this.name = name;
