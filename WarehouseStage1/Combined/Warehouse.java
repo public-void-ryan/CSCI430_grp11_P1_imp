@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Warehouse {
@@ -69,7 +70,7 @@ public class Warehouse {
     }
 
     // retrieve all clients
-    public List<Client> getAllClients() {
+    public Iterator<Client> getAllClients() {
         return clients.getClients();
     }
 }
