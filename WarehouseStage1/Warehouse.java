@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Warehouse implements Serializable {
@@ -10,94 +9,62 @@ public class Warehouse implements Serializable {
     private ProductList products;
     private List<Transaction> transactions;
 
-    private static final String DATA_FILE = "WarehouseData.ser"; // File to save data
+    private static final String DATA_FILE = "WarehouseData.ser"; // Save file
 
-    // Private constructor for singleton pattern
-    Warehouse() {
+    private Warehouse() {
         clients = new ClientList();
         products = new ProductList();
         transactions = new ArrayList<>();
     }
 
-    // Singleton instance
     public static Warehouse instance() {
         if (warehouse == null) {
-            warehouse = retrieve(); // Try to load existing data
+            warehouse = retrieve();
             if (warehouse == null) {
-                warehouse = new Warehouse(); // Create new if no data found
+                warehouse = new Warehouse();
             }
         }
         return warehouse;
     }
 
-    // Add new client to the system
     public void addClient(Client client) {
         clients.addClient(client);
-        save(); // Save data after adding a client
+        save();
     }
 
-    // Add product to the system using ProductList
     public void addProduct(Product product) {
         products.addProduct(product);
-        save(); // Save data after adding a product
-    }
-
-    // Find product by ID using ProductList
-    public Product findProduct(String productId) {
-        return products.findProduct(productId);
-    }
-
-    // Add a product to a client's wishlist
-    public void addToWishlist(Client client, Product product) {
-        client.getWishlist().addProduct(product); // Add product to the client's wishlist
-        save(); // Save data after modifying wishlist
-    }
-
-    // Add a client to a product's waitlist
-    public void addToWaitlist(Client client, Product product) {
-        product.getWaitlist().addClient(client); // Add client to the product's waitlist
-        save(); // Save data after adding to waitlist
+        save();
     }
 
     public void processOrder(Client client, String productId, int quantity) {
-        Product product = findProduct(productId); // Find product using ProductList
+        Product product = findProduct(productId);
         if (product != null) {
             if (product.stockLevel() >= quantity) {
                 Transaction transaction = new Transaction(client, product, quantity);
-                transactions.add(transaction); // Add transaction to the list
-                product.setStockLevel(product.stockLevel() - quantity); // Decrease stock level
-                save(); // Save data after processing the order
+                transactions.add(transaction);
+                product.setStockLevel(product.stockLevel() - quantity);
+                save();
             } else {
-                addToWaitlist(client, product); // Add to waitlist if insufficient stock
+                addToWaitlist(client, product);
             }
         } else {
             System.out.println("Product not found: " + productId);
         }
     }
 
-    public Transaction getTransactionStatus(int transactionId) {
-        for (Transaction transaction : transactions) {
-            if (transaction.getId() == transactionId) {
-                return transaction;
-            }
-        }
-        return null;
+    public Product findProduct(String productId) {
+        return products.findProduct(productId);
     }
 
-    // retrieve all products
-    public List<Product> getAllProducts() {
-        return products.getProducts();
+    public void addToWaitlist(Client client, Product product) {
+        product.waitlist().addClient(client);
+        save();
     }
 
-    // retrieve all clients
-    public Iterator<Client> getAllClients() {
-        return clients.getClients();
-    }
-
-    // Save warehouse data to file
     public static boolean save() {
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
-            output.writeObject(warehouse);
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            out.writeObject(warehouse);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,12 +72,11 @@ public class Warehouse implements Serializable {
         }
     }
 
-    // Load warehouse data from file
     public static Warehouse retrieve() {
-        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
-            return (Warehouse) input.readObject();
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            return (Warehouse) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            return null; // Return null if there's no saved data or an error occurred
+            return null;
         }
     }
 }

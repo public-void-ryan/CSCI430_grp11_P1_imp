@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Waitlist implements Serializable {
     private static final long serialVersionUID = 1L;
-    protected List<Client> clients;
+    private List<Client> clients;
 
     public Waitlist() {
         clients = new ArrayList<>();
@@ -16,5 +16,9 @@ public class Waitlist implements Serializable {
 
     public void removeClient(Client client) {
         clients.remove(client);
+    }
+
+    public List<Client> getClients() {
+        return new ArrayList<>(clients);
     }
 }

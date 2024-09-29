@@ -45,9 +45,4 @@ public class Product implements Serializable {
     public void setStockLevel(int newStock) {
         _stockLevel = newStock;
     }
-
-    @Override
-    public String toString() {
-        return "Product{id='" + _id + "', name='" + _name + "', price=" + _price + ", stockLevel=" + _stockLevel + "}";
-    }
 }

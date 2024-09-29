@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ProductList implements Serializable {
-    private static final long serialVersionUID = 1L; // Added serialVersionUID for version control
+    private static final long serialVersionUID = 1L;
     private List<Product> _products;
 
     public ProductList() {
