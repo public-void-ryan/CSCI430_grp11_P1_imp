@@ -1,18 +1,18 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Wishlist {
-    private Map<Client, Product> wishlist;
+    private List<Product> wishlist;
 
     public Wishlist() {
-        wishlist = new HashMap<>();
+        wishlist = new ArrayList<>();
     }
 
-    public void addProduct(Client client, Product product) {
-        wishlist.put(client, product);
+    public void addProduct(Product product) {
+        wishlist.add(product);
     }
 
-    public Map<Client, Product> getWishlist() {
-        return wishlist;
+    public List<Product> getWishlist() {
+        return new ArrayList<>(wishlist);
     }
 }

@@ -44,7 +44,7 @@ public class Product {
     }
 
     public void addToWishlist(Client client) {
-        _wishlist.addClient(client);
+        _wishlist.addProduct(client, product);
     }
 
     public void removeFromWishlist(Client client) {
