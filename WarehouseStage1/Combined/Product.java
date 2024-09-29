@@ -15,18 +15,34 @@ public class Product {
         _waitlist = new Waitlist();
     }
 
-    public String id() { return _id; }
-    public String name() { return _name; }
-    public double price() { return _price; }
-    public int stockLevel() { return _stockLevel; }
-    public Wishlist wishlist() { return _wishlist; }
-    public Waitlist waitlist() { return _waitlist; }
+    public String id() {
+        return _id;
+    }
 
-    public void setStockLevel(int newStock)
-    {
+    public String name() {
+        return _name;
+    }
+
+    public double price() {
+        return _price;
+    }
+
+    public int stockLevel() {
+        return _stockLevel;
+    }
+
+    public Wishlist wishlist() {
+        return _wishlist;
+    }
+
+    public Waitlist waitlist() {
+        return _waitlist;
+    }
+
+    public void setStockLevel(int newStock) {
         _stockLevel = newStock;
     }
-  
+
     public void addToWishlist(Client client) {
         _wishlist.addClient(client);
     }
@@ -45,6 +61,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{id='" + _id + "', name='"+ _name + "', price=" + _price + ", stockLevel=" + _stockLevel + "}";
+        return "Product{id='" + _id + "', name='" + _name + "', price=" + _price + ", stockLevel=" + _stockLevel + "}";
     }
 }
