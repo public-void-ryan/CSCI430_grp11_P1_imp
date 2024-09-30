@@ -39,7 +39,7 @@ public class WarehouseTest {
     }
 
     public static void testAddProduct() {
-        Product product = new Product("1", "Laptop", 999.99, 10);
+        Product product = new Product("Laptop", 999.99, 10);
         warehouse.addProduct(product);
         Product foundProduct = warehouse.findProduct("1");
         if (foundProduct != null && foundProduct.equals(product)) {
@@ -50,7 +50,7 @@ public class WarehouseTest {
     }
 
     public static void testFindProduct() {
-        Product product = new Product("2", "Smartphone", 499.99, 5);
+        Product product = new Product("Smartphone", 499.99, 5);
         warehouse.addProduct(product);
         Product foundProduct = warehouse.findProduct("2");
         if (foundProduct != null && foundProduct.equals(product)) {
@@ -62,7 +62,7 @@ public class WarehouseTest {
 
     public static void testAddToWaitlist() {
         Client client = new Client("Jane Doe");
-        Product product = new Product("4", "Monitor", 199.99, 0);
+        Product product = new Product("Monitor", 199.99, 0);
         warehouse.addClient(client);
         warehouse.addProduct(product);
         warehouse.addToWaitlist(client, product);
@@ -75,7 +75,7 @@ public class WarehouseTest {
 
     public static void testProcessOrder() {
         Client client = new Client("John Smith");
-        Product product = new Product("5", "Keyboard", 49.99, 20);
+        Product product = new Product("Keyboard", 49.99, 20);
         warehouse.addClient(client);
         warehouse.addProduct(product);
         warehouse.processOrder(client, "5", 5);
@@ -88,7 +88,7 @@ public class WarehouseTest {
 
     public static void testGetTransactionStatus() {
         Client client = new Client("John Smith");
-        Product product = new Product("6", "Mouse", 29.99, 10);
+        Product product = new Product("Mouse", 29.99, 10);
         warehouse.addClient(client);
         warehouse.addProduct(product);
 
@@ -109,8 +109,8 @@ public class WarehouseTest {
     }
 
     public static void testGetAllProducts() {
-        Product product1 = new Product("7", "Printer", 149.99, 5);
-        Product product2 = new Product("8", "Scanner", 89.99, 3);
+        Product product1 = new Product("Printer", 149.99, 5);
+        Product product2 = new Product("Scanner", 89.99, 3);
         warehouse.addProduct(product1);
         warehouse.addProduct(product2);
         List<Product> products = warehouse.getAllProducts();

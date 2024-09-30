@@ -18,7 +18,7 @@ public class TransactionTest {
 
     public static void setUp() {
         client = new Client("John Doe");
-        product = new Product("Laptop", null, 999.99, 0);
+        product = new Product("Laptop", 999.99, 0);
     }
 
     public static void testTransactionCreation() {
@@ -107,7 +107,7 @@ public class TransactionTest {
     }
 
     public static void testDifferentProducts() {
-        Product product2 = new Product("Smartphone", null, 499.99, 0);
+        Product product2 = new Product("Smartphone", 499.99, 0);
         Transaction transaction1 = new Transaction(client, product, 5);
         Transaction transaction2 = new Transaction(client, product2, 5);
         if (!transaction1.getProduct().equals(transaction2.getProduct())) {

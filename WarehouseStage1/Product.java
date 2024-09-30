@@ -8,9 +8,11 @@ public class Product implements Serializable {
     private int _stockLevel;
     private Wishlist _wishlist;
     private Waitlist _waitlist;
+    private static final String PRODUCT_STRING = "P";
+    private static int idCounter = 1;
 
-    public Product(String id, String name, double price, int stockLevel) {
-        _id = id;
+    public Product(String name, double price, int stockLevel) {
+        _id = PRODUCT_STRING + idCounter++;
         _name = name;
         _price = price;
         _stockLevel = stockLevel;
