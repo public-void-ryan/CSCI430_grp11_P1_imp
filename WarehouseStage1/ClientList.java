@@ -20,7 +20,7 @@ public class ClientList implements Serializable {
 
     public Client search(String clientId) {
         for (Client client : clients) {
-            if (client.getId().equals(clientId)) {
+            if (client.id().equals(clientId)) {
                 return client;
             }
         }

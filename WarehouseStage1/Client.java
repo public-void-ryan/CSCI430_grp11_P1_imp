@@ -2,11 +2,11 @@ import java.io.Serializable;
 
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String name;
-    private String id;
+    private final String name;
+    private final String id;
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
-    private Wishlist wishlist;
+    private final Wishlist wishlist;
 
     public Client(String name) {
         this.name = name;
@@ -35,7 +35,7 @@ public class Client implements Serializable {
         return "Client [Name=" + name + ", ID=" + id + "]";
     }
 
-        public void addToWishlist(Product product) {
+    public void addToWishlist(Product product) {
         wishlist.addProduct(product);
     }
 }

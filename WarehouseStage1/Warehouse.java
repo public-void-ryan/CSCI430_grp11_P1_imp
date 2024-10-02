@@ -6,9 +6,9 @@ import java.util.List;
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static Warehouse warehouse;
-    private ClientList clients;
-    private ProductList products;
-    private List<Transaction> transactions;
+    private final ClientList clients;
+    private final ProductList products;
+    private final List<Transaction> transactions;
 
     private static final String DATA_FILE = "WarehouseData"; // Save file
 

@@ -75,4 +75,9 @@ class Client {
     public int hashCode() {
         return name.hashCode();
     }
+
+    public void addToWishlist(Product product) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addToWishlist'");
+    }
 }
