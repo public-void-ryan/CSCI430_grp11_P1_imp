@@ -1,3 +1,4 @@
+package tests;
 public class WaitlistTest {
     public static void main(String[] args) {
         Waitlist waitlist = new Waitlist();
