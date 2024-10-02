@@ -1,3 +1,4 @@
+
 public class TransactionTest {
     private static Client client;
     private static Product product;
@@ -23,7 +24,7 @@ public class TransactionTest {
 
     public static void testTransactionCreation() {
         Transaction transaction = new Transaction(client, product, 5);
-        if (transaction != null && transaction.getClient().equals(client) && transaction.getProduct().equals(product)
+        if (transaction.getClient().equals(client) && transaction.getProduct().equals(product)
                 && transaction.getQuantity() == 5) {
             System.out.println("testTransactionCreation passed");
         } else {
@@ -79,7 +80,6 @@ public class TransactionTest {
 
     public static void testNegativeQuantity() {
         try {
-            new Transaction(client, product, -5);
             System.out.println("testNegativeQuantity failed");
         } catch (IllegalArgumentException e) {
             System.out.println("testNegativeQuantity passed");

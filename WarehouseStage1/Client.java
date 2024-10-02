@@ -34,4 +34,8 @@ public class Client implements Serializable {
     public String toString() {
         return "Client [Name=" + name + ", ID=" + id + "]";
     }
+
+        public void addToWishlist(Product product) {
+        wishlist.addProduct(product);
+    }
 }

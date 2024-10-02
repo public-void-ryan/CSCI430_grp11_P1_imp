@@ -12,7 +12,7 @@ public class Warehouse implements Serializable {
 
     private static final String DATA_FILE = "WarehouseData"; // Save file
 
-    private Warehouse() {
+    public Warehouse() {
         clients = new ClientList();
         products = new ProductList();
         transactions = new ArrayList<>();
@@ -89,4 +89,14 @@ public class Warehouse implements Serializable {
 
         return products.getProducts();
     }
+
+    public List<Transaction> getTransactions() {
+
+        return transactions;
+    }
+
+    public void addToWishlist(Client client, Product product) {
+        client.addToWishlist(product);
+    }
+
 }
