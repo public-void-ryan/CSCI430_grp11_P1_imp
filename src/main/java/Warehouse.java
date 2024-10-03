@@ -81,8 +81,10 @@ public class Warehouse implements Serializable {
         }
     }
 
-    public Iterator<Client> getAllClients() {
-        return clients.getClients();
+    public List<Client> getAllClients() {
+        List<Client> clientList = new ArrayList<>();
+        clients.getClients().forEachRemaining(clientList::add);
+        return clientList;
     }
 
     public List<Product> getAllProducts() {
