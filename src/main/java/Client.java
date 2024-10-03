@@ -60,4 +60,8 @@ public class Client implements Serializable {
     public void addToWishlist(Product product) {
         wishlist.addProduct(product);
     }
+
+    public static void resetIdCounter() {
+        idCounter = 1;
+    }
 }

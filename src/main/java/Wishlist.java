@@ -21,4 +21,8 @@ public class Wishlist implements Serializable {
     public List<Product> getWishlist() {
         return new ArrayList<>(wishlist);
     }
+
+    public String getProducts() {
+        return wishlist.toString();
+    }
 }
