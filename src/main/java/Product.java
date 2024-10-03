@@ -47,5 +47,5 @@ public class Product implements Serializable {
     public void setStockLevel(int newStock) {
         _stockLevel = newStock;
     }
-    
+
 }
