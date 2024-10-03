@@ -31,6 +31,10 @@ public class Transaction implements Serializable {
         return quantity;
     }
 
+    public static void resetIdCounter() {
+        nextId = 0;
+    }
+
     @Override
     public String toString() {
         return "Transaction{id=" + id + ", client=" + client + ", product=" + product + ", quantity=" + quantity + "}";
