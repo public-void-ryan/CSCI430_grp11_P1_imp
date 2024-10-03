@@ -9,7 +9,7 @@ public class Warehouse implements Serializable {
     private final ProductList products;
     private final List<Transaction> transactions;
 
-    private static final String DATA_FILE = "WarehouseData"; // Save file
+    private static final String DATA_FILE = "WarehouseData";
 
     public Warehouse() {
         clients = new ClientList();
@@ -65,6 +65,7 @@ public class Warehouse implements Serializable {
     public static boolean save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             out.writeObject(warehouse);
+            System.out.println("Warehouse saved successfully.");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,8 +75,10 @@ public class Warehouse implements Serializable {
 
     public static Warehouse retrieve() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            System.out.println("Warehouse data found and loaded.");
             return (Warehouse) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Warehouse data not found or could not be loaded.");
             return null;
         }
     }
