@@ -25,7 +25,7 @@ public class Main {
         displayCurrentData(warehouse);
 
         System.out.println("\nProcessing an order for Bob:");
-        warehouse.processOrder(client2, product1.id(), 9); // Fails, insufficient stock
+        warehouse.processOrder(client2, product1.id(), 90); // Fails, insufficient stock
         displayCurrentData(warehouse);
 
         // Save warehouse data at the end
