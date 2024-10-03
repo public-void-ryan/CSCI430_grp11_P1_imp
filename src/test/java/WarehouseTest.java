@@ -53,18 +53,18 @@ public class WarehouseTest {
      Iterator<Client> clients = warehouse.getAllClients();
      while (clients.hasNext()) {
          Client client = clients.next();
-         System.out.println(" - " + client.getName());
+         System.out.println(client.toString());
      }
 
      System.out.println("\nProducts:");
      List<Product> products = warehouse.getAllProducts();
      for (Product product : products) {
-         System.out.println(" - " + product.id() + ": " + product.name() + " (Stock: " + product.stockLevel() + ")");
+         System.out.println(product.toString());
      }
 
      System.out.println("\nTransactions:");
      for (Transaction transaction : warehouse.getTransactions()) {
-         System.out.println(" - Transaction ID: " + transaction.getId() + ", Client: " + transaction.getClient().getName() + ", Product: " + transaction.getProduct().name() + ", Quantity: " + transaction.getQuantity());
+         System.out.println(transaction.toString());
      }
     }
 }

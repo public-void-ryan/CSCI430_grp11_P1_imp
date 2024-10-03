@@ -54,7 +54,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client [Name=" + name + ", ID=" + id + "]";
+        return "Client [Name=" + name + ", " + "Address=" + address + "Phone=" + phone + "ID=" + id + "]";
     }
 
     public void addToWishlist(Product product) {

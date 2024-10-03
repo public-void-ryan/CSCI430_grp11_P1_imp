@@ -4,8 +4,8 @@ public class Main {
         Warehouse warehouse = Warehouse.instance();
 
         // Adding clients
-        Client client1 = new Client("Alice");
-        Client client2 = new Client("Bob");
+        Client client1 = new Client("Alice", "Address 1", "111-111-1111");
+        Client client2 = new Client("Bob", "Address 2", "222-222-2222");
         warehouse.addClient(client1);
         warehouse.addClient(client2);
 
