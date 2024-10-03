@@ -36,3 +36,4 @@ replay_pid*
 *.iml
 .idea/*
 .vscode/*
+.gradle/*
