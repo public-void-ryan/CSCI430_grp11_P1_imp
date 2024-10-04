@@ -11,7 +11,7 @@ public class ClientListTest {
     @BeforeEach
     public void setUp() {
         Client.resetIdCounter(); // Reset the idCounter before each test
-        clientList = new ClientList();
+        clientList = ClientList.instance();
         client1 = new Client("Client One", "123 fake street", null);
         client2 = new Client("Client Two", "345 Main Street", "555-5555");
     }
