@@ -1,20 +1,17 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static Warehouse warehouse;
     private final ClientList clients;
     private final ProductList products;
-    private final List<Transaction> transactions;
 
     private static final String DATA_FILE = "WarehouseData";
 
-    public Warehouse() {
-        clients = new ClientList();
-        products = new ProductList();
-        transactions = new ArrayList<>();
+    private Warehouse() {
+        clients = ClientList.instance();
+        products = ProductList.instance();
     }
 
     public static Warehouse instance() {
@@ -27,45 +24,48 @@ public class Warehouse implements Serializable {
         return warehouse;
     }
 
-    public void addClient(Client client) {
-        clients.addClient(client);
-        save();
+    public Client addClient(String name, String address, String phone) {
+        Client client = new Client(name, address, phone);
+        return clients.addClient(client);
     }
 
-    public void addProduct(Product product) {
-        products.addProduct(product);
-        save();
+    public Product addProduct(String name, double price, int quantity) {
+        Product product = new Product(name, price, quantity);
+        return products.addProduct(product);
     }
 
-    public void processOrder(Client client, String productId, int quantity) {
-        Product product = findProduct(productId);
-        if (product != null) {
-            if (product.stockLevel() >= quantity) {
-                Transaction transaction = new Transaction(client, product, quantity);
-                transactions.add(transaction);
-                product.setStockLevel(product.stockLevel() - quantity);
-                save();
-            } else {
-                addToWaitlist(client, product);
-            }
-        } else {
-            System.out.println("Product not found: " + productId);
+    public Wishlist.WishlistItem addProductToClientWishlist(String clientId, String productId, int quantity) {
+        Client client = clients.findClient(clientId);
+        if (client == null) {
+            return null;
         }
+        Product product = products.findProduct(productId);
+        if (product == null) {
+            return null;
+        }
+        return client.addToWishlist(product, quantity);
     }
 
-    public Product findProduct(String productId) {
-        return products.findProduct(productId);
+    public Iterator<Client> getClients() {
+        return clients.getClients();
     }
 
-    public void addToWaitlist(Client client, Product product) {
-        product.waitlist().addClient(client);
-        save();
+    public Iterator<Product> getProducts() {
+        return products.getProducts();
+    }
+
+    public Iterator<Wishlist.WishlistItem> getClientWishlistItems(String clientId) {
+        Client client = clients.findClient(clientId);
+        if (client != null) {
+            return client.getWishlist().getWishlistItems();
+        } else {
+            return null;
+        }
     }
 
     public static boolean save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             out.writeObject(warehouse);
-            System.out.println("Warehouse saved successfully.");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,32 +75,10 @@ public class Warehouse implements Serializable {
 
     public static Warehouse retrieve() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
-            System.out.println("Warehouse data found and loaded.");
-            return (Warehouse) in.readObject();
+            warehouse = (Warehouse) in.readObject();
+            return warehouse;
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Warehouse data not found or could not be loaded.");
             return null;
         }
     }
-
-    public List<Client> getAllClients() {
-        List<Client> clientList = new ArrayList<>();
-        clients.getClients().forEachRemaining(clientList::add);
-        return clientList;
-    }
-
-    public List<Product> getAllProducts() {
-
-        return products.getProducts();
-    }
-
-    public List<Transaction> getTransactions() {
-
-        return transactions;
-    }
-
-    public void addToWishlist(Client client, Product product) {
-        client.addToWishlist(product);
-    }
-
 }

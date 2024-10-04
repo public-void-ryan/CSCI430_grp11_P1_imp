@@ -54,14 +54,10 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client [Name=" + name + ", " + "Address=" + address + "Phone=" + phone + "ID=" + id + "]";
+        return "Client [Name=" + name + ", Address=" + address + ", Phone=" + phone + ", ID=" + id + "]";
     }
 
-    public void addToWishlist(Product product) {
-        wishlist.addProduct(product);
-    }
-
-    public static void resetIdCounter() {
-        idCounter = 1;
+    public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {
+        return wishlist.addProduct(product, quantity);
     }
 }

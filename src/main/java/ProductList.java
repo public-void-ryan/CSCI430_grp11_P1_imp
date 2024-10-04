@@ -1,29 +1,62 @@
-import java.io.Serializable;
+import java.io.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Product> _products;
+    private final List<Product> products = new LinkedList<>();
+    private static ProductList productList;
 
-    public ProductList() {
-        _products = new ArrayList<>();
+    private ProductList() {
     }
 
-    public void addProduct(Product product) {
-        _products.add(product);
+    public static ProductList instance() {
+        if (productList == null) {
+            productList = new ProductList();
+        }
+        return productList;
     }
 
-    public Product findProduct(String id) {
-        for (Product product : _products) {
-            if (product.id().equals(id)) {
+    public Product addProduct(Product product) {
+        products.add(product);
+        return product;
+    }
+
+    public Product findProduct(String productId) {
+        for (Product product : products) {
+            if (product.getId().equals(productId)) {
                 return product;
             }
         }
         return null;
     }
 
-    public List<Product> getProducts() {
-        return new ArrayList<>(_products);
+    public Iterator<Product> getProducts() {
+        return products.iterator();
+    }
+
+    private void writeObject(ObjectOutputStream output) {
+        try {
+            output.defaultWriteObject();
+            output.writeObject(productList);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private void readObject(ObjectInputStream input) {
+        try {
+            if (productList == null) {
+                input.defaultReadObject();
+                productList = (ProductList) input.readObject();
+            }
+        } catch (IOException | ClassNotFoundException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public String toString() {
+        return products.toString();
     }
 }

@@ -2,50 +2,52 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String _id;
-    private String _name;
-    private double _price;
-    private int _stockLevel;
-    private Wishlist _wishlist;
-    private Waitlist _waitlist;
+    private final String id;
+    private String name;
+    private double price;
+    private int stockLevel;
     private static final String PRODUCT_STRING = "P";
     private static int idCounter = 1;
 
     public Product(String name, double price, int stockLevel) {
-        _id = PRODUCT_STRING + idCounter++;
-        _name = name;
-        _price = price;
-        _stockLevel = stockLevel;
-        _wishlist = new Wishlist();
-        _waitlist = new Waitlist();
+        this.id = PRODUCT_STRING + idCounter++;
+        this.name = name;
+        this.price = price;
+        this.stockLevel = stockLevel;
     }
 
-    public String id() {
-        return _id;
+    // Getters
+    public String getId() {
+        return id;
     }
 
-    public String name() {
-        return _name;
+    public String getName() {
+        return name;
     }
 
-    public double price() {
-        return _price;
+    public double getPrice() {
+        return price;
     }
 
-    public int stockLevel() {
-        return _stockLevel;
+    public int getStockLevel() {
+        return stockLevel;
     }
 
-    public Wishlist wishlist() {
-        return _wishlist;
+    // Setters
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Waitlist waitlist() {
-        return _waitlist;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setStockLevel(int newStock) {
-        _stockLevel = newStock;
+    public void setStockLevel(int stockLevel) {
+        this.stockLevel = stockLevel;
     }
 
+    @Override
+    public String toString() {
+        return "Product [Name=" + name + ", Price=" + price + ", StockLevel=" + stockLevel + ", ID=" + id + "]";
+    }
 }
