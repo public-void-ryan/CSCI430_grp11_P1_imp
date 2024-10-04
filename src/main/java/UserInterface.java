@@ -184,33 +184,33 @@ public class UserInterface {
         help();
         while ((command = getCommand()) != EXIT) {
             switch (command) {
-                case ADD_CLIENT:
-                    addClient();
-                    break;
-                case ADD_PRODUCT:
-                    addProduct();
-                    break;
-                case ADD_PRODUCT_TO_CLIENT_WISHLIST:
-                    addProductToClientWishlist();
-                    break;
-                case SHOW_CLIENTS:
-                    showClients();
-                    break;
-                case SHOW_PRODUCTS:
-                    showProducts();
-                    break;
-                case SHOW_CLIENT_WISHLIST:
-                    showClientWishlist();
-                    break;
-                case SAVE:
-                    save();
-                    break;
-                case HELP:
-                    help();
-                    break;
-                default:
-                    System.out.println("Invalid command!");
-                    break;
+            case ADD_CLIENT:
+                addClient();
+                break;
+            case ADD_PRODUCT:
+                addProduct();
+                break;
+            case ADD_PRODUCT_TO_CLIENT_WISHLIST:
+                addProductToClientWishlist();
+                break;
+            case SHOW_CLIENTS:
+                showClients();
+                break;
+            case SHOW_PRODUCTS:
+                showProducts();
+                break;
+            case SHOW_CLIENT_WISHLIST:
+                showClientWishlist();
+                break;
+            case SAVE:
+                save();
+                break;
+            case HELP:
+                help();
+                break;
+            default:
+                System.out.println("Invalid command!");
+                break;
             }
         }
     }
