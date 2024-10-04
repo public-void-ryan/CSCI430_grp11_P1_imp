@@ -12,23 +12,42 @@ public class ProductTest {
 
     @Test
     public void testProductInitialization() {
-        assertNotNull(product.id());
-        assertEquals("Test Product", product.name());
-        assertEquals(99.99, product.price());
-        assertEquals(10, product.stockLevel());
-        assertNotNull(product.wishlist());
-        assertNotNull(product.waitlist());
+        assertNotNull(product.getId());
+        assertEquals("Test Product", product.getName());
+        assertEquals(99.99, product.getPrice(), 0.001);
+        assertEquals(10, product.getStockLevel());
     }
 
     @Test
     public void testSetStockLevel() {
         product.setStockLevel(20);
-        assertEquals(20, product.stockLevel());
+        assertEquals(20, product.getStockLevel());
+    }
+
+    @Test
+    public void testSetName() {
+        product.setName("Updated Product");
+        assertEquals("Updated Product", product.getName());
+    }
+
+    @Test
+    public void testSetPrice() {
+        product.setPrice(79.99);
+        assertEquals(79.99, product.getPrice(), 0.001);
     }
 
     @Test
     public void testUniqueProductId() {
         Product anotherProduct = new Product("Another Product", 49.99, 5);
-        assertNotEquals(product.id(), anotherProduct.id());
+        assertNotEquals(product.getId(), anotherProduct.getId());
+    }
+
+    @Test
+    public void testToString() {
+        String productString = product.toString();
+        assertTrue(productString.contains("Name=Test Product"));
+        assertTrue(productString.contains("Price=99.99"));
+        assertTrue(productString.contains("StockLevel=10"));
+        assertTrue(productString.contains("ID=" + product.getId()));
     }
 }
