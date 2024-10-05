@@ -5,10 +5,11 @@ import java.util.List;
 
 public class ClientList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<Client> clients = new LinkedList<>();
+    private List<Client> clients;
     private static ClientList clientList;
 
     private ClientList() {
+        clients = new LinkedList<>();
     }
 
     public static ClientList instance() {
@@ -36,23 +37,18 @@ public class ClientList implements Serializable {
         return clients.iterator();
     }
 
-    private void writeObject(ObjectOutputStream output) {
-        try {
-            output.defaultWriteObject();
-            output.writeObject(clientList);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+    public void clear() {
+        clients.clear();
     }
 
-    private void readObject(ObjectInputStream input) {
-        try {
-            if (clientList == null) {
-                input.defaultReadObject();
-                clientList = (ClientList) input.readObject();
-            }
-        } catch (IOException | ClassNotFoundException ioe) {
-            ioe.printStackTrace();
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        if (clients == null) {
+            clients = new LinkedList<>();
         }
     }
 

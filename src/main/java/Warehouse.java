@@ -24,6 +24,10 @@ public class Warehouse implements Serializable {
         return warehouse;
     }
 
+    public static void resetInstance() {
+        warehouse = null;
+    }
+
     public Client addClient(String name, String address, String phone) {
         Client client = new Client(name, address, phone);
         return clients.addClient(client);

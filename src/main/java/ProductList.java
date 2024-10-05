@@ -59,4 +59,8 @@ public class ProductList implements Serializable {
     public String toString() {
         return products.toString();
     }
+
+    public void clear() {
+        products.clear();
+    }
 }

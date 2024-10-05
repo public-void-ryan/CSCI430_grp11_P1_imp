@@ -1,64 +1,73 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WarehouseTest {
+import java.io.File;
+import java.util.Iterator;
+
+class WarehouseTest {
+    private static final String DATA_FILE = "WarehouseData";
     private Warehouse warehouse;
-    private Client client;
-    private Product product;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        // Delete the data file if it exists
+        File file = new File(DATA_FILE);
+        if (file.exists()) {
+            file.delete();
+        }
+
+        // Reset the Warehouse instance
+        Warehouse.resetInstance();
         warehouse = Warehouse.instance();
-        client = new Client("Test Client", "123 Test St", "555-1234");
-        product = new Product("Test Product", 100.0, 10);
+
+        // Clear ClientList and ProductList
+        ClientList.instance().clear();
+        ProductList.instance().clear();
     }
 
     @Test
-    public void testAddClient() {
-        warehouse.addClient(client);
-        assertNotNull(warehouse.getAllClients());
-        assertTrue(warehouse.getAllClients().contains(client));
+    void testAddClientAndGetClients() {
+        Client client = warehouse.addClient("John Doe", "123 Main St", "555-1234");
+        assertNotNull(client);
+
+        Iterator<Client> clients = warehouse.getClients();
+        assertTrue(clients.hasNext());
+        assertEquals("John Doe", clients.next().getName());
     }
 
     @Test
-    public void testAddProduct() {
-        warehouse.addProduct(product);
-        assertNotNull(warehouse.getAllProducts());
-        assertTrue(warehouse.getAllProducts().contains(product));
+    void testAddProductAndGetProducts() {
+        Product product = warehouse.addProduct("Widget", 9.99, 100);
+        assertNotNull(product);
+
+        Iterator<Product> products = warehouse.getProducts();
+        assertTrue(products.hasNext());
+        assertEquals("Widget", products.next().getName());
     }
 
     @Test
-    public void testFindProduct() {
-        warehouse.addProduct(product);
-        Product foundProduct = warehouse.findProduct(product.id());
-        assertNotNull(foundProduct);
-        assertEquals(product, foundProduct);
+    void testAddProductToClientWishlist() {
+        Client client = warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
+        Product product = warehouse.addProduct("Gadget", 19.99, 50);
+
+        Wishlist.WishlistItem wishlistItem = warehouse.addProductToClientWishlist(client.getId(), product.getId(), 2);
+        assertNotNull(wishlistItem);
+
+        Iterator<Wishlist.WishlistItem> wishlistItems = warehouse.getClientWishlistItems(client.getId());
+        assertTrue(wishlistItems.hasNext());
+        assertEquals(product.getName(), wishlistItems.next().getProduct().getName());
     }
 
     @Test
-    public void testProcessOrder() {
-        warehouse.addClient(client);
-        warehouse.addProduct(product);
-        int initialStock = product.stockLevel();
-        warehouse.processOrder(client, product.id(), 2);
-        assertEquals(initialStock - 2, product.stockLevel());
-        assertFalse(warehouse.getTransactions().isEmpty());
-    }
+    void testSaveAndRetrieve() {
+        warehouse.addClient("Test Client", "Test Address", "555-9999");
+        assertTrue(Warehouse.save());
 
-    @Test
-    public void testAddToWaitlist() {
-        warehouse.addClient(client);
-        warehouse.addProduct(product);
-        warehouse.addToWaitlist(client, product);
-        assertTrue(product.waitlist().getClients().contains(client));
-    }
+        Warehouse retrievedWarehouse = Warehouse.retrieve();
+        assertNotNull(retrievedWarehouse);
 
-    @Test
-    public void testAddToWishlist() {
-        warehouse.addClient(client);
-        warehouse.addProduct(product);
-        warehouse.addToWishlist(client, product);
-        assertTrue(client.getWishlist().getWishlist().contains(product));
+        Iterator<Client> clients = retrievedWarehouse.getClients();
+        assertTrue(clients.hasNext());
+        assertEquals("Test Client", clients.next().getName());
     }
 }
