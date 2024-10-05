@@ -17,15 +17,15 @@ public class WarehouseTest {
     @Test
     public void testAddClient() {
         warehouse.addClient(client);
-        assertNotNull(warehouse.getClients());
-        assertTrue(warehouse.getClients().contains(client));
+        assertNotNull(warehouse.getAllClients());
+        assertTrue(warehouse.getAllClients().contains(client));
     }
 
     @Test
     public void testAddProduct() {
         warehouse.addProduct(product);
-        assertNotNull(warehouse.getProducts());
-        assertTrue(warehouse.getProducts().contains(product));
+        assertNotNull(warehouse.getAllProducts());
+        assertTrue(warehouse.getAllProducts().contains(product));
     }
 
     @Test

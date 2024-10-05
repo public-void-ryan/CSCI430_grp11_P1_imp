@@ -24,7 +24,8 @@ public class Warehouse implements Serializable {
         return warehouse;
     }
 
-    public Client addClient(Client client) {
+    public Client addClient(String name, String address, String phone) {
+        Client client = new Client(name, address, phone);
         return clients.addClient(client);
     }
 
