@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.io.*;
 import java.util.Iterator;
 
 public class ClientListTest {
@@ -10,11 +11,17 @@ public class ClientListTest {
 
     @BeforeEach
     public void setUp() {
-        Client.resetIdCounter(); // Reset the idCounter before each test
         clientList = ClientList.instance();
-        clientList.clear(); // Clear the ClientList before each test
-        client1 = new Client("Client One", "123 fake street", null);
-        client2 = new Client("Client Two", "345 Main Street", "555-5555");
+        clientList.clear();
+        client1 = new Client("Client One", "123 fake street", "111-111-1111");
+        client2 = new Client("Client Two", "345 Main Street", "222-222-2222");
+    }
+
+    @Test
+    public void testClientListConstructor() {
+        assertNotNull(clientList);
+        assertNotNull(clientList.getClients());
+        assertFalse(clientList.getClients().hasNext());
     }
 
     @Test
@@ -23,6 +30,20 @@ public class ClientListTest {
         Iterator<Client> iterator = clientList.getClients();
         assertTrue(iterator.hasNext());
         assertEquals(client1, iterator.next());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            clientList.addClient(null);
+        });
+        assertEquals("Client cannot be null.", exception.getMessage());
+    }
+
+    @Test
+    public void testFindClient() {
+        clientList.addClient(client1);
+        clientList.addClient(client2);
+        assertEquals(client1, clientList.findClient(client1.getId()));
+        assertEquals(client2, clientList.findClient(client2.getId()));
+        assertNull(clientList.findClient("X1"));
     }
 
     @Test
@@ -37,11 +58,21 @@ public class ClientListTest {
     }
 
     @Test
-    public void testFindClient() {
+    public void testClear() {
         clientList.addClient(client1);
         clientList.addClient(client2);
-        assertEquals(client1, clientList.findClient(client1.getId()));
-        assertEquals(client2, clientList.findClient(client2.getId()));
-        assertNull(clientList.findClient("C3"));
+        clientList.clear();
+        assertFalse(clientList.getClients().hasNext());
+    }
+
+    @Test
+    public void testToString() {
+        clientList.addClient(client1);
+        String expected = "[" + client1.toString() + "]";
+        assertEquals(expected, clientList.toString());
+
+        clientList.addClient(client2);
+        expected = "[" + client1.toString() + ", " + client2.toString() + "]";
+        assertEquals(expected, clientList.toString());
     }
 }

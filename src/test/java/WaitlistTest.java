@@ -11,8 +11,8 @@ public class WaitlistTest {
     @BeforeEach
     public void setUp() {
         waitlist = new Waitlist();
-        client1 = new Client("Client1", null, null);
-        client2 = new Client("Client2", null, null);
+        client1 = new Client("Client1", "111 Drive", "111-111-1111");
+        client2 = new Client("Client2", "222 Drive", "222-222-2222");
     }
 
     @Test

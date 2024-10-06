@@ -18,13 +18,18 @@ public class WishlistTest {
     }
 
     @Test
+    public void testWishlistConstructor() {
+        assertNotNull(wishlist);
+        assertFalse(wishlist.getWishlistItems().hasNext());
+    }
+
+    @Test
     public void testAddProduct() {
         Wishlist.WishlistItem item = wishlist.addProduct(product1, 2);
         assertNotNull(item);
         assertEquals(product1, item.getProduct());
         assertEquals(2, item.getQuantity());
 
-        // Verify that the wishlist contains the item
         Iterator<Wishlist.WishlistItem> iterator = wishlist.getWishlistItems();
         List<Wishlist.WishlistItem> items = new ArrayList<>();
         iterator.forEachRemaining(items::add);
@@ -42,7 +47,6 @@ public class WishlistTest {
         assertEquals(product1, item.getProduct());
         assertEquals(5, item.getQuantity());
 
-        // Verify that the wishlist contains the updated item
         Iterator<Wishlist.WishlistItem> iterator = wishlist.getWishlistItems();
         List<Wishlist.WishlistItem> items = new ArrayList<>();
         iterator.forEachRemaining(items::add);
@@ -53,12 +57,27 @@ public class WishlistTest {
     }
 
     @Test
+    public void testAddProductNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            wishlist.addProduct(null, 2);
+        });
+        assertEquals("Product cannot be null.", exception.getMessage());
+    }
+
+    @Test
+    public void testAddProductNegativeQuantity() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            wishlist.addProduct(product1, -1);
+        });
+        assertEquals("Quantity cannot be negative.", exception.getMessage());
+    }
+
+    @Test
     public void testRemoveProduct() {
         wishlist.addProduct(product1, 2);
         boolean removed = wishlist.removeProduct(product1);
         assertTrue(removed);
 
-        // Verify that the wishlist is empty
         Iterator<Wishlist.WishlistItem> iterator = wishlist.getWishlistItems();
         assertFalse(iterator.hasNext());
     }
@@ -66,7 +85,15 @@ public class WishlistTest {
     @Test
     public void testRemoveProductNonExisting() {
         boolean removed = wishlist.removeProduct(product1);
-        assertFalse(removed); // Should return false since product was not in the wishlist
+        assertFalse(removed);
+    }
+
+    @Test
+    public void testRemoveProductNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            wishlist.removeProduct(null);
+        });
+        assertEquals("Product cannot be null.", exception.getMessage());
     }
 
     @Test

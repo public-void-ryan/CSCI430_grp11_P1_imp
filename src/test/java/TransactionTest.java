@@ -9,7 +9,7 @@ public class TransactionTest {
     @BeforeEach
     public void setUp() {
         Transaction.resetIdCounter(); // Reset the idCounter before each test
-        client = new Client("John Doe", "john.doe@example.com", null);
+        client = new Client("John Doe", "john.doe@example.com", "111-111-1111");
         product = new Product("Laptop", 999.99, 0);
     }
 

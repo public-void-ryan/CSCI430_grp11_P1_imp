@@ -11,7 +11,7 @@ public class ProductTest {
     }
 
     @Test
-    public void testProductInitialization() {
+    public void testProductConstructor() {
         assertNotNull(product.getId());
         assertEquals("Test Product", product.getName());
         assertEquals(99.99, product.getPrice(), 0.001);
@@ -19,21 +19,41 @@ public class ProductTest {
     }
 
     @Test
-    public void testSetStockLevel() {
-        product.setStockLevel(20);
-        assertEquals(20, product.getStockLevel());
-    }
-
-    @Test
     public void testSetName() {
         product.setName("Updated Product");
         assertEquals("Updated Product", product.getName());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setName(null);
+        });
+        assertEquals("Name cannot be null or empty.", exception.getMessage());
+
+        exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setName("");
+        });
+        assertEquals("Name cannot be null or empty.", exception.getMessage());
     }
 
     @Test
     public void testSetPrice() {
         product.setPrice(79.99);
         assertEquals(79.99, product.getPrice(), 0.001);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setPrice(-10.0);
+        });
+        assertEquals("Price cannot be negative.", exception.getMessage());
+    }
+
+    @Test
+    public void testSetStockLevel() {
+        product.setStockLevel(20);
+        assertEquals(20, product.getStockLevel());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setStockLevel(-5);
+        });
+        assertEquals("Stock level cannot be negative.", exception.getMessage());
     }
 
     @Test
@@ -44,10 +64,7 @@ public class ProductTest {
 
     @Test
     public void testToString() {
-        String productString = product.toString();
-        assertTrue(productString.contains("Name=Test Product"));
-        assertTrue(productString.contains("Price=99.99"));
-        assertTrue(productString.contains("StockLevel=10"));
-        assertTrue(productString.contains("ID=" + product.getId()));
+        String expected = "Product [Name=Test Product, Price=99.99, StockLevel=10, ID=" + product.getId() + "]";
+        assertEquals(expected, product.toString());
     }
 }
