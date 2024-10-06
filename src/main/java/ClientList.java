@@ -20,6 +20,9 @@ public class ClientList implements Serializable {
     }
 
     public Client addClient(Client client) {
+        if (client == null) {
+            throw new IllegalArgumentException("Client cannot be null.");
+        }
         clients.add(client);
         return client;
     }
@@ -41,6 +44,10 @@ public class ClientList implements Serializable {
         clients.clear();
     }
 
+    public String toString() {
+        return clients.toString();
+    }
+
     private void writeObject(ObjectOutputStream output) throws IOException {
         output.defaultWriteObject();
     }
@@ -50,9 +57,5 @@ public class ClientList implements Serializable {
         if (clients == null) {
             clients = new LinkedList<>();
         }
-    }
-
-    public String toString() {
-        return clients.toString();
     }
 }

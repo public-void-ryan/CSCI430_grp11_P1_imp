@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class Warehouse implements Serializable {
@@ -40,11 +41,8 @@ public class Warehouse implements Serializable {
 
     public Wishlist.WishlistItem addProductToClientWishlist(String clientId, String productId, int quantity) {
         Client client = clients.findClient(clientId);
-        if (client == null) {
-            return null;
-        }
         Product product = products.findProduct(productId);
-        if (product == null) {
+        if (client == null || product == null) {
             return null;
         }
         return client.addToWishlist(product, quantity);
@@ -62,9 +60,8 @@ public class Warehouse implements Serializable {
         Client client = clients.findClient(clientId);
         if (client != null) {
             return client.getWishlist().getWishlistItems();
-        } else {
-            return null;
         }
+        return null;
     }
 
     public static boolean save() {

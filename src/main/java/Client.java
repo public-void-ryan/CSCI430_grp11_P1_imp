@@ -11,11 +11,11 @@ public class Client implements Serializable {
     private final Wishlist wishlist;
 
     public Client(String name, String address, String phone) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
         this.id = CLIENT_STRING + idCounter++;
         this.wishlist = new Wishlist();
+        setName(name);
+        setAddress(address);
+        setPhone(phone);
     }
 
     // Getters
@@ -41,27 +41,32 @@ public class Client implements Serializable {
 
     // Setters
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
         this.name = name;
     }
 
     public void setAddress(String address) {
+        if (address == null || address.isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty.");
+        }
         this.address = address;
     }
 
     public void setPhone(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            throw new IllegalArgumentException("Phone cannot be null or empty.");
+        }
         this.phone = phone;
     }
 
     @Override
     public String toString() {
-        return "Client [Name=" + name + ", Address=" + address + ", Phone=" + phone + ", ID=" + id + "]";
+        return String.format("Client [Name=%s, Address=%s, Phone=%s, ID=%s]", name, address, phone, id);
     }
 
     public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {
         return wishlist.addProduct(product, quantity);
-    }
-
-    public static void resetIdCounter() {
-        idCounter = 1;
     }
 }

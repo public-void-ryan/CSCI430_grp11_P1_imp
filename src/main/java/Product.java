@@ -11,9 +11,9 @@ public class Product implements Serializable {
 
     public Product(String name, double price, int stockLevel) {
         this.id = PRODUCT_STRING + idCounter++;
-        this.name = name;
-        this.price = price;
-        this.stockLevel = stockLevel;
+        setName(name);
+        setPrice(price);
+        setStockLevel(stockLevel);
     }
 
     // Getters
@@ -35,19 +35,28 @@ public class Product implements Serializable {
 
     // Setters
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
         this.name = name;
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative.");
+        }
         this.price = price;
     }
 
     public void setStockLevel(int stockLevel) {
+        if (stockLevel < 0) {
+            throw new IllegalArgumentException("Stock level cannot be negative.");
+        }
         this.stockLevel = stockLevel;
     }
 
     @Override
     public String toString() {
-        return "Product [Name=" + name + ", Price=" + price + ", StockLevel=" + stockLevel + ", ID=" + id + "]";
+        return String.format("Product [Name=%s, Price=%.2f, StockLevel=%d, ID=%s]", name, price, stockLevel, id);
     }
 }

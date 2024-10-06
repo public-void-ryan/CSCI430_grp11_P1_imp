@@ -5,10 +5,11 @@ import java.util.List;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<Product> products = new LinkedList<>();
+    private List<Product> products;
     private static ProductList productList;
 
-    public ProductList() {
+    private ProductList() {
+        products = new LinkedList<>();
     }
 
     public static ProductList instance() {
@@ -19,6 +20,9 @@ public class ProductList implements Serializable {
     }
 
     public Product addProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null.");
+        }
         products.add(product);
         return product;
     }
@@ -36,31 +40,22 @@ public class ProductList implements Serializable {
         return products.iterator();
     }
 
-    private void writeObject(ObjectOutputStream output) {
-        try {
-            output.defaultWriteObject();
-            output.writeObject(productList);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-    private void readObject(ObjectInputStream input) {
-        try {
-            if (productList == null) {
-                input.defaultReadObject();
-                productList = (ProductList) input.readObject();
-            }
-        } catch (IOException | ClassNotFoundException ioe) {
-            ioe.printStackTrace();
-        }
+    public void clear() {
+        products.clear();
     }
 
     public String toString() {
         return products.toString();
     }
 
-    public void clear() {
-        products.clear();
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        if (products == null) {
+            products = new LinkedList<>();
+        }
     }
 }

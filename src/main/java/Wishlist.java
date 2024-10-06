@@ -5,9 +5,10 @@ import java.util.List;
 
 public class Wishlist implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<WishlistItem> wishlist = new LinkedList<>();
+    private final List<WishlistItem> wishlist;
 
     public Wishlist() {
+        wishlist = new LinkedList<>();
     }
 
     public static class WishlistItem implements Serializable {
@@ -36,11 +37,18 @@ public class Wishlist implements Serializable {
 
         @Override
         public String toString() {
-            return "WishlistItem [Product=" + product + ", Quantity=" + quantity + "]";
+            return String.format("WishlistItem [Product=%s, Quantity=%s]", product, quantity);
         }
     }
 
     public WishlistItem addProduct(Product product, int quantity) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null.");
+        }
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative.");
+        }
+
         for (WishlistItem item : wishlist) {
             if (item.getProduct().getId().equals(product.getId())) {
                 // Update the quantity if product exists
@@ -54,6 +62,10 @@ public class Wishlist implements Serializable {
     }
 
     public boolean removeProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null.");
+        }
+
         return wishlist.removeIf(item -> item.getProduct().getId().equals(product.getId()));
     }
 

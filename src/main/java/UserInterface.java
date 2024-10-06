@@ -95,11 +95,7 @@ public class UserInterface {
         String address = getToken("Enter address: ");
         String phone = getToken("Enter phone: ");
         Client result = warehouse.addClient(name, address, phone);
-        if (result != null) {
-            System.out.println("Client added: " + result);
-        } else {
-            System.out.println("Could not add client.");
-        }
+        System.out.println("Client added: " + result);
     }
 
     public void addProduct() {
@@ -107,11 +103,7 @@ public class UserInterface {
         double price = Double.parseDouble(getToken("Enter product price: "));
         int quantity = getNumber("Enter product quantity: ");
         Product result = warehouse.addProduct(name, price, quantity);
-        if (result != null) {
-            System.out.println("Product added: " + result);
-        } else {
-            System.out.println("Could not add product.");
-        }
+        System.out.println("Product added: " + result);
     }
 
     public void addProductToClientWishlist() {
@@ -119,11 +111,7 @@ public class UserInterface {
         String productId = getToken("Enter product ID: ");
         int quantity = getNumber("Enter product quantity: ");
         Wishlist.WishlistItem result = warehouse.addProductToClientWishlist(clientId, productId, quantity);
-        if (result != null) {
-            System.out.println("Product added to client's wishlist: " + result);
-        } else {
-            System.out.println("Could not add product to client's wishlist.");
-        }
+        System.out.println("Product added to client's wishlist: " + result);
     }
 
     public void showClients() {
@@ -183,34 +171,38 @@ public class UserInterface {
         int command;
         help();
         while ((command = getCommand()) != EXIT) {
-            switch (command) {
-            case ADD_CLIENT:
-                addClient();
-                break;
-            case ADD_PRODUCT:
-                addProduct();
-                break;
-            case ADD_PRODUCT_TO_CLIENT_WISHLIST:
-                addProductToClientWishlist();
-                break;
-            case SHOW_CLIENTS:
-                showClients();
-                break;
-            case SHOW_PRODUCTS:
-                showProducts();
-                break;
-            case SHOW_CLIENT_WISHLIST:
-                showClientWishlist();
-                break;
-            case SAVE:
-                save();
-                break;
-            case HELP:
-                help();
-                break;
-            default:
-                System.out.println("Invalid command!");
-                break;
+            try {
+                switch (command) {
+                    case ADD_CLIENT:
+                        addClient();
+                        break;
+                    case ADD_PRODUCT:
+                        addProduct();
+                        break;
+                    case ADD_PRODUCT_TO_CLIENT_WISHLIST:
+                        addProductToClientWishlist();
+                        break;
+                    case SHOW_CLIENTS:
+                        showClients();
+                        break;
+                    case SHOW_PRODUCTS:
+                        showProducts();
+                        break;
+                    case SHOW_CLIENT_WISHLIST:
+                        showClientWishlist();
+                        break;
+                    case SAVE:
+                        save();
+                        break;
+                    case HELP:
+                        help();
+                        break;
+                    default:
+                        System.out.println("Invalid command!");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
