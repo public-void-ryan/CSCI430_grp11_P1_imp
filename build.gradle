@@ -17,4 +17,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    // Enable test report generation in both HTML and XML format
+    reports {
+        junitXml.required.set(true)  // XML report
+        html.required.set(true)      // HTML report
+    }
 }

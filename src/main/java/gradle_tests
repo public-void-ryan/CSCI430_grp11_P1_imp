@@ -1,0 +1,255 @@
+lse,2,testRemoveProductNonExisting(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testRemoveProductNonExisting()]
+%TSTTREE8,testWishlistConstructor(WishlistTest),false,1,false,2,testWishlistConstructor(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testWishlistConstructor()]
+%TSTTREE9,testAddProductExisting(WishlistTest),false,1,false,2,testAddProductExisting(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testAddProductExisting()]
+%TSTTREE10,testWishlistItemToString(WishlistTest),false,1,false,2,testWishlistItemToString(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testWishlistItemToString()]
+%TSTTREE11,testAddProduct(WishlistTest),false,1,false,2,testAddProduct(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testAddProduct()]
+%TSTTREE12,testGetWishlistItems(WishlistTest),false,1,false,2,testGetWishlistItems(),,[engine:junit-jupiter]/[class:WishlistTest]/[method:testGetWishlistItems()]
+%TSTTREE13,ProductListTest,true,6,false,1,ProductListTest,,[engine:junit-jupiter]/[class:ProductListTest]
+%TSTTREE14,testClear(ProductListTest),false,1,false,13,testClear(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testClear()]
+%TSTTREE15,testToString(ProductListTest),false,1,false,13,testToString(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testToString()]
+%TSTTREE16,testFindProduct(ProductListTest),false,1,false,13,testFindProduct(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testFindProduct()]
+%TSTTREE17,testGetProducts(ProductListTest),false,1,false,13,testGetProducts(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testGetProducts()]
+%TSTTREE18,testAddProduct(ProductListTest),false,1,false,13,testAddProduct(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testAddProduct()]
+%TSTTREE19,testProductListConstructor(ProductListTest),false,1,false,13,testProductListConstructor(),,[engine:junit-jupiter]/[class:ProductListTest]/[method:testProductListConstructor()]
+%TSTTREE20,ClientTest,true,6,false,1,ClientTest,,[engine:junit-jupiter]/[class:ClientTest]
+%TSTTREE21,testToString(ClientTest),false,1,false,20,testToString(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testToString()]
+%TSTTREE22,testClientConstructor(ClientTest),false,1,false,20,testClientConstructor(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testClientConstructor()]
+%TSTTREE23,testAddToWishlist(ClientTest),false,1,false,20,testAddToWishlist(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testAddToWishlist()]
+%TSTTREE24,testSetAddress(ClientTest),false,1,false,20,testSetAddress(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testSetAddress()]
+%TSTTREE25,testSetName(ClientTest),false,1,false,20,testSetName(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testSetName()]
+%TSTTREE26,testSetPhone(ClientTest),false,1,false,20,testSetPhone(),,[engine:junit-jupiter]/[class:ClientTest]/[method:testSetPhone()]
+%TSTTREE27,TransactionTest,true,3,false,1,TransactionTest,,[engine:junit-jupiter]/[class:TransactionTest]
+%TSTTREE28,testTransactionCreation(TransactionTest),false,1,false,27,testTransactionCreation(),,[engine:junit-jupiter]/[class:TransactionTest]/[method:testTransactionCreation()]
+%TSTTREE29,testTransactionToString(TransactionTest),false,1,false,27,testTransactionToString(),,[engine:junit-jupiter]/[class:TransactionTest]/[method:testTransactionToString()]
+%TSTTREE30,testTransactionIdIncrement(TransactionTest),false,1,false,27,testTransactionIdIncrement(),,[engine:junit-jupiter]/[class:TransactionTest]/[method:testTransactionIdIncrement()]
+%TSTTREE31,ProductTest,true,6,false,1,ProductTest,,[engine:junit-jupiter]/[class:ProductTest]
+%TSTTREE32,testSetStockLevel(ProductTest),false,1,false,31,testSetStockLevel(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testSetStockLevel()]
+%TSTTREE33,testToString(ProductTest),false,1,false,31,testToString(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testToString()]
+%TSTTREE34,testUniqueProductId(ProductTest),false,1,false,31,testUniqueProductId(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testUniqueProductId()]
+%TSTTREE35,testSetName(ProductTest),false,1,false,31,testSetName(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testSetName()]
+%TSTTREE36,testProductConstructor(ProductTest),false,1,false,31,testProductConstructor(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testProductConstructor()]
+%TSTTREE37,testSetPrice(ProductTest),false,1,false,31,testSetPrice(),,[engine:junit-jupiter]/[class:ProductTest]/[method:testSetPrice()]
+%TSTTREE38,ClientListTest,true,6,false,1,ClientListTest,,[engine:junit-jupiter]/[class:ClientListTest]
+%TSTTREE39,testClear(ClientListTest),false,1,false,38,testClear(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testClear()]
+%TSTTREE40,testFindClient(ClientListTest),false,1,false,38,testFindClient(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testFindClient()]
+%TSTTREE41,testToString(ClientListTest),false,1,false,38,testToString(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testToString()]
+%TSTTREE42,testAddClient(ClientListTest),false,1,false,38,testAddClient(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testAddClient()]
+%TSTTREE43,testGetClients(ClientListTest),false,1,false,38,testGetClients(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testGetClients()]
+%TSTTREE44,testClientListConstructor(ClientListTest),false,1,false,38,testClientListConstructor(),,[engine:junit-jupiter]/[class:ClientListTest]/[method:testClientListConstructor()]
+%TSTTREE45,WarehouseTest,true,10,false,1,WarehouseTest,,[engine:junit-jupiter]/[class:WarehouseTest]
+%TSTTREE46,testSaveAndRetrieve(WarehouseTest),false,1,false,45,testSaveAndRetrieve(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testSaveAndRetrieve()]
+%TSTTREE47,testWarehouseConstructor(WarehouseTest),false,1,false,45,testWarehouseConstructor(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testWarehouseConstructor()]
+%TSTTREE48,testGetClientWishlistItemsNonExistentClient(WarehouseTest),false,1,false,45,testGetClientWishlistItemsNonExistentClient(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testGetClientWishlistItemsNonExistentClient()]
+%TSTTREE49,testGetClientWishlistItems(WarehouseTest),false,1,false,45,testGetClientWishlistItems(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testGetClientWishlistItems()]
+%TSTTREE50,testAddClientAndGetClients(WarehouseTest),false,1,false,45,testAddClientAndGetClients(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testAddClientAndGetClients()]
+%TSTTREE51,testGetProducts(WarehouseTest),false,1,false,45,testGetProducts(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testGetProducts()]
+%TSTTREE52,testGetClients(WarehouseTest),false,1,false,45,testGetClients(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testGetClients()]
+%TSTTREE53,testAddProductToClientWishlistNonExistentClientOrProduct(WarehouseTest),false,1,false,45,testAddProductToClientWishlistNonExistentClientOrProduct(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testAddProductToClientWishlistNonExistentClientOrProduct()]
+%TSTTREE54,testAddProductAndGetProducts(WarehouseTest),false,1,false,45,testAddProductAndGetProducts(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testAddProductAndGetProducts()]
+
+%TSTTREE55,testAddProductToClientWishlist(WarehouseTest),false,1,false,45,testAddProductToClientWishlist(),,[engine:junit-jupiter]/[class:WarehouseTest]/[method:testAddProductToClientWishlist()]
+%TSTTREE56,WaitlistTest,true,3,false,1,WaitlistTest,,[engine:junit-jupiter]/[class:WaitlistTest]
+%TSTTREE57,testRemoveClient(WaitlistTest),false,1,false,56,testRemoveClient(),,[engine:junit-jupiter]/[class:WaitlistTest]/[method:testRemoveClient()]
+%TSTTREE58,testAddClient(WaitlistTest),false,1,false,56,testAddClient(),,[engine:junit-jupiter]/[class:WaitlistTest]/[method:testAddClient()]
+%TSTTREE59,testGetClients(WaitlistTest),false,1,false,56,testGetClients(),,[engine:junit-jupiter]/[class:WaitlistTest]/[method:testGetClients()]
+%TESTS  3,testAddProductNull(WishlistTest)
+
+%TESTE  3,testAddProductNull(WishlistTest)
+
+%TESTS  4,testRemoveProductNull(WishlistTest)
+
+%TESTE  4,testRemoveProductNull(WishlistTest)
+
+%TESTS  5,testRemoveProduct(WishlistTest)
+
+%TESTE  5,testRemoveProduct(WishlistTest)
+
+%TESTS  6,testAddProductNegativeQuantity(WishlistTest)
+
+%TESTE  6,testAddProductNegativeQuantity(WishlistTest)
+
+%TESTS  7,testRemoveProductNonExisting(WishlistTest)
+
+%TESTE  7,testRemoveProductNonExisting(WishlistTest)
+
+%TESTS  8,testWishlistConstructor(WishlistTest)
+
+%TESTE  8,testWishlistConstructor(WishlistTest)
+
+%TESTS  9,testAddProductExisting(WishlistTest)
+
+%TESTE  9,testAddProductExisting(WishlistTest)
+
+%TESTS  10,testWishlistItemToString(WishlistTest)
+
+%TESTE  10,testWishlistItemToString(WishlistTest)
+
+%TESTS  11,testAddProduct(WishlistTest)
+
+%TESTE  11,testAddProduct(WishlistTest)
+
+%TESTS  12,testGetWishlistItems(WishlistTest)
+
+%TESTE  12,testGetWishlistItems(WishlistTest)
+
+%TESTS  14,testClear(ProductListTest)
+
+%TESTE  14,testClear(ProductListTest)
+
+%TESTS  15,testToString(ProductListTest)
+
+%TESTE  15,testToString(ProductListTest)
+
+%TESTS  16,testFindProduct(ProductListTest)
+
+%TESTE  16,testFindProduct(ProductListTest)
+
+%TESTS  17,testGetProducts(ProductListTest)
+
+%TESTE  17,testGetProducts(ProductListTest)
+
+%TESTS  18,testAddProduct(ProductListTest)
+
+%TESTE  18,testAddProduct(ProductListTest)
+
+%TESTS  19,testProductListConstructor(ProductListTest)
+
+%TESTE  19,testProductListConstructor(ProductListTest)
+
+%TESTS  21,testToString(ClientTest)
+
+%TESTE  21,testToString(ClientTest)
+
+%TESTS  22,testClientConstructor(ClientTest)
+
+%TESTE  22,testClientConstructor(ClientTest)
+
+%TESTS  23,testAddToWishlist(ClientTest)
+
+%TESTE  23,testAddToWishlist(ClientTest)
+
+%TESTS  24,testSetAddress(ClientTest)
+
+%TESTE  24,testSetAddress(ClientTest)
+
+%TESTS  25,testSetName(ClientTest)
+
+%TESTE  25,testSetName(ClientTest)
+
+%TESTS  26,testSetPhone(ClientTest)
+
+%TESTE  26,testSetPhone(ClientTest)
+
+%TESTS  28,testTransactionCreation(TransactionTest)
+
+%TESTE  28,testTransactionCreation(TransactionTest)
+
+%TESTS  29,testTransactionToString(TransactionTest)
+
+%TESTE  29,testTransactionToString(TransactionTest)
+
+%TESTS  30,testTransactionIdIncrement(TransactionTest)
+
+%TESTE  30,testTransactionIdIncrement(TransactionTest)
+
+%TESTS  32,testSetStockLevel(ProductTest)
+
+%TESTE  32,testSetStockLevel(ProductTest)
+
+%TESTS  33,testToString(ProductTest)
+
+%TESTE  33,testToString(ProductTest)
+
+%TESTS  34,testUniqueProductId(ProductTest)
+
+%TESTE  34,testUniqueProductId(ProductTest)
+
+%TESTS  35,testSetName(ProductTest)
+
+%TESTE  35,testSetName(ProductTest)
+
+%TESTS  36,testProductConstructor(ProductTest)
+%TESTE  36,testProductConstructor(ProductTest)
+
+%TESTS  37,testSetPrice(ProductTest)
+
+%TESTE  37,testSetPrice(ProductTest)
+
+%TESTS  39,testClear(ClientListTest)
+
+%TESTE  39,testClear(ClientListTest)
+
+%TESTS  40,testFindClient(ClientListTest)
+
+%TESTE  40,testFindClient(ClientListTest)
+
+%TESTS  41,testToString(ClientListTest)
+
+%TESTE  41,testToString(ClientListTest)
+
+%TESTS  42,testAddClient(ClientListTest)
+
+%TESTE  42,testAddClient(ClientListTest)
+
+%TESTS  43,testGetClients(ClientListTest)
+
+%TESTE  43,testGetClients(ClientListTest)
+
+%TESTS  44,testClientListConstructor(ClientListTest)
+
+%TESTE  44,testClientListConstructor(ClientListTest)
+
+%TESTS  46,testSaveAndRetrieve(WarehouseTest)
+
+%TESTE  46,testSaveAndRetrieve(WarehouseTest)
+
+%TESTS  47,testWarehouseConstructor(WarehouseTest)
+
+%TESTE  47,testWarehouseConstructor(WarehouseTest)
+
+%TESTS  48,testGetClientWishlistItemsNonExistentClient(WarehouseTest)
+
+%TESTE  48,testGetClientWishlistItemsNonExistentClient(WarehouseTest)
+
+%TESTS  49,testGetClientWishlistItems(WarehouseTest)
+
+%TESTE  49,testGetClientWishlistItems(WarehouseTest)
+
+%TESTS  50,testAddClientAndGetClients(WarehouseTest)
+
+%TESTE  50,testAddClientAndGetClients(WarehouseTest)
+
+%TESTS  51,testGetProducts(WarehouseTest)
+
+%TESTE  51,testGetProducts(WarehouseTest)
+
+%TESTS  52,testGetClients(WarehouseTest)
+
+%TESTE  52,testGetClients(WarehouseTest)
+
+%TESTS  53,testAddProductToClientWishlistNonExistentClientOrProduct(WarehouseTest)
+
+%TESTE  53,testAddProductToClientWishlistNonExistentClientOrProduct(WarehouseTest)
+
+%TESTS  54,testAddProductAndGetProducts(WarehouseTest)
+
+%TESTE  54,testAddProductAndGetProducts(WarehouseTest)
+
+%TESTS  55,testAddProductToClientWishlist(WarehouseTest)
+
+%TESTE  55,testAddProductToClientWishlist(WarehouseTest)
+
+%TESTS  57,testRemoveClient(WaitlistTest)
+
+%TESTE  57,testRemoveClient(WaitlistTest)
+
+%TESTS  58,testAddClient(WaitlistTest)
+
+%TESTE  58,testAddClient(WaitlistTest)
+
+%TESTS  59,testGetClients(WaitlistTest)
+
+%TESTE  59,testGetClients(WaitlistTest)
+
+%RUNTIME124
+

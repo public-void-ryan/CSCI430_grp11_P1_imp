@@ -1,0 +1,1 @@
+ The testing should include populating the system with several clients and products, multiple tests to add products to wishlists, and several queries verifying that the tests were done accurately 

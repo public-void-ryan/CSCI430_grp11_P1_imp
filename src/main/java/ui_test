@@ -1,0 +1,94 @@
+Script started on 2024-10-07 08:55:29-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="182" LINES="20"]
+[5 q[1m[7m%[27m[1m[0m                                                                                                                                                                                      [0m[27m[24m[J[1m[31m[[33mryan[32m@[34marchlinux [35m~/notes/University/Year 2/Fall 2024/CSCI 430/group_work/project1/warehouse-stage-i-implementation-public-void-ryan/src/main/java[31m][00m$[0m [K[5 q[5 q[?2004h[32mj[39m[1m[31mj[1m[31mh[0m[39m[0m[32mj[39m[0m[39m [32mj[39m[90mava UserInterface[39m[17D[39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [39m [18D[32mj[39m[32mj[39m[90mava UserInterface[39m[17D[1m[31mj[1m[31ma[0m[39m[1m[31mj[1m[31ma[1m[31mv[0m[39m[0m[32mj[0m[32ma[0m[32mv[32ma[39m[39m [39mU[39ms[39me[39mr[39mI[39mn[39mt[39me[39mr[39mf[39ma[39mc[39me[1m [0m[0m [?2004l
+[5 qLook for saved data and use it? (Y|N): y N
+Enter a number between 0 and 8 as explained below:
+0 to exit
+1 to add a client
+2 to add a product
+3 to add a product to a client's wishlist
+4 to show all clients
+5 to show all products
+6 to show a client's wishlist
+7 to save data
+8 for help
+Enter command (8 for help): 4
+Warehouse Clients:
+Enter command (8 for help): 1
+Enter client name: Ryan
+Enter address: 123 fake ste reet
+Enter phone: 123-456-7890
+Client added: Client [Name=Ryan, Address=123 fake street, Phone=123-456-7890, ID=C1]
+Enter command (8 for help): 4
+Warehouse Clients:
+Client [Name=Ryan, Address=123 fake street, Phone=123-456-7890, ID=C1]
+Enter command (8 for help): 5
+Warehouse Products:
+Enter command (8 for help): 8
+Enter a number between 0 and 8 as explained below:
+0 to exit
+1 to add a client
+2 to add a product
+3 to add a product to a client's wishlist
+4 to show all clients
+5 to show all products
+6 to show a client's wishlist
+7 to save data
+8 for help
+Enter command (8 for help): 2
+Enter product name: Product1
+Enter product price: 5.00
+Enter product quantity: 1
+Product added: Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1]
+Enter command (8 for help): 8
+Enter a number between 0 and 8 as explained below:
+0 to exit
+1 to add a client
+2 to add a product
+3 to add a product to a client's wishlist
+4 to show all clients
+5 to show all products
+6 to show a client's wishlist
+7 to save data
+8 for help
+Enter command (8 for help): 5
+Warehouse Products:
+Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1]
+Enter command (8 for help): 3
+Enter client ID: C1
+Enter product ID: P1
+Enter product quantity: 1
+Product added to client's wishlist: WishlistItem [Product=Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1], Quantity=1]
+Enter command (8 for help): 6 6
+Enter client ID: C1
+Client's Wishlist:
+WishlistItem [Product=Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1], Quantity=1]
+Enter command (8 for help): 7
+Warehouse data successfully saved.
+Enter command (8 for help): 0
+[1m[7m%[27m[1m[0m                                                                                                                                                                                      [0m[27m[24m[J[1m[31m[[33mryan[32m@[34marchlinux [35m~/notes/University/Year 2/Fall 2024/CSCI 430/group_work/project1/warehouse-stage-i-implementation-public-void-ryan/src/main/java[31m][00m$[0m [K[5 q[5 q[?2004h[32mjava[39m UserInterface[?2004l
+[5 qLook for saved data and use it? (Y|N): Y
+Warehouse data successfully retrieved.
+Enter a number between 0 and 8 as explained below:
+0 to exit
+1 to add a client
+2 to add a product
+3 to add a product to a client's wishlist
+4 to show all clients
+5 to show all products
+6 to show a client's wishlist
+7 to save data
+8 for help
+Enter command (8 for help): 5
+Warehouse Products:
+Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1]
+Enter command (8 for help): 4
+Warehouse Clients:
+Client [Name=Ryan, Address=123 fake street, Phone=123-456-7890, ID=C1]
+Enter command (8 for help): 6
+Enter client ID: C1
+Client's Wishlist:
+WishlistItem [Product=Product [Name=Product1, Price=5.00, StockLevel=1, ID=P1], Quantity=1]
+Enter command (8 for help): 0
+[1m[7m%[27m[1m[0m                                                                                                                                                                                      [0m[27m[24m[J[1m[31m[[33mryan[32m@[34marchlinux [35m~/notes/University/Year 2/Fall 2024/CSCI 430/group_work/project1/warehouse-stage-i-implementation-public-void-ryan/src/main/java[31m][00m$[0m [K[5 q[5 q[?2004h[?2004l
+
+Script done on 2024-10-07 08:57:16-05:00 [COMMAND_EXIT_CODE="0"]
