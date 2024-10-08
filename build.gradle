@@ -1,9 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
 }
-
-group = 'com.scsu.warehouse'
-version = '1.0'
 
 repositories {
     mavenCentral()
@@ -13,6 +11,18 @@ dependencies {
     // JUnit 5 for testing
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+application {
+    mainClassName = 'UserInterface'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'UserInterface'
+        )
+    }
 }
 
 test {
