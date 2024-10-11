@@ -72,4 +72,8 @@ public class Wishlist implements Serializable {
     public Iterator<WishlistItem> getWishlistItems() {
         return wishlist.iterator();
     }
+
+    public void clear() {
+        wishlist.clear();
+    }
 }

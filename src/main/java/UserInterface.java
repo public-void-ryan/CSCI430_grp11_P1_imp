@@ -135,8 +135,9 @@ public class UserInterface {
                 }
             }
 
-            // Need to add warehouse method to process order, and clear wishlist.
+            // Need to add warehouse method to process order.
 
+            warehouse.clearClientWishlist(clientId);
         } else {
             System.out.println("Client not found or wishlist is empty.");
         }

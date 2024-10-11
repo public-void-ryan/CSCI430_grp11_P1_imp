@@ -73,4 +73,8 @@ public class Client implements Serializable {
     public boolean removeFromWishlist(Product product) {
         return wishlist.removeProduct(product);
     }
+
+    public void clearWishlist() {
+        wishlist.clear();
+    }
 }

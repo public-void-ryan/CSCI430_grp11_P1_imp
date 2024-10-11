@@ -56,6 +56,16 @@ public class Warehouse implements Serializable {
         return client.removeFromWishlist(product);
     }
 
+    public boolean clearClientWishlist(String clientId) {
+        Client client = clients.findClient(clientId);
+        if (client == null) {
+            return false;
+        }
+
+        client.clearWishlist();
+        return true;
+    }
+
     public Client getClient(String clientId) {
         return clients.findClient(clientId);
     }
