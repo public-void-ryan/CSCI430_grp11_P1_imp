@@ -8,9 +8,11 @@ public class Product implements Serializable {
     private int stockLevel;
     private static final String PRODUCT_STRING = "P";
     private static int idCounter = 1;
+    private final Waitlist waitlist;
 
     public Product(String name, double price, int stockLevel) {
         this.id = PRODUCT_STRING + idCounter++;
+        this.waitlist = new Waitlist();
         setName(name);
         setPrice(price);
         setStockLevel(stockLevel);
@@ -31,6 +33,10 @@ public class Product implements Serializable {
 
     public int getStockLevel() {
         return stockLevel;
+    }
+
+    public Waitlist getWaitlist() {
+        return waitlist ;
     }
 
     // Setters
@@ -58,5 +64,17 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return String.format("Product [Name=%s, Price=%.2f, StockLevel=%d, ID=%s]", name, price, stockLevel, id);
+    }
+
+    public Waitlist.WaitlistItem addToWaitlist(Client client, int quantity) {
+        return waitlist.addClient(client, quantity);
+    }
+
+    public boolean removeFromWaitlist(Client client) {
+        return waitlist.removeClient(client);
+    }
+
+    public void clearWaitlist() {
+        waitlist.clear();
     }
 }

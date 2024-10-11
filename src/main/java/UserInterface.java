@@ -177,26 +177,6 @@ public class UserInterface {
         }
     }
 
-    public void showProduct() {
-        String productId = getToken("Enter product ID: ");
-        Product product = warehouse.getProduct(productId);
-        if (product != null) {
-            System.out.println("Product Details:");
-            System.out.println(product);
-        } else {
-            System.out.println("Product not found.");
-        }
-    }
-
-    public void showProducts() {
-        Iterator<Product> allProducts = warehouse.getProducts();
-        System.out.println("Warehouse Products:");
-        while (allProducts.hasNext()) {
-            Product product = allProducts.next();
-            System.out.println(product);
-        }
-    }
-
     public void showClientWishlist() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
@@ -225,14 +205,34 @@ public class UserInterface {
         }
     }
 
+    public void showProduct() {
+        String productId = getToken("Enter product ID: ");
+        Product product = warehouse.getProduct(productId);
+        if (product != null) {
+            System.out.println("Product Details:");
+            System.out.println(product);
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
+
+    public void showProducts() {
+        Iterator<Product> allProducts = warehouse.getProducts();
+        System.out.println("Warehouse Products:");
+        while (allProducts.hasNext()) {
+            Product product = allProducts.next();
+            System.out.println(product);
+        }
+    }
+
     public void showProductWaitlist() {
         String productId = getToken("Enter product ID: ");
-        Iterator<Client> waitlist = warehouse.getProductWaitlist(productId);
+        Iterator<Waitlist.WaitlistItem> waitlist = warehouse.getProductWaitlistItems(productId);
         if (waitlist != null) {
             System.out.println("Waitlisted Clients for Product:");
             while (waitlist.hasNext()) {
-                Client client = waitlist.next();
-                System.out.println(client);
+                Waitlist.WaitlistItem item = waitlist.next();
+                System.out.println(item);
             }
         } else {
             System.out.println("Product not found or no clients on the waitlist.");

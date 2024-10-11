@@ -90,6 +90,14 @@ public class Warehouse implements Serializable {
         return null;
     }
 
+    public Iterator<Waitlist.WaitlistItem> getProductWaitlistItems(String productId) {
+        Product product = products.findProduct(productId);
+        if (product != null) {
+            return product.getWaitlist().getWaitlistItems();
+        }
+        return null;
+    }
+
     public static boolean save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             out.writeObject(warehouse);
