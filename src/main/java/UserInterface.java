@@ -10,11 +10,15 @@ public class UserInterface {
     private static final int ADD_PRODUCT = 2;
     private static final int ADD_PRODUCT_TO_CLIENT_WISHLIST = 3;
     private static final int PROCESS_CLIENT_ORDER = 4;
-    private static final int SHOW_CLIENTS = 5;
-    private static final int SHOW_PRODUCTS = 6;
-    private static final int SHOW_CLIENT_WISHLIST = 7;
-    private static final int SAVE = 8;
-    private static final int HELP = 9;
+    private static final int SHOW_CLIENT = 5;
+    private static final int SHOW_CLIENTS = 6;
+    private static final int SHOW_PRODUCT = 7;
+    private static final int SHOW_PRODUCTS = 8;
+    private static final int SHOW_CLIENT_WISHLIST = 9;
+    private static final int SHOW_CLIENT_TRANSACTIONS = 10;
+    private static final int SHOW_PRODUCT_WAITLIST = 11;
+    private static final int SAVE = 12;
+    private static final int HELP = 13;
 
     // Private utility methods
     private UserInterface() {
@@ -135,11 +139,32 @@ public class UserInterface {
                 }
             }
 
-            // Need to add warehouse method to process order.
+            wishlist = warehouse.getClientWishlistItems(clientId);
+            while (wishlist.hasNext()) {
+                Wishlist.WishlistItem item = wishlist.next();
+
+                Product product = item.getProduct();
+                if (product.getStockLevel() > item.getQuantity()) {
+                    // Simply place order
+                } else {
+                    // Place order with available amount and place rest on waitlist
+                }
+            }
 
             warehouse.clearClientWishlist(clientId);
         } else {
             System.out.println("Client not found or wishlist is empty.");
+        }
+    }
+
+    public void showClient() {
+        String clientId = getToken("Enter client ID: ");
+        Client client = warehouse.getClient(clientId);
+        if (client != null) {
+            System.out.println("Client Details:");
+            System.out.println(client);
+        } else {
+            System.out.println("Client not found.");
         }
     }
 
@@ -149,6 +174,17 @@ public class UserInterface {
         while (allClients.hasNext()) {
             Client client = allClients.next();
             System.out.println(client);
+        }
+    }
+
+    public void showProduct() {
+        String productId = getToken("Enter product ID: ");
+        Product product = warehouse.getProduct(productId);
+        if (product != null) {
+            System.out.println("Product Details:");
+            System.out.println(product);
+        } else {
+            System.out.println("Product not found.");
         }
     }
 
@@ -175,6 +211,34 @@ public class UserInterface {
         }
     }
 
+    public void showClientTransactions() {
+        String clientId = getToken("Enter client ID: ");
+        Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
+        if (transactions != null) {
+            System.out.println("Client's Transactions:");
+            while (transactions.hasNext()) {
+                Transaction transaction = transactions.next();
+                System.out.println(transaction);
+            }
+        } else {
+            System.out.println("Client not found or no transactions available.");
+        }
+    }
+
+    public void showProductWaitlist() {
+        String productId = getToken("Enter product ID: ");
+        Iterator<Client> waitlist = warehouse.getProductWaitlist(productId);
+        if (waitlist != null) {
+            System.out.println("Waitlisted Clients for Product:");
+            while (waitlist.hasNext()) {
+                Client client = waitlist.next();
+                System.out.println(client);
+            }
+        } else {
+            System.out.println("Product not found or no clients on the waitlist.");
+        }
+    }
+
     public void save() {
         if (Warehouse.save()) {
             System.out.println("Warehouse data successfully saved.");
@@ -190,9 +254,13 @@ public class UserInterface {
         System.out.println(ADD_PRODUCT + " to add a product");
         System.out.println(ADD_PRODUCT_TO_CLIENT_WISHLIST + " to add a product to a client's wishlist");
         System.out.println(PROCESS_CLIENT_ORDER + " to process a client order");
+        System.out.println(SHOW_CLIENT + " to display a specific client");
         System.out.println(SHOW_CLIENTS + " to show all clients");
+        System.out.println(SHOW_PRODUCT + " to display a specific product");
         System.out.println(SHOW_PRODUCTS + " to show all products");
         System.out.println(SHOW_CLIENT_WISHLIST + " to show a client's wishlist");
+        System.out.println(SHOW_CLIENT_TRANSACTIONS + " to display client transactions");
+        System.out.println(SHOW_PRODUCT_WAITLIST + " to display product waitlist");
         System.out.println(SAVE + " to save data");
         System.out.println(HELP + " for help");
     }
@@ -215,14 +283,26 @@ public class UserInterface {
                     case PROCESS_CLIENT_ORDER:
                         processClientOrder();
                         break;
+                    case SHOW_CLIENT:
+                        showClient();
+                        break;
                     case SHOW_CLIENTS:
                         showClients();
+                        break;
+                    case SHOW_PRODUCT:
+                        showProduct();
                         break;
                     case SHOW_PRODUCTS:
                         showProducts();
                         break;
                     case SHOW_CLIENT_WISHLIST:
                         showClientWishlist();
+                        break;
+                    case SHOW_CLIENT_TRANSACTIONS:
+                        showClientTransactions();
+                        break;
+                    case SHOW_PRODUCT_WAITLIST:
+                        showProductWaitlist();
                         break;
                     case SAVE:
                         save();
@@ -239,6 +319,7 @@ public class UserInterface {
             }
         }
     }
+
 
     public static void main(String[] args) {
         UserInterface.instance().process();
