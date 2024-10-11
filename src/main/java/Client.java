@@ -69,4 +69,8 @@ public class Client implements Serializable {
     public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {
         return wishlist.addProduct(product, quantity);
     }
+
+    public boolean removeFromWishlist(Product product) {
+        return wishlist.removeProduct(product);
+    }
 }

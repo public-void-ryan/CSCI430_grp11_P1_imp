@@ -9,11 +9,12 @@ public class UserInterface {
     private static final int ADD_CLIENT = 1;
     private static final int ADD_PRODUCT = 2;
     private static final int ADD_PRODUCT_TO_CLIENT_WISHLIST = 3;
-    private static final int SHOW_CLIENTS = 4;
-    private static final int SHOW_PRODUCTS = 5;
-    private static final int SHOW_CLIENT_WISHLIST = 6;
-    private static final int SAVE = 7;
-    private static final int HELP = 8;
+    private static final int PROCESS_CLIENT_ORDER = 4;
+    private static final int SHOW_CLIENTS = 5;
+    private static final int SHOW_PRODUCTS = 6;
+    private static final int SHOW_CLIENT_WISHLIST = 7;
+    private static final int SAVE = 8;
+    private static final int HELP = 9;
 
     // Private utility methods
     private UserInterface() {
@@ -114,6 +115,33 @@ public class UserInterface {
         System.out.println("Product added to client's wishlist: " + result);
     }
 
+    public void processClientOrder() {
+        String clientId = getToken("Enter client ID: ");
+        Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
+        if (wishlist != null) {
+            System.out.println("Client's Wishlist:");
+            while (wishlist.hasNext()) {
+                Wishlist.WishlistItem item = wishlist.next();
+                System.out.println(item);
+
+                String productId = item.getProduct().getId();
+
+                if (yesOrNo("Would you like to purchase this product?")) {
+                    int quantity = getNumber("Enter product quantity: ");
+                    warehouse.removeProductFromClientWishlist(clientId, productId);
+                    warehouse.addProductToClientWishlist(clientId, productId, quantity);
+                } else {
+                    warehouse.removeProductFromClientWishlist(clientId, productId);
+                }
+            }
+
+            // Need to add warehouse method to process order, and clear wishlist.
+
+        } else {
+            System.out.println("Client not found or wishlist is empty.");
+        }
+    }
+
     public void showClients() {
         Iterator<Client> allClients = warehouse.getClients();
         System.out.println("Warehouse Clients:");
@@ -160,6 +188,7 @@ public class UserInterface {
         System.out.println(ADD_CLIENT + " to add a client");
         System.out.println(ADD_PRODUCT + " to add a product");
         System.out.println(ADD_PRODUCT_TO_CLIENT_WISHLIST + " to add a product to a client's wishlist");
+        System.out.println(PROCESS_CLIENT_ORDER + " to process a client order");
         System.out.println(SHOW_CLIENTS + " to show all clients");
         System.out.println(SHOW_PRODUCTS + " to show all products");
         System.out.println(SHOW_CLIENT_WISHLIST + " to show a client's wishlist");
@@ -181,6 +210,9 @@ public class UserInterface {
                         break;
                     case ADD_PRODUCT_TO_CLIENT_WISHLIST:
                         addProductToClientWishlist();
+                        break;
+                    case PROCESS_CLIENT_ORDER:
+                        processClientOrder();
                         break;
                     case SHOW_CLIENTS:
                         showClients();
