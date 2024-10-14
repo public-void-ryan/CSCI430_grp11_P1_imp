@@ -132,22 +132,19 @@ public class UserInterface {
 
                 if (yesOrNo("Would you like to purchase this product?")) {
                     int quantity = getNumber("Enter product quantity: ");
-                    warehouse.removeProductFromClientWishlist(clientId, productId);
-                    warehouse.addProductToClientWishlist(clientId, productId, quantity);
+                    Product product = warehouse.getProduct(productId);
+                    if (product != null && product.getStockLevel() >= quantity) {
+                        int newStockLevel = product.getStockLevel() - quantity;
+                        product.setStockLevel(newStockLevel);
+                        warehouse.removeProductFromClientWishlist(clientId, productId);
+                        Transaction transaction = new Transaction(warehouse.getClient(clientId), product, quantity);
+                        warehouse.addTransaction(transaction);
+                        System.out.println("Order processed: " + transaction);
+                    } else {
+                        System.out.println("Insufficient stock for product: " + productId);
+                    }
                 } else {
                     warehouse.removeProductFromClientWishlist(clientId, productId);
-                }
-            }
-
-            wishlist = warehouse.getClientWishlistItems(clientId);
-            while (wishlist.hasNext()) {
-                Wishlist.WishlistItem item = wishlist.next();
-
-                Product product = item.getProduct();
-                if (product.getStockLevel() > item.getQuantity()) {
-                    // Simply place order
-                } else {
-                    // Place order with available amount and place rest on waitlist
                 }
             }
 
@@ -319,7 +316,6 @@ public class UserInterface {
             }
         }
     }
-
 
     public static void main(String[] args) {
         UserInterface.instance().process();

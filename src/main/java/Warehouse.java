@@ -1,17 +1,21 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static Warehouse warehouse;
     private final ClientList clients;
     private final ProductList products;
+    private List<Transaction> allTransactions;
 
     private static final String DATA_FILE = "WarehouseData";
 
-    private Warehouse() {
+    public Warehouse() {
         clients = ClientList.instance();
         products = ProductList.instance();
+        this.allTransactions = new ArrayList<>();
     }
 
     public static Warehouse instance() {
@@ -115,5 +119,33 @@ public class Warehouse implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             return null;
         }
+    }
+
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        if (allTransactions == null) {
+            allTransactions = new ArrayList<>();
+        }
+    }
+
+    public Iterator<Transaction> getClientTransactions(String clientId) {
+        List<Transaction> transactions = new ArrayList<>();
+        for (Transaction transaction : allTransactions) {
+            if (transaction.getClient().getId().equals(clientId)) {
+                transactions.add(transaction);
+            }
+        }
+        return transactions.iterator();
+    }
+
+    public void addTransaction(Transaction transaction) {
+        if (allTransactions == null) {
+            allTransactions = new ArrayList<>();
+        }
+        allTransactions.add(transaction);
     }
 }
