@@ -1,0 +1,34 @@
+@startuml Process Client Order
+actor Clerk
+participant UI
+participant Warehouse
+participant ClientList
+participant Client
+
+Clerk -> UI: processClientOrder()
+UI -> Clerk: Request clientId
+UI -> Warehouse: getClient(clientId)
+Warehouse -> ClientList: findClient(clientId)
+ClientList -> Warehouse: return Client
+Warehouse -> UI: Client
+UI -> Warehouse: getClientWishlistItems(clientId)
+Warehouse -> UI: return wishlistItems
+UI -> Clerk: Display wishlist items, request input for each item
+
+alt Product not being ordered
+    Clerk -> UI: Remove product
+    UI -> Warehouse: removeProductFromClientWishlist(clientId, productId)
+    Warehouse -> Client: removeFromWishlist(product)
+end
+
+alt Product being ordered
+    Clerk -> UI: Input quantity
+    UI -> Warehouse: removeProductFromClientWishlist(clientId, productId)
+    Warehouse -> Client: removeFromWishlist(product)
+    UI -> Warehouse: addProductToClientWishlist(clientId, productId, newQuantity)
+    Warehouse -> Client: addToWishlist(product)
+end
+
+UI -> Clerk: Display updated wishlist
+UI -> Warehouse: processClientOrder(clientId, productId, quantity)
+@enduml

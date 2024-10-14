@@ -1,0 +1,30 @@
+@startuml Receive Shipment
+actor Clerk
+participant UI
+participant Warehouse
+participant ProductList
+participant Product
+
+Clerk -> UI: Receive shipment
+UI -> Warehouse: checkProductExists(productId)
+Warehouse -> ProductList: findProduct(productId)
+ProductList -> Warehouse: return Product
+Warehouse -> UI: Product exists
+
+UI -> Warehouse: getWaitlist(productId)
+Warehouse -> Product: return waitlist
+
+loop While waitlist not empty
+    UI -> Warehouse: getNextWaitlistedClient(productId)
+    Warehouse -> Product: return Client
+    UI -> Warehouse: completeOrder(productId, clientId, quantity)
+end
+
+alt Remaining quantity
+    UI -> Warehouse: updateStock(productId, remainingQuantity)
+end
+
+UI -> Warehouse: getProductInfo(productId)
+Warehouse -> Product: return updated product info
+UI -> Clerk: Display updated product info and confirmation
+@enduml

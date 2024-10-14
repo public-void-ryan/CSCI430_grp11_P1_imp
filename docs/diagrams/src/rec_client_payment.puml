@@ -1,0 +1,24 @@
+@startuml Receive Client Payment
+actor Clerk
+participant UI
+participant Warehouse
+participant ClientList
+participant Client
+
+Clerk -> UI: processPayment()
+UI -> Clerk: Request clientId and payment amount
+UI -> Warehouse: getClient(clientId)
+Warehouse -> ClientList: findClient(clientId)
+ClientList -> Warehouse: return Client
+Warehouse -> UI: return Client
+UI -> Warehouse: getClientOutstandingBalance(clientId)
+Warehouse -> Client: return outstanding balance
+
+alt Payment amount sufficient
+    UI -> Warehouse: processPayment(clientId, paymentAmount)
+    Warehouse -> Client: update balance
+    UI -> Clerk: Display payment confirmation and updated balance
+else Payment amount insufficient
+    UI -> Clerk: Display error, adjust payment
+end
+@enduml
