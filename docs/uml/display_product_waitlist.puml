@@ -1,0 +1,26 @@
+@startuml Display Product Waitlist
+actor Clerk
+participant UI
+participant Warehouse
+participant ProductList
+participant Product
+
+Clerk -> UI: displayProductWaitlist()
+UI -> Warehouse: checkProductExists(productId)
+Warehouse -> ProductList: findProduct(productId)
+ProductList -> Warehouse: return Product
+
+alt Product does not exist
+    UI -> Clerk: Display error message
+else Product exists
+    UI -> Warehouse: getProduct(productId)
+    Warehouse -> Product: return Product info and waitlist
+
+    loop For each waitlisted item
+        UI -> Product: Get client information and quantity
+        Product -> UI: return client info and quantity
+    end
+
+    UI -> Clerk: Display formatted waitlist information
+end
+@enduml
