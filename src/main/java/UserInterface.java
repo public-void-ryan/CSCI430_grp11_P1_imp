@@ -10,15 +10,17 @@ public class UserInterface {
     private static final int ADD_PRODUCT = 2;
     private static final int ADD_PRODUCT_TO_CLIENT_WISHLIST = 3;
     private static final int PROCESS_CLIENT_ORDER = 4;
-    private static final int SHOW_CLIENT = 5;
-    private static final int SHOW_CLIENTS = 6;
-    private static final int SHOW_PRODUCT = 7;
-    private static final int SHOW_PRODUCTS = 8;
-    private static final int SHOW_CLIENT_WISHLIST = 9;
-    private static final int SHOW_CLIENT_TRANSACTIONS = 10;
-    private static final int SHOW_PRODUCT_WAITLIST = 11;
-    private static final int SAVE = 12;
-    private static final int HELP = 13;
+    private static final int PROCESS_CLIENT_PAYMENT = 5;
+    private static final int PROCESS_PRODUCT_SHIPMENT = 6;
+    private static final int SHOW_CLIENT = 7;
+    private static final int SHOW_CLIENTS = 8;
+    private static final int SHOW_PRODUCT = 9;
+    private static final int SHOW_PRODUCTS = 10;
+    private static final int SHOW_CLIENT_WISHLIST = 11;
+    private static final int SHOW_CLIENT_TRANSACTIONS = 12;
+    private static final int SHOW_PRODUCT_WAITLIST = 13;
+    private static final int SAVE = 14;
+    private static final int HELP = 15;
 
     // Private utility methods
     private UserInterface() {
@@ -122,50 +124,52 @@ public class UserInterface {
     public void processClientOrder() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
-        if (wishlist != null) {
-            System.out.println("Client's Wishlist:");
-            while (wishlist.hasNext()) {
-                Wishlist.WishlistItem item = wishlist.next();
-                System.out.println(item);
+        System.out.println("Client's Wishlist:");
+        while (wishlist.hasNext()) {
+            Wishlist.WishlistItem item = wishlist.next();
+            System.out.println(item);
 
-                String productId = item.getProduct().getId();
+            String productId = item.getProduct().getId();
 
-                if (yesOrNo("Would you like to purchase this product?")) {
-                    int quantity = getNumber("Enter product quantity: ");
-                    warehouse.removeProductFromClientWishlist(clientId, productId);
-                    warehouse.addProductToClientWishlist(clientId, productId, quantity);
-                } else {
-                    warehouse.removeProductFromClientWishlist(clientId, productId);
-                }
+            if (yesOrNo("Would you like to purchase this product?")) {
+                int quantity = getNumber("Enter product quantity: ");
+                warehouse.removeProductFromClientWishlist(clientId, productId);
+                warehouse.addProductToClientWishlist(clientId, productId, quantity);
+            } else {
+                warehouse.removeProductFromClientWishlist(clientId, productId);
             }
-
-            wishlist = warehouse.getClientWishlistItems(clientId);
-            while (wishlist.hasNext()) {
-                Wishlist.WishlistItem item = wishlist.next();
-
-                Product product = item.getProduct();
-                if (product.getStockLevel() > item.getQuantity()) {
-                    // Simply place order
-                } else {
-                    // Place order with available amount and place rest on waitlist
-                }
-            }
-
-            warehouse.clearClientWishlist(clientId);
-        } else {
-            System.out.println("Client not found or wishlist is empty.");
         }
+
+        wishlist = warehouse.getClientWishlistItems(clientId);
+        while (wishlist.hasNext()) {
+            Wishlist.WishlistItem item = wishlist.next();
+            warehouse.processClientOrder(clientId, item.getProduct().getId(), item.getQuantity());
+        }
+
+        warehouse.clearClientWishlist(clientId);
+
+        System.out.println("Order invoice: ");
+    }
+
+    public void processClientPayment() {
+        String clientId = getToken("Enter client ID: ");
+        double amount = Double.parseDouble(getToken("Enter payment amount: "));
+        warehouse.processClientPayment(clientId, amount);
+        System.out.println("Payment processed successfully.");
+    }
+
+    public void processProductShipment() {
+        String productId = getToken("Enter product ID: ");
+        int quantityReceived = Integer.parseInt(getToken("Enter quantity received: "));
+        warehouse.processProductShipment(productId, quantityReceived);
+        System.out.println("Shipment processed successfully.");
     }
 
     public void showClient() {
         String clientId = getToken("Enter client ID: ");
         Client client = warehouse.getClient(clientId);
-        if (client != null) {
-            System.out.println("Client Details:");
-            System.out.println(client);
-        } else {
-            System.out.println("Client not found.");
-        }
+        System.out.println("Client Details:");
+        System.out.println(client);
     }
 
     public void showClients() {
@@ -180,40 +184,29 @@ public class UserInterface {
     public void showClientWishlist() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
-        if (wishlist != null) {
-            System.out.println("Client's Wishlist:");
-            while (wishlist.hasNext()) {
-                Wishlist.WishlistItem item = wishlist.next();
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("Client not found or wishlist is empty.");
+        System.out.println("Client's Wishlist:");
+        while (wishlist.hasNext()) {
+            Wishlist.WishlistItem item = wishlist.next();
+            System.out.println(item);
         }
     }
 
     public void showClientTransactions() {
         String clientId = getToken("Enter client ID: ");
-        Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
-        if (transactions != null) {
-            System.out.println("Client's Transactions:");
-            while (transactions.hasNext()) {
-                Transaction transaction = transactions.next();
-                System.out.println(transaction);
-            }
-        } else {
-            System.out.println("Client not found or no transactions available.");
+        //Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
+        Iterator<Transaction> transactions = null;
+        System.out.println("Client's Transactions:");
+        while (transactions.hasNext()) {
+            Transaction transaction = transactions.next();
+            System.out.println(transaction);
         }
     }
 
     public void showProduct() {
         String productId = getToken("Enter product ID: ");
         Product product = warehouse.getProduct(productId);
-        if (product != null) {
-            System.out.println("Product Details:");
-            System.out.println(product);
-        } else {
-            System.out.println("Product not found.");
-        }
+        System.out.println("Product Details:");
+        System.out.println(product);
     }
 
     public void showProducts() {
@@ -228,14 +221,10 @@ public class UserInterface {
     public void showProductWaitlist() {
         String productId = getToken("Enter product ID: ");
         Iterator<Waitlist.WaitlistItem> waitlist = warehouse.getProductWaitlistItems(productId);
-        if (waitlist != null) {
-            System.out.println("Waitlisted Clients for Product:");
-            while (waitlist.hasNext()) {
-                Waitlist.WaitlistItem item = waitlist.next();
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("Product not found or no clients on the waitlist.");
+        System.out.println("Waitlisted Clients for Product:");
+        while (waitlist.hasNext()) {
+            Waitlist.WaitlistItem item = waitlist.next();
+            System.out.println(item);
         }
     }
 
@@ -254,13 +243,15 @@ public class UserInterface {
         System.out.println(ADD_PRODUCT + " to add a product");
         System.out.println(ADD_PRODUCT_TO_CLIENT_WISHLIST + " to add a product to a client's wishlist");
         System.out.println(PROCESS_CLIENT_ORDER + " to process a client order");
-        System.out.println(SHOW_CLIENT + " to display a specific client");
+        System.out.println(PROCESS_CLIENT_PAYMENT + " to process a client payment");
+        System.out.println(PROCESS_PRODUCT_SHIPMENT + " to process a product shipment");
+        System.out.println(SHOW_CLIENT + " to show a specific client");
         System.out.println(SHOW_CLIENTS + " to show all clients");
-        System.out.println(SHOW_PRODUCT + " to display a specific product");
+        System.out.println(SHOW_PRODUCT + " to show a specific product");
         System.out.println(SHOW_PRODUCTS + " to show all products");
         System.out.println(SHOW_CLIENT_WISHLIST + " to show a client's wishlist");
-        System.out.println(SHOW_CLIENT_TRANSACTIONS + " to display client transactions");
-        System.out.println(SHOW_PRODUCT_WAITLIST + " to display product waitlist");
+        System.out.println(SHOW_CLIENT_TRANSACTIONS + " to show client transactions");
+        System.out.println(SHOW_PRODUCT_WAITLIST + " to show product waitlist");
         System.out.println(SAVE + " to save data");
         System.out.println(HELP + " for help");
     }
@@ -282,6 +273,12 @@ public class UserInterface {
                         break;
                     case PROCESS_CLIENT_ORDER:
                         processClientOrder();
+                        break;
+                    case PROCESS_CLIENT_PAYMENT:
+                        processClientPayment();
+                        break;
+                    case PROCESS_PRODUCT_SHIPMENT:
+                        processProductShipment();
                         break;
                     case SHOW_CLIENT:
                         showClient();

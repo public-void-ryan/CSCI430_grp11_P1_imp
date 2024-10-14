@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -33,7 +34,8 @@ public class ProductList implements Serializable {
                 return product;
             }
         }
-        return null;
+
+        throw new NoSuchElementException("Product with ID " + productId + " not found.");
     }
 
     public Iterator<Product> getProducts() {

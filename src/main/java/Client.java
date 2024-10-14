@@ -6,6 +6,7 @@ public class Client implements Serializable {
     private String name;
     private String address;
     private String phone;
+    private double balance;
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
     private final Wishlist wishlist;
@@ -16,6 +17,7 @@ public class Client implements Serializable {
         setName(name);
         setAddress(address);
         setPhone(phone);
+        setBalance(0);
     }
 
     // Getters
@@ -29,6 +31,10 @@ public class Client implements Serializable {
 
     public String getPhone() {
         return phone;
+    }
+
+    public double getBalance() {
+        return balance;
     }
 
     public String getId() {
@@ -61,9 +67,13 @@ public class Client implements Serializable {
         this.phone = phone;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
-        return String.format("Client [Name=%s, Address=%s, Phone=%s, ID=%s]", name, address, phone, id);
+        return String.format("Client [ID=%s, Name=%s, Address=%s, Phone=%s, Balance=%.2f]", id, name, address, phone, balance);
     }
 
     public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {

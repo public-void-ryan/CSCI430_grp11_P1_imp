@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ClientList implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -33,7 +34,8 @@ public class ClientList implements Serializable {
                 return client;
             }
         }
-        return null;
+
+        throw new NoSuchElementException("Client with ID " + clientId + " not found.");
     }
 
     public Iterator<Client> getClients() {
