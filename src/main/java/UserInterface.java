@@ -193,8 +193,7 @@ public class UserInterface {
 
     public void showClientTransactions() {
         String clientId = getToken("Enter client ID: ");
-        //Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
-        Iterator<Transaction> transactions = null;
+        Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
         System.out.println("Client's Transactions:");
         while (transactions.hasNext()) {
             Transaction transaction = transactions.next();
@@ -316,7 +315,6 @@ public class UserInterface {
             }
         }
     }
-
 
     public static void main(String[] args) {
         UserInterface.instance().process();

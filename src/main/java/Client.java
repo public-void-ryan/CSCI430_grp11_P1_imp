@@ -1,4 +1,7 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,10 +13,12 @@ public class Client implements Serializable {
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
     private final Wishlist wishlist;
+    private List<Transaction> transactions;
 
     public Client(String name, String address, String phone) {
         this.id = CLIENT_STRING + idCounter++;
         this.wishlist = new Wishlist();
+        this.transactions = new ArrayList<>();
         setName(name);
         setAddress(address);
         setPhone(phone);
@@ -73,7 +78,8 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Client [ID=%s, Name=%s, Address=%s, Phone=%s, Balance=%.2f]", id, name, address, phone, balance);
+        return String.format("Client [ID=%s, Name=%s, Address=%s, Phone=%s, Balance=%.2f]", id, name, address, phone,
+                balance);
     }
 
     public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {
@@ -86,5 +92,13 @@ public class Client implements Serializable {
 
     public void clearWishlist() {
         wishlist.clear();
+    }
+
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
+
+    public Iterator<Transaction> getTransactions() {
+        return transactions.iterator();
     }
 }

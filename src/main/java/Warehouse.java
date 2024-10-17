@@ -151,4 +151,10 @@ public class Warehouse implements Serializable {
             return null;
         }
     }
+
+    public Iterator<Transaction> getClientTransactions(String clientId) {
+        Client client = clients.findClient(clientId);
+        return client.getTransactions();
+    }
+
 }
