@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ClientListTest {
     private ClientList clientList;
@@ -42,7 +43,9 @@ public class ClientListTest {
         clientList.addClient(client2);
         assertEquals(client1, clientList.findClient(client1.getId()));
         assertEquals(client2, clientList.findClient(client2.getId()));
-        assertNull(clientList.findClient("X1"));
+        assertThrows(NoSuchElementException.class, () -> {
+            clientList.findClient("X1");
+        });
     }
 
     @Test
