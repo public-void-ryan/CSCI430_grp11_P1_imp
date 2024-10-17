@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class ProductListTest {
     private ProductList productList;
@@ -44,7 +45,10 @@ public class ProductListTest {
         productList.addProduct(product2);
         assertEquals(product1, productList.findProduct(product1.getId()));
         assertEquals(product2, productList.findProduct(product2.getId()));
-        assertNull(productList.findProduct("X1"));
+        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+            productList.findProduct("X1");
+        });
+        assertEquals("Product with ID X1 not found.", exception.getMessage());
     }
 
     @Test
