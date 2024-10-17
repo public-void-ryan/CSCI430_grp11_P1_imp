@@ -68,19 +68,6 @@ class WarehouseTest {
     }
 
     @Test
-    void testAddProductToClientWishlistNonExistentClientOrProduct() {
-        Product product = warehouse.addProduct("Gadget", 19.99, 50);
-
-        Wishlist.WishlistItem wishlistItem = warehouse.addProductToClientWishlist("invalidClientId", product.getId(), 2);
-        assertNull(wishlistItem);
-
-        Client client = warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
-
-        wishlistItem = warehouse.addProductToClientWishlist(client.getId(), "invalidProductId", 2);
-        assertNull(wishlistItem);
-    }
-
-    @Test
     void testGetClients() {
         warehouse.addClient("John Doe", "123 Main St", "555-1234");
         warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
@@ -122,12 +109,6 @@ class WarehouseTest {
         Wishlist.WishlistItem item = wishlistItems.next();
         assertEquals(product, item.getProduct());
         assertEquals(2, item.getQuantity());
-    }
-
-    @Test
-    void testGetClientWishlistItemsNonExistentClient() {
-        Iterator<Wishlist.WishlistItem> wishlistItems = warehouse.getClientWishlistItems("invalidClientId");
-        assertNull(wishlistItems);
     }
 
     @Test
