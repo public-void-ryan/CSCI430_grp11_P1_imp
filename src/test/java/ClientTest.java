@@ -69,7 +69,9 @@ public class ClientTest {
 
     @Test
     public void testToString() {
-        String expected = "Client [Name=John Doe, Address=123 Main St, Phone=555-1234, ID=" + client.getId() + "]";
+        String expected = String.format(
+                "Client [ID=%s, Name=John Doe, Address=123 Main St, Phone=555-1234, Balance=%.2f]", client.getId(),
+                0.0);
         assertEquals(expected, client.toString());
     }
 
