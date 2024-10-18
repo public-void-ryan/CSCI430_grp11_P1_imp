@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.text.DecimalFormat;
 
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -55,33 +56,41 @@ public class Warehouse implements Serializable {
         client.clearWishlist();
     }
 
-    public void processClientOrder(String clientId, String productId, int orderQuantity) {
+    public String processClientOrder(String clientId, String productId, int orderQuantity) {
         Client client = clients.findClient(clientId);
         Product product = products.findProduct(productId);
 
         int stockLevel = product.getStockLevel();
         double productPrice = product.getPrice();
+        StringBuilder message = new StringBuilder();
 
         if (stockLevel >= orderQuantity) {
             // Enough stock to fulfill the entire order
             product.setStockLevel(stockLevel - orderQuantity);
             double totalCost = productPrice * orderQuantity;
             client.setBalance(client.getBalance() + totalCost);
+            generateInvoice(client, product, orderQuantity, totalCost);
+            message.append("Order processed successfully.");
         } else if (stockLevel > 0) {
             // Partial fulfillment
             int waitlistedQuantity = orderQuantity - stockLevel;
             product.setStockLevel(0);
             double fulfilledCost = productPrice * stockLevel;
             client.setBalance(client.getBalance() + fulfilledCost);
+            generateInvoice(client, product, stockLevel, fulfilledCost);
 
             // Waitlist the remaining quantity
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, waitlistedQuantity);
+            message.append("Partial order processed. ").append(waitlistedQuantity).append(" items added to waitlist.");
         } else {
             // No stock available, entire quantity goes to waitlist
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, orderQuantity);
+            message.append("No stock available. ").append(orderQuantity).append(" items added to waitlist.");
         }
+
+        return message.toString();
     }
 
     public void processClientPayment(String clientId, double paymentAmount) {
@@ -92,19 +101,39 @@ public class Warehouse implements Serializable {
 
     public void processProductShipment(String productId, int shipmentQuantity) {
         Product product = products.findProduct(productId);
-        Iterator<Waitlist.WaitlistItem> waitlistItems = product.getWaitlist().getWaitlistItems();
+        Waitlist waitlist = product.getWaitlist();
+        Iterator<Waitlist.WaitlistItem> waitlistItems = waitlist.getWaitlistItems();
 
-        // Update the stock quantity before processing all the waitlist items
-        product.setStockLevel(product.getStockLevel() + shipmentQuantity);
-
-        while (waitlistItems.hasNext()) {
+        while (waitlistItems.hasNext() && shipmentQuantity > 0) {
             Waitlist.WaitlistItem waitlistItem = waitlistItems.next();
-            String waitlistClientId = waitlistItem.getClient().getId();
+            Client client = waitlistItem.getClient();
             int waitlistQuantity = waitlistItem.getQuantity();
-            waitlistItems.remove();
 
-            processClientOrder(waitlistClientId, productId, waitlistQuantity);
+            if (shipmentQuantity >= waitlistQuantity) {
+                shipmentQuantity -= waitlistQuantity;
+                double totalCost = product.getPrice() * waitlistQuantity;
+                client.setBalance(client.getBalance() + totalCost);
+                generateInvoice(client, product, waitlistQuantity, totalCost);
+                waitlistItems.remove();
+            } else {
+                waitlistItem.setQuantity(waitlistQuantity - shipmentQuantity);
+                double totalCost = product.getPrice() * shipmentQuantity;
+                client.setBalance(client.getBalance() + totalCost);
+                generateInvoice(client, product, shipmentQuantity, totalCost);
+                shipmentQuantity = 0;
+            }
         }
+
+        product.setStockLevel(product.getStockLevel() + shipmentQuantity);
+    }
+
+    private void generateInvoice(Client client, Product product, int quantity, double totalCost) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        System.out.println("Invoice generated:");
+        System.out.println("Client: " + client.getName());
+        System.out.println("Product: " + product.getName());
+        System.out.println("Quantity: " + quantity);
+        System.out.println("Total Cost: $" + df.format(totalCost));
     }
 
     public Client getClient(String clientId) {
@@ -156,5 +185,4 @@ public class Warehouse implements Serializable {
         Client client = clients.findClient(clientId);
         return client.getTransactions();
     }
-
 }
