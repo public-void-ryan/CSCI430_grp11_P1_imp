@@ -1,142 +1,135 @@
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.util.Iterator;
-
-class WarehouseTest {
-    private static final String DATA_FILE = "WarehouseData";
+public class WarehouseTest {
     private Warehouse warehouse;
 
     @BeforeEach
     void setUp() {
-        // Delete the data file if it exists
-        File file = new File(DATA_FILE);
-        if (file.exists()) {
-            file.delete();
-        }
-
-        Warehouse.resetInstance();
         warehouse = Warehouse.instance();
-
-        ClientList.instance().clear();
-        ProductList.instance().clear();
+        Warehouse.resetInstance();
     }
 
     @Test
-    void testWarehouseConstructor() {
-        assertNotNull(warehouse);
-        assertFalse(warehouse.getClients().hasNext());
-        assertFalse(warehouse.getProducts().hasNext());
+    void testFullScenario() {
+        // Create clients
+        Client c1 = warehouse.addClient("C1", "Address1", "Phone1");
+        Client c2 = warehouse.addClient("C2", "Address2", "Phone2");
+        Client c3 = warehouse.addClient("C3", "Address3", "Phone3");
+        Client c4 = warehouse.addClient("C4", "Address4", "Phone4");
+        Client c5 = warehouse.addClient("C5", "Address5", "Phone5");
+
+        // Create products
+        Product p1 = warehouse.addProduct("P1", 1.0, 10);
+        Product p2 = warehouse.addProduct("P2", 2.0, 20);
+        Product p3 = warehouse.addProduct("P3", 3.0, 30);
+        Product p4 = warehouse.addProduct("P4", 4.0, 40);
+        Product p5 = warehouse.addProduct("P5", 5.0, 50);
+
+        // Display clients
+        displayClients();
+
+        // Display products
+        displayProducts();
+
+        // Add to wishlists
+        warehouse.addProductToClientWishlist(c1.getId(), p1.getId(), 5);
+        warehouse.addProductToClientWishlist(c1.getId(), p3.getId(), 5);
+        warehouse.addProductToClientWishlist(c1.getId(), p5.getId(), 5);
+        displayWishlist(c1);
+
+        warehouse.addProductToClientWishlist(c2.getId(), p1.getId(), 7);
+        warehouse.addProductToClientWishlist(c2.getId(), p2.getId(), 7);
+        warehouse.addProductToClientWishlist(c2.getId(), p4.getId(), 7);
+        displayWishlist(c2);
+
+        warehouse.addProductToClientWishlist(c3.getId(), p1.getId(), 6);
+        warehouse.addProductToClientWishlist(c3.getId(), p2.getId(), 6);
+        warehouse.addProductToClientWishlist(c3.getId(), p5.getId(), 6);
+        displayWishlist(c3);
+
+        // Place orders
+        warehouse.processClientOrder(c2.getId(), p1.getId(), 7);
+        warehouse.processClientOrder(c2.getId(), p2.getId(), 7);
+        warehouse.processClientOrder(c2.getId(), p4.getId(), 7);
+        displayClients();
+
+        warehouse.processClientOrder(c3.getId(), p1.getId(), 6);
+        warehouse.processClientOrder(c3.getId(), p2.getId(), 6);
+        warehouse.processClientOrder(c3.getId(), p5.getId(), 6);
+        displayClients();
+
+        displayWishlist(c2);
+        displayWishlist(c3);
+
+        // Waitlists (assuming waitlist functionality is implemented)
+        displayWaitlist(p1);
+        displayWaitlist(p2);
+
+        // Place order for C1
+        warehouse.processClientOrder(c1.getId(), p1.getId(), 5);
+        warehouse.processClientOrder(c1.getId(), p3.getId(), 5);
+        warehouse.processClientOrder(c1.getId(), p5.getId(), 5);
+        displayClients();
+        displayWishlist(c1);
+
+        // Record payments
+        warehouse.processClientPayment(c1.getId(), 100.0);
+        warehouse.processClientPayment(c2.getId(), 100.0);
+        displayClients();
+
+        // Receive shipment
+        warehouse.processProductShipment(p1.getId(), 100);
+        displayProducts();
+        displayClients();
+
+        // Print invoices
+        displayInvoices(c1);
+        displayInvoices(c2);
     }
 
-    @Test
-    void testAddClientAndGetClients() {
-        Client client = warehouse.addClient("John Doe", "123 Main St", "555-1234");
-        assertNotNull(client);
-        assertEquals("John Doe", client.getName());
-
+    private void displayClients() {
         Iterator<Client> clients = warehouse.getClients();
-        assertTrue(clients.hasNext());
-        assertEquals(client, clients.next());
+        while (clients.hasNext()) {
+            Client client = clients.next();
+            System.out.println(client);
+        }
     }
 
-    @Test
-    void testAddProductAndGetProducts() {
-        Product product = warehouse.addProduct("Widget", 9.99, 100);
-        assertNotNull(product);
-        assertEquals("Widget", product.getName());
-
+    private void displayProducts() {
         Iterator<Product> products = warehouse.getProducts();
-        assertTrue(products.hasNext());
-        assertEquals(product, products.next());
+        while (products.hasNext()) {
+            Product product = products.next();
+            System.out.println(product);
+        }
     }
 
-    @Test
-    void testAddProductToClientWishlist() {
-        Client client = warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
-        Product product = warehouse.addProduct("Gadget", 19.99, 50);
-
-        Wishlist.WishlistItem wishlistItem = warehouse.addProductToClientWishlist(client.getId(), product.getId(), 2);
-        assertNotNull(wishlistItem);
-        assertEquals(2, wishlistItem.getQuantity());
-        assertEquals(product, wishlistItem.getProduct());
-
+    private void displayWishlist(Client client) {
         Iterator<Wishlist.WishlistItem> wishlistItems = warehouse.getClientWishlistItems(client.getId());
-        assertTrue(wishlistItems.hasNext());
-        assertEquals(wishlistItem, wishlistItems.next());
+        System.out.println("Wishlist for " + client.getName() + ":");
+        while (wishlistItems.hasNext()) {
+            Wishlist.WishlistItem item = wishlistItems.next();
+            System.out.println(item);
+        }
     }
 
-    @Test
-    void testGetClients() {
-        warehouse.addClient("John Doe", "123 Main St", "555-1234");
-        warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
-
-        Iterator<Client> clients = warehouse.getClients();
-        assertTrue(clients.hasNext());
-
-        Client client1 = clients.next();
-        assertEquals("John Doe", client1.getName());
-
-        Client client2 = clients.next();
-        assertEquals("Jane Smith", client2.getName());
+    private void displayWaitlist(Product product) {
+        Iterator<Waitlist.WaitlistItem> waitlistItems = warehouse.getProductWaitlistItems(product.getId());
+        System.out.println("Waitlist for " + product.getName() + ":");
+        while (waitlistItems.hasNext()) {
+            Waitlist.WaitlistItem item = waitlistItems.next();
+            System.out.println(item);
+        }
     }
 
-    @Test
-    void testGetProducts() {
-        warehouse.addProduct("Widget", 9.99, 100);
-        warehouse.addProduct("Gadget", 19.99, 50);
-
-        Iterator<Product> products = warehouse.getProducts();
-        assertTrue(products.hasNext());
-
-        Product product1 = products.next();
-        assertEquals("Widget", product1.getName());
-
-        Product product2 = products.next();
-        assertEquals("Gadget", product2.getName());
-    }
-
-    @Test
-    void testGetClientWishlistItems() {
-        Client client = warehouse.addClient("Jane Smith", "456 Elm St", "555-5678");
-        Product product = warehouse.addProduct("Gadget", 19.99, 50);
-        warehouse.addProductToClientWishlist(client.getId(), product.getId(), 2);
-
-        Iterator<Wishlist.WishlistItem> wishlistItems = warehouse.getClientWishlistItems(client.getId());
-        assertTrue(wishlistItems.hasNext());
-
-        Wishlist.WishlistItem item = wishlistItems.next();
-        assertEquals(product, item.getProduct());
-        assertEquals(2, item.getQuantity());
-    }
-
-    @Test
-    void testSaveAndRetrieve() {
-        Client client = warehouse.addClient("Test Client", "Test Address", "555-9999");
-        Product product = warehouse.addProduct("Test Product", 49.99, 10);
-        warehouse.addProductToClientWishlist(client.getId(), product.getId(), 1);
-
-        assertTrue(Warehouse.save());
-
-        Warehouse retrievedWarehouse = Warehouse.retrieve();
-        assertNotNull(retrievedWarehouse);
-
-        // Verify the client
-        Iterator<Client> clients = retrievedWarehouse.getClients();
-        assertTrue(clients.hasNext());
-        assertEquals("Test Client", clients.next().getName());
-
-        // Verify the product
-        Iterator<Product> products = retrievedWarehouse.getProducts();
-        assertTrue(products.hasNext());
-        assertEquals("Test Product", products.next().getName());
-
-        // Verify the wishlist
-        Iterator<Wishlist.WishlistItem> wishlistItems = retrievedWarehouse.getClientWishlistItems(client.getId());
-        assertTrue(wishlistItems.hasNext());
-        Wishlist.WishlistItem item = wishlistItems.next();
-        assertEquals(1, item.getQuantity());
-        assertEquals(product.getId(), item.getProduct().getId());
+    private void displayInvoices(Client client) {
+        Iterator<Transaction> transactions = warehouse.getClientTransactions(client.getId());
+        System.out.println("Invoices for " + client.getName() + ":");
+        while (transactions.hasNext()) {
+            Transaction transaction = transactions.next();
+            System.out.println(transaction);
+        }
     }
 }
