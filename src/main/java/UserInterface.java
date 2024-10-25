@@ -125,6 +125,12 @@ public class UserInterface {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
         System.out.println("Client Wishlist:");
+
+        if (!wishlist.hasNext()) {
+            System.out.println("No wishlist items found.");
+            return;
+        }
+
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
             System.out.println(item);
@@ -140,9 +146,11 @@ public class UserInterface {
             }
         }
 
-        System.out.println("Order invoice: ");
-
         wishlist = warehouse.getClientWishlistItems(clientId);
+        if (wishlist.hasNext()) {
+            System.out.println("Order invoice: ");
+        }
+
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
             String transactionId = warehouse.processClientOrder(clientId, item.getProduct().getId(), item.getQuantity());
@@ -187,6 +195,11 @@ public class UserInterface {
     public void showClients() {
         Iterator<Client> allClients = warehouse.getClients();
         System.out.println("Warehouse Clients:");
+
+        if (!allClients.hasNext()) {
+            System.out.println("No warehouse clients found.");
+        }
+
         while (allClients.hasNext()) {
             Client client = allClients.next();
             System.out.println(client);
@@ -196,7 +209,12 @@ public class UserInterface {
     public void showClientWishlist() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
-        System.out.println("Client " + clientId + " Wishlist:");
+        System.out.println("Client Wishlist:");
+
+        if (!wishlist.hasNext()) {
+            System.out.println("No wishlist items found.");
+        }
+
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
             System.out.println(item);
@@ -205,13 +223,17 @@ public class UserInterface {
 
     public void showClientTransactions() {
         String clientId = getToken("Enter client ID: ");
-        // Iterator<Transaction> transactions =
-        // warehouse.getClientTransactions(clientId);
-        // System.out.println("Client's Transactions:");
-        // while (transactions.hasNext()) {
-        // Transaction transaction = transactions.next();
-        // System.out.println(transaction);
-        // }
+        Iterator<TransactionList.TransactionItem> transactions = warehouse.getClientTransactions(clientId);
+        System.out.println("Client's Transactions:");
+
+        if (!transactions.hasNext()) {
+            System.out.println("No transactions found.");
+        }
+
+        while (transactions.hasNext()) {
+            TransactionList.TransactionItem transaction = transactions.next();
+            System.out.println(transaction);
+        }
     }
 
     public void showProduct() {
@@ -224,6 +246,11 @@ public class UserInterface {
     public void showProducts() {
         Iterator<Product> allProducts = warehouse.getProducts();
         System.out.println("Warehouse Products:");
+
+        if (!allProducts.hasNext()) {
+            System.out.println("No warehouse products found.");
+        }
+
         while (allProducts.hasNext()) {
             Product product = allProducts.next();
             System.out.println(product);
@@ -234,6 +261,11 @@ public class UserInterface {
         String productId = getToken("Enter product ID: ");
         Iterator<Waitlist.WaitlistItem> waitlist = warehouse.getProductWaitlistItems(productId);
         System.out.println("Waitlisted Clients for Product:");
+
+        if (!waitlist.hasNext()) {
+            System.out.println("No waitlist items found.");
+        }
+
         while (waitlist.hasNext()) {
             Waitlist.WaitlistItem item = waitlist.next();
             System.out.println(item);
