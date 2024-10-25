@@ -154,8 +154,10 @@ public class UserInterface {
     public void processClientPayment() {
         String clientId = getToken("Enter client ID: ");
         double amount = Double.parseDouble(getToken("Enter payment amount: "));
-        warehouse.processClientPayment(clientId, amount);
+        String transactionId = warehouse.processClientPayment(clientId, amount);
+        String transaction = warehouse.getClientTransaction(clientId, transactionId);
         System.out.println("Payment processed successfully.");
+        System.out.println(transaction);
     }
 
     public void processProductShipment() {

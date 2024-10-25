@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class TransactionList implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -44,13 +45,24 @@ public class TransactionList implements Serializable {
         }
     }
 
-    public void addTransaction(String content) {
+    public String addTransaction(String content) {
         String id = generateId();
         transactions.add(new TransactionItem(id, content));
+        return id;
     }
 
-    public boolean removeTransaction(String id) {
-        return transactions.removeIf(item -> item.getId().equals(id));
+    public boolean removeTransaction(String transactionId) {
+        return transactions.removeIf(item -> item.getId().equals(transactionId));
+    }
+
+    public String getTransaction(String transactionId) {
+        for (TransactionItem item : transactions) {
+            if (item.getId().equals(transactionId)) {
+                return item.toString();
+            }
+        }
+
+        throw new NoSuchElementException("Transaction with ID " + transactionId + " not found.");
     }
 
     public Iterator<TransactionItem> getTransactions() {

@@ -84,10 +84,13 @@ public class Warehouse implements Serializable {
         }
     }
 
-    public void processClientPayment(String clientId, double paymentAmount) {
+    public String processClientPayment(String clientId, double paymentAmount) {
         Client client = clients.findClient(clientId);
         double newBalance = client.getBalance() - paymentAmount;
         client.setBalance(newBalance);
+
+        String transaction = "Payment of " + paymentAmount + " received. New balance is " + client.getBalance();
+        return client.addTransaction(transaction);
     }
 
     public void processProductShipment(String productId, int shipmentQuantity) {
@@ -128,6 +131,16 @@ public class Warehouse implements Serializable {
         return client.getWishlist().getWishlistItems();
     }
 
+    public Iterator<TransactionList.TransactionItem> getClientTransactions(String clientId) {
+        Client client = clients.findClient(clientId);
+        return client.getTransactions();
+    }
+
+    public String getClientTransaction(String clientId, String transactionId) {
+        Client client = clients.findClient(clientId);
+        return client.getTransaction(transactionId);
+    }
+
     public Iterator<Waitlist.WaitlistItem> getProductWaitlistItems(String productId) {
         Product product = products.findProduct(productId);
         return product.getWaitlist().getWaitlistItems();
@@ -151,10 +164,4 @@ public class Warehouse implements Serializable {
             return null;
         }
     }
-
-    public Iterator<TransactionList.TransactionItem> getClientTransactions(String clientId) {
-        Client client = clients.findClient(clientId);
-        return client.getTransactions();
-    }
-
 }

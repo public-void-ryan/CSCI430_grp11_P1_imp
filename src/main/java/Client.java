@@ -94,11 +94,15 @@ public class Client implements Serializable {
         wishlist.clear();
     }
 
-    public void addTransaction(String content) {
-        transactions.addTransaction(content);
+    public String addTransaction(String content) {
+        return transactions.addTransaction(content);
     }
 
     public Iterator<TransactionList.TransactionItem> getTransactions() {
         return transactions.getTransactions();
+    }
+
+    public String getTransaction(String transactionId) {
+        return transactions.getTransaction(transactionId);
     }
 }
