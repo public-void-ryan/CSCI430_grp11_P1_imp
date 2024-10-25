@@ -160,7 +160,7 @@ public class UserInterface {
 
     public void processProductShipment() {
         String productId = getToken("Enter product ID: ");
-        int quantityReceived = Integer.parseInt(getToken("Enter quantity received: "));
+        int quantityReceived = getNumber("Enter quantity received: ");
         warehouse.processProductShipment(productId, quantityReceived);
         System.out.println("Shipment processed successfully.");
     }
