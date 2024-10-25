@@ -55,7 +55,7 @@ public class Warehouse implements Serializable {
         client.clearWishlist();
     }
 
-    public void processClientOrder(String clientId, String productId, int orderQuantity) {
+    public String processClientOrder(String clientId, String productId, int orderQuantity) {
         Client client = clients.findClient(clientId);
         Product product = products.findProduct(productId);
 
@@ -67,6 +67,10 @@ public class Warehouse implements Serializable {
             product.setStockLevel(stockLevel - orderQuantity);
             double totalCost = productPrice * orderQuantity;
             client.setBalance(client.getBalance() + totalCost);
+
+            String transaction = String.format("%s: Order placed for full quantity of %s. Total cost: %.2f",
+                    product.getName(), orderQuantity, totalCost);
+            return client.addTransaction(transaction);
         } else if (stockLevel > 0) {
             // Partial fulfillment
             int waitlistedQuantity = orderQuantity - stockLevel;
@@ -77,10 +81,18 @@ public class Warehouse implements Serializable {
             // Waitlist the remaining quantity
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, waitlistedQuantity);
+
+            String transaction = String.format("%s: Order placed for partial quantity of %s. Total cost: %.2f. %s of the products were waitlisted.",
+                    product.getName(), orderQuantity, fulfilledCost, waitlistedQuantity);
+            return client.addTransaction(transaction);
         } else {
             // No stock available, entire quantity goes to waitlist
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, orderQuantity);
+
+            String transaction = String.format("%s: %s of the products were waitlisted.",
+                    product.getName(), orderQuantity);
+            return client.addTransaction(transaction);
         }
     }
 

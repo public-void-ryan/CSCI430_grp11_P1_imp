@@ -140,15 +140,17 @@ public class UserInterface {
             }
         }
 
+        System.out.println("Order invoice: ");
+
         wishlist = warehouse.getClientWishlistItems(clientId);
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
-            warehouse.processClientOrder(clientId, item.getProduct().getId(), item.getQuantity());
+            String transactionId = warehouse.processClientOrder(clientId, item.getProduct().getId(), item.getQuantity());
+            String transaction = warehouse.getClientTransaction(clientId, transactionId);
+            System.out.println(transaction);
         }
 
         warehouse.clearClientWishlist(clientId);
-
-        System.out.println("Order invoice: ");
     }
 
     public void processClientPayment() {
