@@ -13,12 +13,12 @@ public class Client implements Serializable {
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
     private final Wishlist wishlist;
-    private List<Transaction> transactions;
+    private final TransactionList transactions;
 
     public Client(String name, String address, String phone) {
         this.id = CLIENT_STRING + idCounter++;
         this.wishlist = new Wishlist();
-        this.transactions = new ArrayList<>();
+        this.transactions = new TransactionList();
         setName(name);
         setAddress(address);
         setPhone(phone);
@@ -94,11 +94,11 @@ public class Client implements Serializable {
         wishlist.clear();
     }
 
-    public void addTransaction(Transaction transaction) {
-        transactions.add(transaction);
+    public void addTransaction(String content) {
+        transactions.addTransaction(content);
     }
 
-    public Iterator<Transaction> getTransactions() {
-        return transactions.iterator();
+    public Iterator<TransactionList.TransactionItem> getTransactions() {
+        return transactions.getTransactions();
     }
 }

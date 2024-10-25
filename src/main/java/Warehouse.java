@@ -152,7 +152,7 @@ public class Warehouse implements Serializable {
         }
     }
 
-    public Iterator<Transaction> getClientTransactions(String clientId) {
+    public Iterator<TransactionList.TransactionItem> getClientTransactions(String clientId) {
         Client client = clients.findClient(clientId);
         return client.getTransactions();
     }
