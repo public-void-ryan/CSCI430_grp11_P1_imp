@@ -83,7 +83,7 @@ public class Warehouse implements Serializable {
             waitlist.addClient(client, waitlistedQuantity);
 
             String transaction = String.format("%s: Order placed for partial quantity of %s. Total cost: %.2f. %s of the products were waitlisted.",
-                    product.getName(), orderQuantity, fulfilledCost, waitlistedQuantity);
+                    product.getName(), orderQuantity - waitlistedQuantity, fulfilledCost, waitlistedQuantity);
             return client.addTransaction(transaction);
         } else {
             // No stock available, entire quantity goes to waitlist
@@ -105,21 +105,30 @@ public class Warehouse implements Serializable {
         return client.addTransaction(transaction);
     }
 
-    public void processProductShipment(String productId, int shipmentQuantity) {
+    public Iterator<Map<String, String>> processProductShipment(String productId, int shipmentQuantity) {
         Product product = products.findProduct(productId);
         Iterator<Waitlist.WaitlistItem> waitlistItems = product.getWaitlist().getWaitlistItems();
 
-        // Update the stock quantity before processing all the waitlist items
+        LinkedList<Map<String, String>> transactionInfoList = new LinkedList<>();
+
+        // Update the stock quantity before processing the waitlist items
         product.setStockLevel(product.getStockLevel() + shipmentQuantity);
 
         while (waitlistItems.hasNext()) {
             Waitlist.WaitlistItem waitlistItem = waitlistItems.next();
             String waitlistClientId = waitlistItem.getClient().getId();
             int waitlistQuantity = waitlistItem.getQuantity();
-            waitlistItems.remove();
 
-            processClientOrder(waitlistClientId, productId, waitlistQuantity);
+            waitlistItems.remove();
+            String transactionId = processClientOrder(waitlistClientId, productId, waitlistQuantity);
+
+            Map<String, String> transactionInfo = new HashMap<>();
+            transactionInfo.put("clientId", waitlistClientId);
+            transactionInfo.put("transactionId", transactionId);
+            transactionInfoList.add(transactionInfo);
         }
+
+        return transactionInfoList.iterator();
     }
 
     public Client getClient(String clientId) {
