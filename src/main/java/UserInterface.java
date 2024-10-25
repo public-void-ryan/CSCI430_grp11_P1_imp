@@ -118,13 +118,13 @@ public class UserInterface {
         String productId = getToken("Enter product ID: ");
         int quantity = getNumber("Enter product quantity: ");
         Wishlist.WishlistItem result = warehouse.addProductToClientWishlist(clientId, productId, quantity);
-        System.out.println("Product added to client's wishlist: " + result);
+        System.out.println("Product added to client" + clientId + "wishlist: " + result);
     }
 
     public void processClientOrder() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
-        System.out.println("Client's Wishlist:");
+        System.out.println("Client" + clientId + "Wishlist:");
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
             System.out.println(item);
@@ -186,7 +186,7 @@ public class UserInterface {
     public void showClientWishlist() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
-        System.out.println("Client's Wishlist:");
+        System.out.println("Client " + clientId + " Wishlist:");
         while (wishlist.hasNext()) {
             Wishlist.WishlistItem item = wishlist.next();
             System.out.println(item);
@@ -195,12 +195,13 @@ public class UserInterface {
 
     public void showClientTransactions() {
         String clientId = getToken("Enter client ID: ");
-        //Iterator<Transaction> transactions = warehouse.getClientTransactions(clientId);
-        //System.out.println("Client's Transactions:");
-        //while (transactions.hasNext()) {
-        //    Transaction transaction = transactions.next();
-        //    System.out.println(transaction);
-        //}
+        // Iterator<Transaction> transactions =
+        // warehouse.getClientTransactions(clientId);
+        // System.out.println("Client's Transactions:");
+        // while (transactions.hasNext()) {
+        // Transaction transaction = transactions.next();
+        // System.out.println(transaction);
+        // }
     }
 
     public void showProduct() {
