@@ -7,7 +7,7 @@ public class UserInterface {
     private static Warehouse warehouse;
     private static final int EXIT = 0;
     private static final int ADD_CLIENT = 1;
-    private static final int ADD_PRODUCT = 2;
+    private static final int ADD_PRODUCTS = 2;
     private static final int ADD_PRODUCT_TO_CLIENT_WISHLIST = 3;
     private static final int PROCESS_CLIENT_ORDER = 4;
     private static final int PROCESS_CLIENT_PAYMENT = 5;
@@ -105,12 +105,14 @@ public class UserInterface {
         System.out.println("Client added: " + result);
     }
 
-    public void addProduct() {
-        String name = getToken("Enter product name: ");
-        double price = Double.parseDouble(getToken("Enter product price: "));
-        int quantity = getNumber("Enter product quantity: ");
-        Product result = warehouse.addProduct(name, price, quantity);
-        System.out.println("Product added: " + result);
+    public void addProducts() {
+        do {
+            String name = getToken("Enter product name: ");
+            double price = Double.parseDouble(getToken("Enter product price: "));
+            int quantity = getNumber("Enter product quantity: ");
+            Product result = warehouse.addProduct(name, price, quantity);
+            System.out.println("Product added: " + result);
+        } while (yesOrNo("Would you like to add another product?"));
     }
 
     public void addProductToClientWishlist() {
@@ -284,7 +286,7 @@ public class UserInterface {
         System.out.println("Enter a number between 0 and " + HELP + " as explained below:");
         System.out.println(EXIT + " to exit");
         System.out.println(ADD_CLIENT + " to add a client");
-        System.out.println(ADD_PRODUCT + " to add a product");
+        System.out.println(ADD_PRODUCTS + " to add products");
         System.out.println(ADD_PRODUCT_TO_CLIENT_WISHLIST + " to add a product to a client's wishlist");
         System.out.println(PROCESS_CLIENT_ORDER + " to process a client order");
         System.out.println(PROCESS_CLIENT_PAYMENT + " to process a client payment");
@@ -309,8 +311,8 @@ public class UserInterface {
                     case ADD_CLIENT:
                         addClient();
                         break;
-                    case ADD_PRODUCT:
-                        addProduct();
+                    case ADD_PRODUCTS:
+                        addProducts();
                         break;
                     case ADD_PRODUCT_TO_CLIENT_WISHLIST:
                         addProductToClientWishlist();

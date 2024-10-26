@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final String CLIENT_STRING = "C";
+    private static int idCounter = 1;
     private final String id;
     private String name;
     private String address;
     private String phone;
     private double balance;
-    private static final String CLIENT_STRING = "C";
-    private static int idCounter = 1;
     private final Wishlist wishlist;
     private final TransactionList transactions;
 

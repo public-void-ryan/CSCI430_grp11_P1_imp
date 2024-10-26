@@ -2,12 +2,12 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final String PRODUCT_STRING = "P";
+    private static int idCounter = 1;
     private final String id;
     private String name;
     private double price;
     private int stockLevel;
-    private static final String PRODUCT_STRING = "P";
-    private static int idCounter = 1;
     private final Waitlist waitlist;
 
     public Product(String name, double price, int stockLevel) {

@@ -6,28 +6,22 @@ import java.util.NoSuchElementException;
 public class TransactionList implements Serializable {
     private static final long serialVersionUID = 1L;
     private final LinkedList<TransactionItem> transactions;
-    private static int idCounter = 1; // ID counter for unique transaction IDs
 
     // Constructor
     public TransactionList() {
         transactions = new LinkedList<>();
     }
 
-    private static String generateId() {
-        return "T" + idCounter++;
-    }
-
     public static class TransactionItem implements Serializable {
         private static final long serialVersionUID = 1L;
+        private static final String TRANSACTION_STRING = "T";
+        private static int idCounter = 1;
         private final String id;
-        private final String content;
+        private String content;
 
-        public TransactionItem(String id, String content) {
-            if (content == null || content.isEmpty()) {
-                throw new IllegalArgumentException("Content cannot be null or empty.");
-            }
-            this.id = id;
-            this.content = content;
+        public TransactionItem(String content) {
+            this.id = TRANSACTION_STRING + idCounter++;
+            setContent(content);
         }
 
         // Getters
@@ -39,6 +33,14 @@ public class TransactionList implements Serializable {
             return content;
         }
 
+        // Setters
+        public void setContent(String content) {
+            if (content == null || content.isEmpty()) {
+                throw new IllegalArgumentException("Content cannot be null or empty.");
+            }
+            this.content = content;
+        }
+
         @Override
         public String toString() {
             return String.format("TransactionItem [ID=%s, Content=%s]", id, content);
@@ -46,9 +48,9 @@ public class TransactionList implements Serializable {
     }
 
     public String addTransaction(String content) {
-        String id = generateId();
-        transactions.add(new TransactionItem(id, content));
-        return id;
+        TransactionItem item = new TransactionItem(content);
+        transactions.add(item);
+        return item.getId();
     }
 
     public boolean removeTransaction(String transactionId) {
