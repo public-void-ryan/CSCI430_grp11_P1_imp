@@ -6,8 +6,9 @@ import java.util.NoSuchElementException;
 
 public class ClientList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Client> clients;
     private static ClientList clientList;
+
+    private List<Client> clients;
 
     private ClientList() {
         clients = new LinkedList<>();

@@ -6,8 +6,9 @@ import java.util.NoSuchElementException;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Product> products;
     private static ProductList productList;
+
+    private List<Product> products;
 
     private ProductList() {
         products = new LinkedList<>();

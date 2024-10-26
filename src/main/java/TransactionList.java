@@ -1,13 +1,14 @@
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TransactionList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final LinkedList<TransactionItem> transactions;
+    private final List<TransactionItem> transactions;
 
-    // Constructor
     public TransactionList() {
         transactions = new LinkedList<>();
     }
@@ -16,12 +17,17 @@ public class TransactionList implements Serializable {
         private static final long serialVersionUID = 1L;
         private static final String TRANSACTION_STRING = "T";
         private static int idCounter = 1;
-        private final String id;
-        private String content;
 
-        public TransactionItem(String content) {
+        private final String id;
+        private final LocalDate date;
+        private String description;
+        private double dollarAmount;
+
+        public TransactionItem(String description, double dollarAmount) {
             this.id = TRANSACTION_STRING + idCounter++;
-            setContent(content);
+            this.date = LocalDate.now();
+            setDescription(description);
+            setDollarAmount(dollarAmount);
         }
 
         // Getters
@@ -29,26 +35,44 @@ public class TransactionList implements Serializable {
             return id;
         }
 
-        public String getContent() {
-            return content;
+        public LocalDate getDate() {
+            return date;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public double getDollarAmount() {
+            return dollarAmount;
         }
 
         // Setters
-        public void setContent(String content) {
-            if (content == null || content.isEmpty()) {
-                throw new IllegalArgumentException("Content cannot be null or empty.");
+        public void setDescription(String description) {
+            if (description == null || description.isEmpty()) {
+                throw new IllegalArgumentException("Description cannot be null or empty.");
             }
-            this.content = content;
+            this.description = description;
+        }
+
+        public void setDollarAmount(double dollarAmount) {
+            if (dollarAmount < 0) {
+                throw new IllegalArgumentException("Dollar amount cannot be negative.");
+            }
+            this.dollarAmount = dollarAmount;
         }
 
         @Override
         public String toString() {
-            return String.format("TransactionItem [ID=%s, Content=%s]", id, content);
+            return String.format(
+                    "TransactionItem [ID=%s, Date=%s, Description=%s, DollarAmount=%.2f]",
+                    id, date, description, dollarAmount
+            );
         }
     }
 
-    public String addTransaction(String content) {
-        TransactionItem item = new TransactionItem(content);
+    public String addTransaction(String description, double dollarAmount) {
+        TransactionItem item = new TransactionItem(description, dollarAmount);
         transactions.add(item);
         return item.getId();
     }
@@ -63,7 +87,6 @@ public class TransactionList implements Serializable {
                 return item.toString();
             }
         }
-
         throw new NoSuchElementException("Transaction with ID " + transactionId + " not found.");
     }
 

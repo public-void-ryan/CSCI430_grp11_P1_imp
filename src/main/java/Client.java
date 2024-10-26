@@ -1,12 +1,11 @@
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String CLIENT_STRING = "C";
     private static int idCounter = 1;
+
     private final String id;
     private String name;
     private String address;
@@ -86,16 +85,16 @@ public class Client implements Serializable {
         return wishlist.addProduct(product, quantity);
     }
 
-    public boolean removeFromWishlist(Product product) {
-        return wishlist.removeProduct(product);
+    public void removeFromWishlist(Product product) {
+        wishlist.removeProduct(product);
     }
 
     public void clearWishlist() {
         wishlist.clear();
     }
 
-    public String addTransaction(String content) {
-        return transactions.addTransaction(content);
+    public String addTransaction(String description, double dollarAmount) {
+        return transactions.addTransaction(description, dollarAmount);
     }
 
     public Iterator<TransactionList.TransactionItem> getTransactions() {

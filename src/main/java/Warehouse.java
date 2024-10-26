@@ -68,9 +68,12 @@ public class Warehouse implements Serializable {
             double totalCost = productPrice * orderQuantity;
             client.setBalance(client.getBalance() + totalCost);
 
-            String transaction = String.format("%s: Order placed for full quantity of %s. Total cost: %.2f",
-                    product.getName(), orderQuantity, totalCost);
-            return client.addTransaction(transaction);
+            String description = String.format(
+                    "Order placed: %s (%d units)",
+                    product.getName(), orderQuantity
+            );
+            return client.addTransaction(description, totalCost);
+
         } else if (stockLevel > 0) {
             // Partial fulfillment
             int waitlistedQuantity = orderQuantity - stockLevel;
@@ -82,17 +85,22 @@ public class Warehouse implements Serializable {
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, waitlistedQuantity);
 
-            String transaction = String.format("%s: Order placed for partial quantity of %s. Total cost: %.2f. %s of the products were waitlisted.",
-                    product.getName(), orderQuantity - waitlistedQuantity, fulfilledCost, waitlistedQuantity);
-            return client.addTransaction(transaction);
+            String description = String.format(
+                    "Partial order placed: %s (%d fulfilled, %d waitlisted)",
+                    product.getName(), stockLevel, waitlistedQuantity
+            );
+            return client.addTransaction(description, fulfilledCost);
+
         } else {
             // No stock available, entire quantity goes to waitlist
             Waitlist waitlist = product.getWaitlist();
             waitlist.addClient(client, orderQuantity);
 
-            String transaction = String.format("%s: %s of the products were waitlisted.",
-                    product.getName(), orderQuantity);
-            return client.addTransaction(transaction);
+            String description = String.format(
+                    "Waitlisted: %s (%d units)",
+                    product.getName(), orderQuantity
+            );
+            return client.addTransaction(description, 0.0);
         }
     }
 
@@ -101,9 +109,10 @@ public class Warehouse implements Serializable {
         double newBalance = client.getBalance() - paymentAmount;
         client.setBalance(newBalance);
 
-        String transaction = "Payment of " + paymentAmount + " received. New balance is " + client.getBalance();
-        return client.addTransaction(transaction);
+        String description = "Payment received";
+        return client.addTransaction(description, paymentAmount);
     }
+
 
     public Iterator<Map<String, String>> processProductShipment(String productId, int shipmentQuantity) {
         Product product = products.findProduct(productId);

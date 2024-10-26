@@ -150,7 +150,10 @@ public class UserInterface {
 
         wishlist = warehouse.getClientWishlistItems(clientId);
         if (wishlist.hasNext()) {
+            System.out.println("Order placed successfully.");
             System.out.println("Order invoice: ");
+        } else {
+            System.out.println("No items to order.");
         }
 
         while (wishlist.hasNext()) {
@@ -169,6 +172,7 @@ public class UserInterface {
         String transactionId = warehouse.processClientPayment(clientId, amount);
         String transaction = warehouse.getClientTransaction(clientId, transactionId);
         System.out.println("Payment processed successfully.");
+        System.out.println("Payment invoice: ");
         System.out.println(transaction);
     }
 
@@ -176,14 +180,24 @@ public class UserInterface {
         String productId = getToken("Enter product ID: ");
         int quantityReceived = getNumber("Enter quantity received: ");
         Iterator<Map<String, String>> shipmentTransactionInfo = warehouse.processProductShipment(productId, quantityReceived);
-        System.out.println("Shipment processed successfully. Shipment Invoice: ");
+        System.out.println("Shipment processed successfully.");
+
+        if (shipmentTransactionInfo.hasNext()) {
+            System.out.println("Shipment invoice: ");
+        }
 
         while (shipmentTransactionInfo.hasNext()) {
             Map<String, String> transactionInfo = shipmentTransactionInfo.next();
             String clientId = transactionInfo.get("clientId");
             String transactionId = transactionInfo.get("transactionId");
+            Client client = warehouse.getClient(clientId);
             String transaction = warehouse.getClientTransaction(clientId, transactionId);
+
+            System.out.println("Client Details:");
+            System.out.println(client);
+            System.out.println("Transaction:");
             System.out.println(transaction);
+            System.out.println();
         }
     }
 

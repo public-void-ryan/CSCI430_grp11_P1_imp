@@ -4,6 +4,7 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String PRODUCT_STRING = "P";
     private static int idCounter = 1;
+
     private final String id;
     private String name;
     private double price;
@@ -63,15 +64,15 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Product [Name=%s, Price=%.2f, StockLevel=%d, ID=%s]", name, price, stockLevel, id);
+        return String.format("Product [ID=%s, Name=%s, Price=%.2f, StockLevel=%d]", id, name, price, stockLevel);
     }
 
     public Waitlist.WaitlistItem addToWaitlist(Client client, int quantity) {
         return waitlist.addClient(client, quantity);
     }
 
-    public boolean removeFromWaitlist(Client client) {
-        return waitlist.removeClient(client);
+    public void removeFromWaitlist(Client client) {
+        waitlist.removeClient(client);
     }
 
     public void clearWaitlist() {
