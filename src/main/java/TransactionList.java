@@ -91,7 +91,7 @@ public class TransactionList implements Serializable {
     }
 
     public Iterator<TransactionItem> getTransactions() {
-        return transactions.iterator();
+        return new LinkedList<>(transactions).iterator();
     }
 
     public void clear() {

@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -40,7 +37,7 @@ public class ProductList implements Serializable {
     }
 
     public Iterator<Product> getProducts() {
-        return products.iterator();
+        return new LinkedList<>(products).iterator();
     }
 
     public void clear() {

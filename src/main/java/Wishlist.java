@@ -70,7 +70,7 @@ public class Wishlist implements Serializable {
     }
 
     public Iterator<WishlistItem> getWishlistItems() {
-        return wishlist.iterator();
+        return new LinkedList<>(wishlist).iterator();
     }
 
     public void clear() {

@@ -40,7 +40,7 @@ public class ClientList implements Serializable {
     }
 
     public Iterator<Client> getClients() {
-        return clients.iterator();
+        return new LinkedList<>(clients).iterator();
     }
 
     public void clear() {

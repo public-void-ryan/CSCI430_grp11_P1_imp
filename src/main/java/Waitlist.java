@@ -61,16 +61,16 @@ public class Waitlist implements Serializable {
         return newItem;
     }
 
-    public boolean removeClient(Client client) {
+    public void removeClient(Client client) {
         if (client == null) {
             throw new IllegalArgumentException("Client cannot be null.");
         }
 
-        return waitlist.removeIf(item -> item.getClient().getId().equals(client.getId()));
+        waitlist.removeIf(item -> item.getClient().getId().equals(client.getId()));
     }
 
     public Iterator<WaitlistItem> getWaitlistItems() {
-        return waitlist.iterator();
+        return new LinkedList<>(waitlist).iterator();
     }
 
     public void clear() {
