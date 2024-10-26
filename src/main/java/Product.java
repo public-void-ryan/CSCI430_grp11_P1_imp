@@ -86,6 +86,10 @@ public class Product implements Serializable {
         waitlist.removeClient(client);
     }
 
+    public void updateWaitlistQuantity(Client client, int quantity) {
+        waitlist.updateClientQuantity(client, quantity);
+    }
+
     public void clearWaitlist() {
         waitlist.clear();
     }
@@ -97,16 +101,27 @@ public class Product implements Serializable {
         LinkedList<Map<String, String>> transactionInfoList = new LinkedList<>();
         Iterator<Waitlist.WaitlistItem> waitlistItems = getWaitlistItems();
 
-        while (waitlistItems.hasNext()) {
+        while (waitlistItems.hasNext() && getStockLevel() > 0) {
             Waitlist.WaitlistItem waitlistItem = waitlistItems.next();
             Client waitlistClient = waitlistItem.getClient();
             int waitlistQuantity = waitlistItem.getQuantity();
 
-            // Remove client from the waitlist
-            removeFromWaitlist(waitlistClient);
+            String transactionId;
 
-            // Process the client's order with the waitlisted quantity
-            String transactionId = waitlistClient.processOrder(this, waitlistQuantity);
+            if (waitlistQuantity < getStockLevel()) {
+                // Remove client from the waitlist
+                removeFromWaitlist(waitlistClient);
+
+                // Process the client's order with the waitlisted quantity
+                transactionId = waitlistClient.processOrder(this, waitlistQuantity);
+            } else {
+                // Update the waitlist quantity
+                int newQuantity = waitlistQuantity - getStockLevel();
+                updateWaitlistQuantity(waitlistClient, newQuantity);
+
+                // Process the client's order with the partial quantity
+                transactionId = waitlistClient.processOrder(this, newQuantity);
+            }
 
             // Record transaction information
             Map<String, String> transactionInfo = new HashMap<>();

@@ -68,6 +68,24 @@ public class Waitlist implements Serializable {
         waitlist.removeIf(item -> item.getClient().getId().equals(client.getId()));
     }
 
+    public void updateClientQuantity(Client client, int newQuantity) {
+        if (client == null) {
+            throw new IllegalArgumentException("Client cannot be null.");
+        }
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative.");
+        }
+
+        for (WaitlistItem item : waitlist) {
+            if (item.getClient().getId().equals(client.getId())) {
+                item.setQuantity(newQuantity);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Client not found on the waitlist.");
+    }
+
+
     public Iterator<WaitlistItem> getWaitlistItems() {
         return new LinkedList<>(waitlist).iterator();
     }
