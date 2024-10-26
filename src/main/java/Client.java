@@ -45,10 +45,6 @@ public class Client implements Serializable {
         return id;
     }
 
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
-
     // Setters
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
@@ -81,6 +77,10 @@ public class Client implements Serializable {
                 balance);
     }
 
+    public Iterator<Wishlist.WishlistItem> getWishlistItems() {
+        return wishlist.getWishlistItems();
+    }
+
     public Wishlist.WishlistItem addToWishlist(Product product, int quantity) {
         return wishlist.addProduct(product, quantity);
     }
@@ -103,5 +103,57 @@ public class Client implements Serializable {
 
     public String getTransaction(String transactionId) {
         return transactions.getTransaction(transactionId);
+    }
+
+    public String processPayment(double paymentAmount) {
+        double newBalance = getBalance() - paymentAmount;
+        setBalance(newBalance);
+
+        String description = "Payment received";
+        return addTransaction(description, paymentAmount);
+    }
+
+    public String processOrder(Product product, int orderQuantity) {
+        String productName = product.getName();
+        double productPrice = product.getPrice();
+        int stockLevel = product.getStockLevel();
+
+        if (stockLevel >= orderQuantity) {
+            // Enough stock to fulfill the entire order
+            product.setStockLevel(stockLevel - orderQuantity);
+            double totalCost = productPrice * orderQuantity;
+            setBalance(getBalance() + totalCost);
+
+            String description = String.format(
+                    "Order placed: (%d x %s) at $%.2f each",
+                    orderQuantity, productName, productPrice
+            );
+            return addTransaction(description, totalCost);
+
+        } else if (stockLevel > 0) {
+            // Partial fulfillment
+            int waitlistedQuantity = orderQuantity - stockLevel;
+            product.setStockLevel(0);
+            double fulfilledCost = productPrice * stockLevel;
+            setBalance(getBalance() + fulfilledCost);
+
+            // Waitlist the remaining quantity
+            product.addToWaitlist(this, waitlistedQuantity);
+
+            String description = String.format(
+                    "Partial order: (%d x %s) at $%.2f each with %d units waitlisted",
+                    stockLevel, productName, productPrice, waitlistedQuantity
+            );
+            return addTransaction(description, fulfilledCost);
+
+        } else {
+            // No stock available, entire quantity goes to waitlist
+            product.addToWaitlist(this, orderQuantity);
+
+            String description = String.format(
+                    "Waitlisted: (%d x %s)", orderQuantity, productName
+            );
+            return addTransaction(description, 0.0);
+        }
     }
 }

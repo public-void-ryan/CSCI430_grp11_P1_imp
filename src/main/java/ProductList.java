@@ -1,11 +1,16 @@
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class ProductList implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ProductList productList;
 
-    private List<Product> products;
+    private LinkedList<Product> products;
 
     private ProductList() {
         products = new LinkedList<>();

@@ -1,11 +1,10 @@
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Waitlist implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<WaitlistItem> waitlist;
+    private final LinkedList<WaitlistItem> waitlist;
 
     public Waitlist() {
         waitlist = new LinkedList<>();
@@ -75,5 +74,9 @@ public class Waitlist implements Serializable {
 
     public void clear() {
         waitlist.clear();
+    }
+
+    public int getTotalQuantity() {
+        return waitlist.stream().mapToInt(WaitlistItem::getQuantity).sum();
     }
 }

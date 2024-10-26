@@ -1,14 +1,16 @@
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class ClientList implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ClientList clientList;
 
-    private List<Client> clients;
+    private LinkedList<Client> clients;
 
     private ClientList() {
         clients = new LinkedList<>();

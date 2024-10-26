@@ -1,5 +1,10 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
 
 public class UserInterface {
     private static UserInterface userInterface;
@@ -14,13 +19,14 @@ public class UserInterface {
     private static final int PROCESS_PRODUCT_SHIPMENT = 6;
     private static final int SHOW_CLIENT = 7;
     private static final int SHOW_CLIENTS = 8;
-    private static final int SHOW_PRODUCT = 9;
-    private static final int SHOW_PRODUCTS = 10;
-    private static final int SHOW_CLIENT_WISHLIST = 11;
-    private static final int SHOW_CLIENT_TRANSACTIONS = 12;
-    private static final int SHOW_PRODUCT_WAITLIST = 13;
-    private static final int SAVE = 14;
-    private static final int HELP = 15;
+    private static final int SHOW_CLIENTS_WITH_OUTSTANDING_BALANCE = 9;
+    private static final int SHOW_PRODUCT = 10;
+    private static final int SHOW_PRODUCTS = 11;
+    private static final int SHOW_CLIENT_WISHLIST = 12;
+    private static final int SHOW_CLIENT_TRANSACTIONS = 13;
+    private static final int SHOW_PRODUCT_WAITLIST = 14;
+    private static final int SAVE = 15;
+    private static final int HELP = 16;
 
     // Private utility methods
     private UserInterface() {
@@ -222,6 +228,24 @@ public class UserInterface {
         }
     }
 
+    public void showClientsWithOutstandingBalance() {
+        Iterator<Client> allClients = warehouse.getClients();
+        System.out.println("Clients with Outstanding Balance:");
+
+        boolean found = false;
+        while (allClients.hasNext()) {
+            Client client = allClients.next();
+            if (client.getBalance() > 0) {
+                System.out.println(client);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No clients with outstanding balance.");
+        }
+    }
+
     public void showClientWishlist() {
         String clientId = getToken("Enter client ID: ");
         Iterator<Wishlist.WishlistItem> wishlist = warehouse.getClientWishlistItems(clientId);
@@ -307,6 +331,7 @@ public class UserInterface {
         System.out.println(PROCESS_PRODUCT_SHIPMENT + " to process a product shipment");
         System.out.println(SHOW_CLIENT + " to show a specific client");
         System.out.println(SHOW_CLIENTS + " to show all clients");
+        System.out.println(SHOW_CLIENTS_WITH_OUTSTANDING_BALANCE + " to show all clients with the outstanding balance");
         System.out.println(SHOW_PRODUCT + " to show a specific product");
         System.out.println(SHOW_PRODUCTS + " to show all products");
         System.out.println(SHOW_CLIENT_WISHLIST + " to show a client's wishlist");
@@ -345,6 +370,9 @@ public class UserInterface {
                         break;
                     case SHOW_CLIENTS:
                         showClients();
+                        break;
+                    case SHOW_CLIENTS_WITH_OUTSTANDING_BALANCE:
+                        showClientsWithOutstandingBalance();
                         break;
                     case SHOW_PRODUCT:
                         showProduct();

@@ -2,12 +2,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TransactionList implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<TransactionItem> transactions;
+    private final LinkedList<TransactionItem> transactions;
 
     public TransactionList() {
         transactions = new LinkedList<>();

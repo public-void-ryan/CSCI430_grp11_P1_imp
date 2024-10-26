@@ -1,4 +1,8 @@
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -36,10 +40,6 @@ public class Product implements Serializable {
         return stockLevel;
     }
 
-    public Waitlist getWaitlist() {
-        return waitlist ;
-    }
-
     // Setters
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
@@ -62,9 +62,20 @@ public class Product implements Serializable {
         this.stockLevel = stockLevel;
     }
 
+    private int getTotalOutstandingQuantity() {
+        return waitlist.getTotalQuantity();
+    }
+
     @Override
     public String toString() {
-        return String.format("Product [ID=%s, Name=%s, Price=%.2f, StockLevel=%d]", id, name, price, stockLevel);
+        return String.format(
+                "Product [ID=%s, Name=%s, Price=%.2f, StockLevel=%d, OutstandingWaitlistQuantity=%d]",
+                id, name, price, stockLevel, getTotalOutstandingQuantity()
+        );
+    }
+
+    public Iterator<Waitlist.WaitlistItem> getWaitlistItems() {
+        return waitlist.getWaitlistItems();
     }
 
     public Waitlist.WaitlistItem addToWaitlist(Client client, int quantity) {
@@ -77,5 +88,34 @@ public class Product implements Serializable {
 
     public void clearWaitlist() {
         waitlist.clear();
+    }
+
+    public Iterator<Map<String, String>> processShipment(int shipmentQuantity) {
+        // Update the stock quantity before processing the waitlist items
+        setStockLevel(getStockLevel() + shipmentQuantity);
+
+        LinkedList<Map<String, String>> transactionInfoList = new LinkedList<>();
+        Iterator<Waitlist.WaitlistItem> waitlistItems = getWaitlistItems();
+
+        while (waitlistItems.hasNext()) {
+            Waitlist.WaitlistItem waitlistItem = waitlistItems.next();
+            Client waitlistClient = waitlistItem.getClient();
+            int waitlistQuantity = waitlistItem.getQuantity();
+
+            // Remove client from the waitlist
+            removeFromWaitlist(waitlistClient);
+
+            // Process the client's order with the waitlisted quantity
+            String transactionId = waitlistClient.processOrder(this, waitlistQuantity);
+
+            // Record transaction information
+            Map<String, String> transactionInfo = new HashMap<>();
+            transactionInfo.put("clientId", waitlistClient.getId());
+            transactionInfo.put("transactionId", transactionId);
+
+            transactionInfoList.add(transactionInfo);
+        }
+
+        return transactionInfoList.iterator();
     }
 }
