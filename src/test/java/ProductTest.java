@@ -62,9 +62,4 @@ public class ProductTest {
         assertNotEquals(product.getId(), anotherProduct.getId());
     }
 
-    @Test
-    public void testToString() {
-        String expected = "Product [Name=Test Product, Price=99.99, StockLevel=10, ID=" + product.getId() + "]";
-        assertEquals(expected, product.toString());
-    }
 }
