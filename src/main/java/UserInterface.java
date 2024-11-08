@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class UserInterface {
@@ -316,17 +315,14 @@ public class UserInterface {
     }
 
     private void clerkMenu() {
-        Scanner scanner = new Scanner(System.in);
         boolean exit = false;
         while (!exit) {
             System.out.println("Clerk Menu State:");
             System.out.println("1. Add New Client");
             System.out.println("2. Other Clerk Functionality");
             System.out.println("3. Logout");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
 
+            int choice = getNumber("Enter your choice: ");
             switch (choice) {
                 case 1:
                     addClient();
