@@ -23,6 +23,7 @@ public class UserInterface {
     private static final int LOGOUT = 7;
     private static final int HELP = 8;
     private SecuritySystem securitySystem = new SecuritySystem();
+    private SessionContext sessionContext = new SessionContext();
 
     private UserInterface() {
         if (yesOrNo("Look for saved data and use it?")) {
@@ -208,8 +209,21 @@ public class UserInterface {
     }
 
     public void logout() {
-        System.out.println("Logging out...");
-        currentState = OPENING_STATE;
+        if(sessionContext.getPrimaryRole() == sessionContext.getCurrentRole()) {
+            System.out.println("Logging out...");
+            currentState = OPENING_STATE;
+        } else {
+            switch(currentState) {
+                case CLIENT_MENU_STATE:
+                    System.out.print("Return to Clerk menu...");
+                    currentState = CLERK_MENU_STATE;
+                    break;
+                case CLERK_MENU_STATE:
+                    System.out.print("Return to Manager menu...");
+                    currentState = MANAGER_MENU_STATE;
+                    break;
+            } 
+        }
     }
 
     public void help() {
@@ -233,12 +247,15 @@ public class UserInterface {
                     openingState();
                     break;
                 case CLIENT_MENU_STATE:
+                    sessionContext.intializeSessionContext(1);
                     clientMenu();
                     break;
                 case CLERK_MENU_STATE:
+                    sessionContext.intializeSessionContext(2);
                     clerkMenu();
                     break;
                 case MANAGER_MENU_STATE:
+                    sessionContext.intializeSessionContext(3);
                     managerMenu();
                     break;
             }
@@ -331,29 +348,64 @@ public class UserInterface {
     }
 
     private void clerkMenu() {
-        boolean exit = false;
-        while (!exit) {
-            System.out.println("Clerk Menu State:");
-            System.out.println("1. Add New Client");
-            System.out.println("2. Other Clerk Functionality");
-            System.out.println("3. Logout");
-
-            int choice = getNumber("Enter your choice: ");
-            switch (choice) {
+        int command;
+        clerkHelp();
+        while ((command = getClerkCommand()) != 7) {
+            switch (command) {
                 case 1:
                     addClient();
                     break;
                 case 2:
-                    // Implement other clerk functionalities here
+                    showProducts();
                     break;
                 case 3:
-                    logout();
-                    exit = true;
+                    showClients();
+                    break;
+                case 4:
+                    showClientsOutstandingBalance();
+                    break;
+                case 5: 
+                    recordClientPayment();
+                    break;
+                case 6:
+                    becomeClient();
+                    break;
+                case 8:
+                    clerkHelp();
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid command.");
             }
         }
+        logout();
+    }
+
+    private int getClerkCommand() {
+        do {
+            try {
+                int value = Integer.parseInt(getToken("Enter command (8 for help): "));
+                if (value >= 1 && value <= 8) {
+                    return value;
+                } else {
+                    System.out.println("Command out of range.");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Enter a valid number.");
+            }
+        } while(true);
+    }
+
+    private void clerkHelp()
+    {
+        System.out.println("Clerk Menu State:");
+        System.out.println("1. Add New Client");
+        System.out.println("2. Show Product List");
+        System.out.println("3. Show Client List");
+        System.out.println("4. Show Clients with Outstanding Balance");
+        System.out.println("5. Record Client Payment");
+        System.out.println("6. Become a Client");
+        System.out.println("7. Logout");
+        System.out.println("8. Help");
     }
 
     public void addClient() {
@@ -362,6 +414,48 @@ public class UserInterface {
         String phone = getToken("Enter phone: ");
         Client result = warehouse.addClient(name, address, phone);
         System.out.println("Client added: " + result);
+    }
+
+    private void showClients() {
+        Iterator<Client> clients = warehouse.getClients();
+        while(clients.hasNext()) {
+            System.out.println("Client Details: " + clients.next());
+        }
+    }
+
+    private void showClientsOutstandingBalance() {
+        Iterator<Client> clients = warehouse.getClients();
+        while(clients.hasNext()) {
+            var client = clients.next();
+            if(client.getBalance() < 0.0) {
+                System.out.println("Client Details: " + client);
+            }             
+        }
+    }
+
+    private void recordClientPayment() {
+        String clientID = getToken("Enter Client ID: ");
+        double paymentAmount = Double.parseDouble(getToken("Enter Payment Amount: "));
+        warehouse.processClientPayment(clientID, paymentAmount);
+    }
+
+    private void becomeClient() {
+        String clientID;
+        do {
+            clientID = getToken("Enter Client ID (or 'Q' to quit): ");
+            if (clientID.equalsIgnoreCase("Q")) {
+                return;
+            }
+            else if (warehouse.getClient(clientID) != null) {
+                break;  // Exit loop when valid client is found
+            }
+            System.out.println("Client does not exist in system, please try again");
+        } while (true);
+
+        currentClientId = clientID;
+        sessionContext.UpdateCurrentRole(1);
+        currentState = CLIENT_MENU_STATE;
+        clientMenu();
     }
 
     private void managerMenu() {

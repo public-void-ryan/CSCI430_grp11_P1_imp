@@ -23,7 +23,7 @@ public class SecuritySystem {
     }
 
     public boolean validateClerkCredentials(String[] credentials) {
-        return "clerk".equals(credentials[0]) && "clerk".equals(credentials[1]);
+        return "salesclerk".equals(credentials[0]) && "salesclerk".equals(credentials[1]);
     }
 
     public boolean validateManagerCredentials(String[] credentials) {
