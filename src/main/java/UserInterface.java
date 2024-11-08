@@ -22,6 +22,7 @@ public class UserInterface {
     private static final int PLACE_ORDER = 6;
     private static final int LOGOUT = 7;
     private static final int HELP = 8;
+    private SecuritySystem securitySystem = new SecuritySystem();
 
     private UserInterface() {
         if (yesOrNo("Look for saved data and use it?")) {
@@ -247,7 +248,6 @@ public class UserInterface {
     private String currentClientId;
 
     private void openingState() {
-        System.out.println("Opening State:");
         System.out.println("1. Client Menu");
         System.out.println("2. Clerk Menu");
         System.out.println("3. Manager Menu");
@@ -257,18 +257,29 @@ public class UserInterface {
         int choice = getNumber("Enter your choice: ");
         switch (choice) {
             case 1:
-                currentClientId = getToken("Enter client ID: ");
-                if (warehouse.getClient(currentClientId) != null) {
+                currentClientId = getToken("Enter client username: ");
+                String[] clientCredentials = securitySystem.promptCredentials();
+                if (securitySystem.validateClientCredentials(currentClientId, clientCredentials)) {
                     currentState = CLIENT_MENU_STATE;
                 } else {
-                    System.out.println("Invalid client ID.");
+                    System.out.println("Invalid client credentials.");
                 }
                 break;
             case 2:
-                currentState = CLERK_MENU_STATE;
+                String[] clerkCredentials = securitySystem.promptCredentials();
+                if (securitySystem.validateClerkCredentials(clerkCredentials)) {
+                    currentState = CLERK_MENU_STATE;
+                } else {
+                    System.out.println("Invalid clerk credentials.");
+                }
                 break;
             case 3:
-                currentState = MANAGER_MENU_STATE;
+                String[] managerCredentials = securitySystem.promptCredentials();
+                if (securitySystem.validateManagerCredentials(managerCredentials)) {
+                    currentState = MANAGER_MENU_STATE;
+                } else {
+                    System.out.println("Invalid manager credentials.");
+                }
                 break;
             case 4:
                 save();
