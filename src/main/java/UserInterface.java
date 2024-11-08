@@ -257,16 +257,14 @@ public class UserInterface {
         int choice = getNumber("Enter your choice: ");
         switch (choice) {
             case 1:
-                currentClientId = getToken("Enter client ID: ");
-                if (warehouse.getClient(currentClientId) != null) {
-                    String[] clientCredentials = securitySystem.promptCredentials();
-                    if (securitySystem.validateClientCredentials(currentClientId, clientCredentials)) {
-                        currentState = CLIENT_MENU_STATE;
-                    } else {
-                        System.out.println("Invalid client credentials.");
-                    }
+                String[] clientCredentials = securitySystem.promptCredentials();
+                String clientId = clientCredentials[0];
+                if (warehouse.getClient(clientId) != null
+                        && securitySystem.validateClientCredentials(clientId, clientCredentials)) {
+                    currentClientId = clientId;
+                    currentState = CLIENT_MENU_STATE;
                 } else {
-                    System.out.println("Client ID not found.");
+                    System.out.println("Invalid client ID or credentials.");
                 }
                 break;
             case 2:
