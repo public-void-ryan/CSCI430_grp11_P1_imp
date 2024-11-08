@@ -93,13 +93,20 @@ public class UserInterface {
         }
     }
 
+    public void save() {
+        if (Warehouse.save()) {
+            System.out.println("Warehouse data successfully saved.");
+        } else {
+            System.out.println("Error saving warehouse data.");
+        }
+    }
+
     public static UserInterface instance() {
         return userInterface == null ? (userInterface = new UserInterface()) : userInterface;
     }
 
     public void showClientDetails() {
-        String clientId = getToken("Enter client ID: ");
-        Client client = warehouse.getClient(clientId);
+        Client client = warehouse.getClient(currentClientId);
         System.out.println("Client Details:");
         System.out.println(client);
     }
@@ -238,23 +245,34 @@ public class UserInterface {
         }
     }
 
+    private String currentClientId;
+
     private void openingState() {
         System.out.println("Opening State:");
         System.out.println("1. Client Menu");
         System.out.println("2. Clerk Menu");
         System.out.println("3. Manager Menu");
+        System.out.println("4. Save Warehouse Data");
         System.out.println("0. Exit");
 
         int choice = getNumber("Enter your choice: ");
         switch (choice) {
             case 1:
-                currentState = CLIENT_MENU_STATE;
+                currentClientId = getToken("Enter client ID: ");
+                if (warehouse.getClient(currentClientId) != null) {
+                    currentState = CLIENT_MENU_STATE;
+                } else {
+                    System.out.println("Invalid client ID.");
+                }
                 break;
             case 2:
                 currentState = CLERK_MENU_STATE;
                 break;
             case 3:
                 currentState = MANAGER_MENU_STATE;
+                break;
+            case 4:
+                save();
                 break;
             case 0:
                 System.exit(0);
