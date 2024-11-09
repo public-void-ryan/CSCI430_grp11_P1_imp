@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class UserInterface {
@@ -209,11 +210,11 @@ public class UserInterface {
     }
 
     public void logout() {
-        if(sessionContext.getPrimaryRole() == sessionContext.getCurrentRole()) {
+        if (sessionContext.getPrimaryRole() == sessionContext.getCurrentRole()) {
             System.out.println("Logging out...");
             currentState = OPENING_STATE;
         } else {
-            switch(currentState) {
+            switch (currentState) {
                 case CLIENT_MENU_STATE:
                     System.out.print("Return to Clerk menu...");
                     currentState = CLERK_MENU_STATE;
@@ -222,7 +223,7 @@ public class UserInterface {
                     System.out.print("Return to Manager menu...");
                     currentState = MANAGER_MENU_STATE;
                     break;
-            } 
+            }
         }
     }
 
@@ -276,12 +277,16 @@ public class UserInterface {
             case 1:
                 String[] clientCredentials = securitySystem.promptCredentials();
                 String clientId = clientCredentials[0];
-                if (warehouse.getClient(clientId) != null
-                        && securitySystem.validateClientCredentials(clientId, clientCredentials)) {
-                    currentClientId = clientId;
-                    currentState = CLIENT_MENU_STATE;
-                } else {
-                    System.out.println("Invalid client ID or credentials.");
+                try {
+                    if (warehouse.getClient(clientId) != null
+                            && securitySystem.validateClientCredentials(clientId, clientCredentials)) {
+                        currentClientId = clientId;
+                        currentState = CLIENT_MENU_STATE;
+                    } else {
+                        System.out.println("Invalid client credentials.");
+                    }
+                } catch (NoSuchElementException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             case 2:
@@ -364,7 +369,7 @@ public class UserInterface {
                 case 4:
                     showClientsOutstandingBalance();
                     break;
-                case 5: 
+                case 5:
                     recordClientPayment();
                     break;
                 case 6:
@@ -392,11 +397,10 @@ public class UserInterface {
             } catch (NumberFormatException nfe) {
                 System.out.println("Enter a valid number.");
             }
-        } while(true);
+        } while (true);
     }
 
-    private void clerkHelp()
-    {
+    private void clerkHelp() {
         System.out.println("Clerk Menu State:");
         System.out.println("1. Add New Client");
         System.out.println("2. Show Product List");
@@ -418,18 +422,18 @@ public class UserInterface {
 
     private void showClients() {
         Iterator<Client> clients = warehouse.getClients();
-        while(clients.hasNext()) {
+        while (clients.hasNext()) {
             System.out.println("Client Details: " + clients.next());
         }
     }
 
     private void showClientsOutstandingBalance() {
         Iterator<Client> clients = warehouse.getClients();
-        while(clients.hasNext()) {
+        while (clients.hasNext()) {
             var client = clients.next();
-            if(client.getBalance() < 0.0) {
+            if (client.getBalance() < 0.0) {
                 System.out.println("Client Details: " + client);
-            }             
+            }
         }
     }
 
@@ -445,9 +449,8 @@ public class UserInterface {
             clientID = getToken("Enter Client ID (or 'Q' to quit): ");
             if (clientID.equalsIgnoreCase("Q")) {
                 return;
-            }
-            else if (warehouse.getClient(clientID) != null) {
-                break;  // Exit loop when valid client is found
+            } else if (warehouse.getClient(clientID) != null) {
+                break; // Exit loop when valid client is found
             }
             System.out.println("Client does not exist in system, please try again");
         } while (true);
