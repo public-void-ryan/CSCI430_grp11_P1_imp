@@ -70,8 +70,7 @@ public class Product implements Serializable {
     public String toString() {
         return String.format(
                 "Product [ID=%s, Name=%s, Price=%.2f, StockLevel=%d, OutstandingWaitlistQuantity=%d]",
-                id, name, price, stockLevel, getTotalOutstandingQuantity()
-        );
+                id, name, price, stockLevel, getTotalOutstandingQuantity());
     }
 
     public Iterator<Waitlist.WaitlistItem> getWaitlistItems() {

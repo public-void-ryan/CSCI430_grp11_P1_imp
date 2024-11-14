@@ -11,13 +11,11 @@ public class SessionContext {
         currentRole = role;
     }
 
-    public int getPrimaryRole()
-    {
+    public int getPrimaryRole() {
         return primaryRole;
     }
 
-    public int getCurrentRole()
-    {
+    public int getCurrentRole() {
         return currentRole;
     }
 }

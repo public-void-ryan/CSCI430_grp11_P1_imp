@@ -482,14 +482,14 @@ public class UserInterface {
                     break;
                 case 6:
                     managerHelp();
-                    break;    
+                    break;
                 default:
                     System.out.println("Invalid command.");
             }
         }
         logout();
     }
-    
+
     private int getManagerCommand() {
         do {
             try {
@@ -504,7 +504,7 @@ public class UserInterface {
             }
         } while (true);
     }
-    
+
     private void managerHelp() {
         System.out.println("Manager Menu:");
         System.out.println("1. Add a Product");
@@ -514,7 +514,7 @@ public class UserInterface {
         System.out.println("5. Logout");
         System.out.println("6. Help");
     }
-    
+
     private void addProduct() {
         String name = getToken("Enter product name: ");
         double price = Double.parseDouble(getToken("Enter product price: "));
@@ -522,7 +522,7 @@ public class UserInterface {
         Product result = warehouse.addProduct(name, price, quantity);
         System.out.println("Product added: " + result);
     }
-    
+
     private void displayProductWaitlist() {
         String productId = getToken("Enter product ID: ");
         Iterator<Waitlist.WaitlistItem> waitlist = warehouse.getProductWaitlistItems(productId);
@@ -535,14 +535,14 @@ public class UserInterface {
             System.out.println(item);
         }
     }
-    
+
     private void receiveShipment() {
         String productId = getToken("Enter product ID: ");
         int quantityReceived = getNumber("Enter quantity received: ");
         warehouse.processProductShipment(productId, quantityReceived);
         System.out.println("Shipment processed successfully.");
     }
-    
+
     private void becomeClerk() {
         currentState = CLERK_MENU_STATE;
         clerkMenu();

@@ -85,7 +85,6 @@ public class Waitlist implements Serializable {
         throw new IllegalArgumentException("Client not found on the waitlist.");
     }
 
-
     public Iterator<WaitlistItem> getWaitlistItems() {
         return new LinkedList<>(waitlist).iterator();
     }

@@ -126,8 +126,7 @@ public class Client implements Serializable {
 
             String description = String.format(
                     "Order placed: (%d x %s) at $%.2f each",
-                    orderQuantity, productName, productPrice
-            );
+                    orderQuantity, productName, productPrice);
             return addTransaction(description, totalCost);
 
         } else if (stockLevel > 0) {
@@ -142,8 +141,7 @@ public class Client implements Serializable {
 
             String description = String.format(
                     "Partial order: (%d x %s) at $%.2f each with %d units waitlisted",
-                    stockLevel, productName, productPrice, waitlistedQuantity
-            );
+                    stockLevel, productName, productPrice, waitlistedQuantity);
             return addTransaction(description, fulfilledCost);
 
         } else {
@@ -151,8 +149,7 @@ public class Client implements Serializable {
             product.addToWaitlist(this, orderQuantity);
 
             String description = String.format(
-                    "Waitlisted: (%d x %s)", orderQuantity, productName
-            );
+                    "Waitlisted: (%d x %s)", orderQuantity, productName);
             return addTransaction(description, 0.0);
         }
     }

@@ -65,8 +65,7 @@ public class TransactionList implements Serializable {
         public String toString() {
             return String.format(
                     "TransactionItem [ID=%s, Date=%s, Description=%s, DollarAmount=%.2f]",
-                    id, date, description, dollarAmount
-            );
+                    id, date, description, dollarAmount);
         }
     }
 
