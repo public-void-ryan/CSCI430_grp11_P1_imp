@@ -227,9 +227,8 @@ public class UserInterface {
         }
     }
 
-    public void help() {
-        System.out.println("Enter a number between 0 and " + HELP + " as explained below:");
-        System.out.println(EXIT + " to exit");
+    public void clientHelp() {
+        System.out.println("Client Menu:");
         System.out.println(SHOW_CLIENT_DETAILS + " to show client details");
         System.out.println(SHOW_PRODUCTS + " to show products");
         System.out.println(SHOW_CLIENT_TRANSACTIONS + " to show client transactions");
@@ -318,7 +317,7 @@ public class UserInterface {
 
     private void clientMenu() {
         int command;
-        help();
+        clientHelp();
         while ((command = getCommand()) != LOGOUT) {
             switch (command) {
                 case EXIT:
@@ -343,7 +342,7 @@ public class UserInterface {
                     placeOrder();
                     break;
                 case HELP:
-                    help();
+                    clientHelp();
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -401,7 +400,7 @@ public class UserInterface {
     }
 
     private void clerkHelp() {
-        System.out.println("Clerk Menu State:");
+        System.out.println("Clerk Menu:");
         System.out.println("1. Add New Client");
         System.out.println("2. Show Product List");
         System.out.println("3. Show Client List");
@@ -462,10 +461,91 @@ public class UserInterface {
     }
 
     private void managerMenu() {
-        // Implement manager-specific functionalities here
-        System.out.println("Manager Menu State:");
-        // Add manager-specific commands and functionalities
-
+        int command;
+        managerHelp();
+        while ((command = getManagerCommand()) != 5) {
+            switch (command) {
+                case 1:
+                    addProduct();
+                    break;
+                case 2:
+                    displayProductWaitlist();
+                    break;
+                case 3:
+                    receiveShipment();
+                    break;
+                case 4:
+                    becomeClerk();
+                    break;
+                case 5:
+                    logout();
+                    break;
+                case 6:
+                    managerHelp();
+                    break;    
+                default:
+                    System.out.println("Invalid command.");
+            }
+        }
+        logout();
+    }
+    
+    private int getManagerCommand() {
+        do {
+            try {
+                int value = Integer.parseInt(getToken("Enter command (6 for help): "));
+                if (value >= 1 && value <= 6) {
+                    return value;
+                } else {
+                    System.out.println("Command out of range.");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Enter a valid number.");
+            }
+        } while (true);
+    }
+    
+    private void managerHelp() {
+        System.out.println("Manager Menu:");
+        System.out.println("1. Add a Product");
+        System.out.println("2. Display Product Waitlist");
+        System.out.println("3. Receive a Shipment");
+        System.out.println("4. Become a Clerk");
+        System.out.println("5. Logout");
+        System.out.println("6. Help");
+    }
+    
+    private void addProduct() {
+        String name = getToken("Enter product name: ");
+        double price = Double.parseDouble(getToken("Enter product price: "));
+        int quantity = getNumber("Enter product quantity: ");
+        Product result = warehouse.addProduct(name, price, quantity);
+        System.out.println("Product added: " + result);
+    }
+    
+    private void displayProductWaitlist() {
+        String productId = getToken("Enter product ID: ");
+        Iterator<Waitlist.WaitlistItem> waitlist = warehouse.getProductWaitlistItems(productId);
+        System.out.println("Waitlisted Clients for Product:");
+        if (!waitlist.hasNext()) {
+            System.out.println("No waitlist items found.");
+        }
+        while (waitlist.hasNext()) {
+            Waitlist.WaitlistItem item = waitlist.next();
+            System.out.println(item);
+        }
+    }
+    
+    private void receiveShipment() {
+        String productId = getToken("Enter product ID: ");
+        int quantityReceived = getNumber("Enter quantity received: ");
+        warehouse.processProductShipment(productId, quantityReceived);
+        System.out.println("Shipment processed successfully.");
+    }
+    
+    private void becomeClerk() {
+        currentState = CLERK_MENU_STATE;
+        clerkMenu();
     }
 
     public static void main(String[] args) {
