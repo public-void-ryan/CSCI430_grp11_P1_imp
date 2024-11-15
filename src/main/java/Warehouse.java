@@ -9,7 +9,6 @@ public class Warehouse implements Serializable {
     private final ProductList products;
 
     private static final String DATA_FILE = "WarehouseData";
-    private static int clientIdCounter = 1; // Add a static counter for client IDs
 
     private Warehouse() {
         clients = ClientList.instance();
@@ -31,8 +30,17 @@ public class Warehouse implements Serializable {
     }
 
     public Client addClient(String name, String address, String phone) {
-        String clientId = "C" + clientIdCounter++; // Generate a unique client ID
-        Client client = new Client(clientId, name, address, phone);
+        Iterator<Client> clientsIterator = clients.getClients();
+        while (clientsIterator.hasNext()) {
+            Client existingClient = clientsIterator.next();
+            if (existingClient.getName().equalsIgnoreCase(name) &&
+                    existingClient.getAddress().equalsIgnoreCase(address) &&
+                    existingClient.getPhone().equals(phone)) {
+                throw new IllegalArgumentException("Client with the same details already exists.");
+            }
+        }
+
+        Client client = new Client(name, address, phone);
         return clients.addClient(client);
     }
 
@@ -125,6 +133,7 @@ public class Warehouse implements Serializable {
             warehouse = (Warehouse) in.readObject();
             return warehouse;
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             return null;
         }
     }

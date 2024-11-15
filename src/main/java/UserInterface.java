@@ -82,6 +82,15 @@ public class UserInterface {
             if (tempWarehouse != null) {
                 System.out.println("Warehouse data successfully retrieved.");
                 warehouse = tempWarehouse;
+
+                // Reset the ID generator
+                Iterator<Client> clientsIterator = warehouse.getClients();
+                int lastId = 0;
+                while (clientsIterator.hasNext()) {
+                    String clientId = clientsIterator.next().getId().replace("C", "");
+                    lastId = Math.max(lastId, Integer.parseInt(clientId));
+                }
+                Client.resetIdCounter(lastId);
             } else {
                 System.out.println("No saved data found. Creating new warehouse.");
                 warehouse = Warehouse.instance();
@@ -389,11 +398,18 @@ public class UserInterface {
     }
 
     public void addClient() {
-        String name = getToken("Enter client name: ");
-        String address = getToken("Enter address: ");
-        String phone = getToken("Enter phone: ");
-        Client result = warehouse.addClient(name, address, phone);
-        System.out.println("Client added: " + result);
+        try {
+            String name = getToken("Enter client name: ");
+            String address = getToken("Enter address: ");
+            String phone = getToken("Enter phone: ");
+            Client result = warehouse.addClient(name, address, phone);
+            System.out.println("Client added: " + result);
+            currentClientId = result.getId(); // Update the current client ID
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred while adding the client: " + e.getMessage());
+        }
     }
 
     private void showClients() {

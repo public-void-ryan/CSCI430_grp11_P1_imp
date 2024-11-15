@@ -4,7 +4,7 @@ import java.util.Iterator;
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String CLIENT_STRING = "C";
-    private static int idCounter = 1;
+    private static ClientIdGenerator idGenerator = ClientIdGenerator.instance();
 
     private final String id;
     private String name;
@@ -14,18 +14,14 @@ public class Client implements Serializable {
     private final Wishlist wishlist;
     private final TransactionList transactions;
 
-    public Client(String clientId, String name, String address, String phone) {
-        this.id = clientId;
+    public Client(String name, String address, String phone) {
+        this.id = CLIENT_STRING + idGenerator.getNextId();
         this.wishlist = new Wishlist();
         this.transactions = new TransactionList();
         setName(name);
         setAddress(address);
         setPhone(phone);
         setBalance(0);
-    }
-
-    public Client(String name, String address, String phone) {
-        this(CLIENT_STRING + idCounter++, name, address, phone);
     }
 
     // Getters
@@ -157,4 +153,35 @@ public class Client implements Serializable {
             return addTransaction(description, 0.0);
         }
     }
+
+    public static void resetIdCounter(int lastId) {
+        ClientIdGenerator.instance().resetIdCounter(lastId);
+    }
+
+    public static class ClientIdGenerator {
+        public static ClientIdGenerator instance;
+        public int idCounter;
+
+        public ClientIdGenerator() {
+            idCounter = 1;
+        }
+
+        public static ClientIdGenerator instance() {
+            if (instance == null) {
+                instance = new ClientIdGenerator();
+            }
+            return instance;
+        }
+
+        public synchronized int getNextId() {
+            return idCounter++;
+        }
+
+        public synchronized void resetIdCounter(int lastId) {
+            if (lastId >= idCounter) {
+                idCounter = lastId + 1;
+            }
+        }
+    }
+
 }
