@@ -455,6 +455,8 @@ public class UserInterface {
         sessionContext.UpdateCurrentRole(1);
         currentState = CLIENT_MENU_STATE;
         clientMenu();
+        logout();
+        clerkHelp();
     }
 
     private void managerMenu() {
@@ -547,6 +549,8 @@ public class UserInterface {
     private void becomeClerk() {
         currentState = CLERK_MENU_STATE;
         clerkMenu();
+        logout();
+        managerHelp();
     }
 
     public static void main(String[] args) {
