@@ -9,6 +9,7 @@ public class Warehouse implements Serializable {
     private final ProductList products;
 
     private static final String DATA_FILE = "WarehouseData";
+    private static int clientIdCounter = 1; // Add a static counter for client IDs
 
     private Warehouse() {
         clients = ClientList.instance();
@@ -30,7 +31,8 @@ public class Warehouse implements Serializable {
     }
 
     public Client addClient(String name, String address, String phone) {
-        Client client = new Client(name, address, phone);
+        String clientId = "C" + clientIdCounter++; // Generate a unique client ID
+        Client client = new Client(clientId, name, address, phone);
         return clients.addClient(client);
     }
 

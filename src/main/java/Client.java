@@ -14,14 +14,18 @@ public class Client implements Serializable {
     private final Wishlist wishlist;
     private final TransactionList transactions;
 
-    public Client(String name, String address, String phone) {
-        this.id = CLIENT_STRING + idCounter++;
+    public Client(String clientId, String name, String address, String phone) {
+        this.id = clientId;
         this.wishlist = new Wishlist();
         this.transactions = new TransactionList();
         setName(name);
         setAddress(address);
         setPhone(phone);
         setBalance(0);
+    }
+
+    public Client(String name, String address, String phone) {
+        this(CLIENT_STRING + idCounter++, name, address, phone);
     }
 
     // Getters
