@@ -468,11 +468,11 @@ public class UserInterface {
         do {
             clientID = getToken("Enter Client ID (or 'Q' to quit): ");
             if (clientID.equalsIgnoreCase("Q")) {
-                return;
+                return; // Exit back to the clerk menu without further actions
             }
             try {
                 if (warehouse.getClient(clientID) != null) {
-                    break; // Exit loop when valid client is found
+                    break; // Exit loop when a valid client is found
                 }
             } catch (NoSuchElementException e) {
                 System.out.println("Client with ID " + clientID + " not found. Please try again.");
@@ -480,11 +480,10 @@ public class UserInterface {
         } while (true);
 
         currentClientId = clientID;
-        sessionContext.UpdateCurrentRole(1);
-        currentState = CLIENT_MENU_STATE;
-        clientMenu();
-        logout();
-        clerkHelp();
+        sessionContext.UpdateCurrentRole(1); // Set session role to Client
+        currentState = CLIENT_MENU_STATE; // Set state to client menu
+        clientMenu(); // Process client menu
+        // Logout is handled within clientMenu; no need to call clerkHelp() here.
     }
 
     private void managerMenu() {
@@ -575,8 +574,7 @@ public class UserInterface {
     private void becomeClerk() {
         currentState = CLERK_MENU_STATE;
         clerkMenu();
-        logout();
-        managerHelp();
+
     }
 
     public static void main(String[] args) {
