@@ -252,11 +252,17 @@ public class UserInterface {
 
     private String currentClientId;
 
-    private void openingState() {
+    private void openingHelp() {
+        System.out.println("---------- Main Menu ----------");
         System.out.println("1. Client Menu");
         System.out.println("2. Clerk Menu");
         System.out.println("3. Manager Menu");
         System.out.println("0. Save and Exit");
+        System.out.println("-------------------------------");
+    }
+
+    private void openingState() {
+        openingHelp();
 
         int choice = getNumber("Enter your choice: ");
         switch (choice) {
@@ -267,37 +273,58 @@ public class UserInterface {
                     if (warehouse.getClient(clientId) != null
                             && securitySystem.validateClientCredentials(clientId, clientCredentials)) {
                         currentClientId = clientId;
-                        currentState = CLIENT_MENU_STATE;
+                        sessionContext.intializeSessionContext(1);
+                        clientMenu();
+                        clientHelp();
                     } else {
-                        System.out.println("Invalid client credentials.");
+                        System.out.println("Invalid credentials. Please try again.");
                     }
                 } catch (NoSuchElementException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("Client with ID " + clientId + " not found. Please try again.");
                 }
                 break;
             case 2:
                 String[] clerkCredentials = securitySystem.promptCredentials();
-                if (securitySystem.validateClerkCredentials(clerkCredentials)) {
-                    currentState = CLERK_MENU_STATE;
-                } else {
-                    System.out.println("Invalid clerk credentials.");
+                String clerkId = clerkCredentials[0];
+                try {
+                    if (securitySystem.validateClerkCredentials(clerkCredentials)) {
+                        sessionContext.intializeSessionContext(2);
+                        clerkMenu();
+                        clerkHelp();
+                    } else {
+                        System.out.println("Invalid credentials. Please try again.");
+                    }
+                } catch (NoSuchElementException e) {
+                    System.out.println("Clerk with ID " + clerkId + " not found. Please try again.");
                 }
                 break;
             case 3:
                 String[] managerCredentials = securitySystem.promptCredentials();
-                if (securitySystem.validateManagerCredentials(managerCredentials)) {
-                    currentState = MANAGER_MENU_STATE;
-                } else {
-                    System.out.println("Invalid manager credentials.");
+                String managerId = managerCredentials[0];
+                try {
+                    if (securitySystem.validateManagerCredentials(managerCredentials)) {
+                        sessionContext.intializeSessionContext(3);
+                        managerMenu();
+                        managerHelp();
+                    } else {
+                        System.out.println("Invalid credentials. Please try again.");
+                    }
+                } catch (NoSuchElementException e) {
+                    System.out.println("Manager with ID " + managerId + " not found. Please try again.");
                 }
                 break;
             case 0:
-                save();
-                System.out.println("Goodbye!");
+                if (Warehouse.save()) {
+                    System.out.println("Data saved successfully.");
+                } else {
+                    System.out.println("Error saving data.");
+                }
                 System.exit(0);
                 break;
             default:
-                System.out.println("Invalid choice.");
+                System.out.println("Invalid choice. Please try again.");
+                openingState();
+                break;
         }
     }
 
@@ -359,7 +386,7 @@ public class UserInterface {
                     break;
                 case 6:
                     becomeClient();
-                    break;
+                    return; // Exit the loop and show the clerk menu
                 case 8:
                     clerkHelp();
                     break;
@@ -377,16 +404,16 @@ public class UserInterface {
                 if (value >= 1 && value <= 8) {
                     return value;
                 } else {
-                    System.out.println("Command out of range.");
+                    System.out.println("Invalid command. Please enter a number between 1 and 8.");
                 }
-            } catch (NumberFormatException nfe) {
-                System.out.println("Enter a valid number.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
             }
         } while (true);
     }
 
     private void clerkHelp() {
-        System.out.println("Clerk Menu:");
+        System.out.println("---------- Clerk Menu ----------");
         System.out.println("1. Add New Client");
         System.out.println("2. Show Product List");
         System.out.println("3. Show Client List");
@@ -395,6 +422,7 @@ public class UserInterface {
         System.out.println("6. Become a Client");
         System.out.println("7. Logout");
         System.out.println("8. Help");
+        System.out.println("-------------------------------");
     }
 
     public void addClient() {
@@ -475,10 +503,7 @@ public class UserInterface {
                     break;
                 case 4:
                     becomeClerk();
-                    break;
-                case 5:
-                    logout();
-                    break;
+                    return; // Exit the loop and show the manager menu
                 case 6:
                     managerHelp();
                     break;
@@ -496,22 +521,23 @@ public class UserInterface {
                 if (value >= 1 && value <= 6) {
                     return value;
                 } else {
-                    System.out.println("Command out of range.");
+                    System.out.println("Invalid command. Please enter a number between 1 and 6.");
                 }
-            } catch (NumberFormatException nfe) {
-                System.out.println("Enter a valid number.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
             }
         } while (true);
     }
 
     private void managerHelp() {
-        System.out.println("Manager Menu:");
+        System.out.println("---------- Manager Menu ----------");
         System.out.println("1. Add a Product");
         System.out.println("2. Display Product Waitlist");
         System.out.println("3. Receive a Shipment");
         System.out.println("4. Become a Clerk");
         System.out.println("5. Logout");
         System.out.println("6. Help");
+        System.out.println("----------------------------------");
     }
 
     private void addProduct() {
