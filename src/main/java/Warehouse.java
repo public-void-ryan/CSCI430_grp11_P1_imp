@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -119,7 +120,8 @@ public class Warehouse implements Serializable {
     }
 
     public static boolean save() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+        File file = getResourceFile();
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
             out.writeObject(warehouse);
             return true;
         } catch (IOException e) {
@@ -129,12 +131,19 @@ public class Warehouse implements Serializable {
     }
 
     public static Warehouse retrieve() {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+        File file = getResourceFile();
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
             warehouse = (Warehouse) in.readObject();
             return warehouse;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private static File getResourceFile() {
+        String projectRoot = System.getProperty("user.dir");
+        File binMainDir = new File(projectRoot, "bin/main");
+        return new File(binMainDir, DATA_FILE);
     }
 }
