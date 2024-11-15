@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+import java.util.Stack;
 
 public class UserInterface {
     private static UserInterface userInterface;
@@ -210,9 +211,17 @@ public class UserInterface {
         warehouse.clearClientWishlist(currentClientId);
     }
 
+    private Stack<Integer> roleStack = new Stack<Integer>(); // Explicitly declare the type
+
     public void logout() {
         System.out.println("Logging out...");
-        currentState = OPENING_STATE;
+        if (!roleStack.isEmpty()) {
+            currentState = roleStack.pop(); // Return to the previous menu/state
+            sessionContext.UpdateCurrentRole(currentState);
+        } else {
+            System.out.println("Warning: Role stack is empty. Returning to Main Menu.");
+            currentState = OPENING_STATE; // Default to Main Menu if no previous state
+        }
     }
 
     public void clientHelp() {
@@ -228,24 +237,28 @@ public class UserInterface {
     }
 
     public void process() {
-        currentState = OPENING_STATE;
         while (true) {
+            System.out.println("DEBUG: Processing State = " + currentState);
+            System.out.println("DEBUG: Role Stack = " + roleStack);
             switch (currentState) {
                 case OPENING_STATE:
                     openingState();
                     break;
                 case CLIENT_MENU_STATE:
-                    sessionContext.intializeSessionContext(1);
+                    sessionContext.intializeSessionContext(CLIENT_MENU_STATE);
                     clientMenu();
                     break;
                 case CLERK_MENU_STATE:
-                    sessionContext.intializeSessionContext(2);
+                    sessionContext.intializeSessionContext(CLERK_MENU_STATE);
                     clerkMenu();
                     break;
                 case MANAGER_MENU_STATE:
-                    sessionContext.intializeSessionContext(3);
+                    sessionContext.intializeSessionContext(MANAGER_MENU_STATE);
                     managerMenu();
                     break;
+                default:
+                    System.out.println("Unknown state. Returning to Main Menu.");
+                    currentState = OPENING_STATE;
             }
         }
     }
@@ -480,10 +493,10 @@ public class UserInterface {
         } while (true);
 
         currentClientId = clientID;
-        sessionContext.UpdateCurrentRole(1); // Set session role to Client
-        currentState = CLIENT_MENU_STATE; // Set state to client menu
-        clientMenu(); // Process client menu
-        // Logout is handled within clientMenu; no need to call clerkHelp() here.
+        roleStack.push(currentState); // Save the current state
+        currentState = CLIENT_MENU_STATE; // Transition to Client Menu
+        sessionContext.UpdateCurrentRole(CLIENT_MENU_STATE);
+        clientMenu(); // Enter Client Menu
     }
 
     private void managerMenu() {
@@ -572,12 +585,16 @@ public class UserInterface {
     }
 
     private void becomeClerk() {
-        currentState = CLERK_MENU_STATE;
-        clerkMenu();
-
+        if (roleStack.isEmpty() || roleStack.peek() != currentState) {
+            roleStack.push(currentState); // Save the current state (e.g., Manager)
+        }
+        currentState = CLERK_MENU_STATE; // Transition to Clerk Menu
+        sessionContext.UpdateCurrentRole(CLERK_MENU_STATE);
+        clerkMenu(); // Enter Clerk Menu
     }
 
     public static void main(String[] args) {
         UserInterface.instance().process();
     }
+
 }
