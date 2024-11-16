@@ -62,6 +62,7 @@ public class LoginState extends WarehouseState {
             warehouse.getClient(clientID);
         } catch (Exception e) {
             System.out.println("Invalid Client Username");
+            return;
         }
 
         if (!Objects.equals(clientID, clientPassword)) {
