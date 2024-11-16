@@ -14,13 +14,13 @@ dependencies {
 }
 
 application {
-    mainClassName = 'frontend.FrontendMain'
+    mainClassName = 'frontend.WarehouseContext'
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': 'frontend.UserInterface'
+                'Main-Class': 'frontend.WarehouseContext'
         )
     }
 }
