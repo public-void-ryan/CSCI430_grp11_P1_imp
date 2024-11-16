@@ -60,15 +60,17 @@ public class LoginState extends WarehouseState {
 
         try {
             warehouse.getClient(clientID);
-            warehouseContext.setCurrentClientID(clientID);
-            warehouseContext.changeState(WarehouseContext.LOGIN_AS_CLIENT);
         } catch (Exception e) {
             System.out.println("Invalid Client Username");
         }
 
         if (!Objects.equals(clientID, clientPassword)) {
             System.out.println("Invalid Client Password");
+            return;
         }
+
+        warehouseContext.setCurrentClientID(clientID);
+        warehouseContext.changeState(WarehouseContext.LOGIN_AS_CLIENT);
     }
 
     private void loginAsClerk() {
@@ -77,10 +79,12 @@ public class LoginState extends WarehouseState {
 
         if (!Objects.equals(clerkID, "clerk")) {
             System.out.println("Invalid Clerk Username");
+            return;
         }
 
         if (!Objects.equals(clerkPassword, "clerk")) {
             System.out.println("Invalid Clerk Password");
+            return;
         }
 
         warehouseContext.changeState(WarehouseContext.LOGIN_AS_CLERK);
@@ -92,10 +96,12 @@ public class LoginState extends WarehouseState {
 
         if (!Objects.equals(managerID, "manager")) {
             System.out.println("Invalid Clerk Username");
+            return;
         }
 
         if (!Objects.equals(managerPassword, "manager")) {
             System.out.println("Invalid Manager Password");
+            return;
         }
 
         warehouseContext.changeState(WarehouseContext.LOGIN_AS_MANAGER);
