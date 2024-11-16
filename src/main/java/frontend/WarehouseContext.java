@@ -2,6 +2,7 @@ package frontend;
 
 import backend.Warehouse;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -9,6 +10,7 @@ public class WarehouseContext {
     private static WarehouseContext instance;
     private static Warehouse warehouse;
     private static WarehouseState[] states;
+    private static JFrame mainFrame;
 
     private final int[][] nextState;
     private final Stack<Integer> stateStack;
@@ -31,8 +33,19 @@ public class WarehouseContext {
     public static final int BECOME_CLERK = 5;
 
     private WarehouseContext() {
+        // Initialize the main frame
+        mainFrame = MainFrame.getInstance();
+        mainFrame.setVisible(true);
+
         // Request to load previous data
-        if (InputUtils.yesOrNo("Look for saved data and use it?")) {
+        int choice = JOptionPane.showConfirmDialog(
+                mainFrame,
+                "Look for saved data and use it?",
+                "Load Data",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
             retrieve();
         } else {
             warehouse = Warehouse.instance();
@@ -86,7 +99,7 @@ public class WarehouseContext {
     public void changeState(int transition) {
         int next = nextState[currentState][transition];
         if (next == -1) {
-            System.out.println("Invalid transition!");
+            JOptionPane.showMessageDialog(mainFrame, "Invalid transition!", "Application Error", JOptionPane.ERROR_MESSAGE);
             terminate();
         } else if (next == -2) {
             // Return to the previous state in the stack
@@ -113,38 +126,76 @@ public class WarehouseContext {
         return currentClientID;
     }
 
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
+
     public void process() {
         states[currentState].run();
     }
 
     private void terminate() {
-        if (InputUtils.yesOrNo("Save data?")) {
+        int choice = JOptionPane.showConfirmDialog(
+                mainFrame,
+                "Would you like to save the data before exiting?",
+                "Save Data",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
             save();
         }
-        System.out.println("Goodbye! \n");
+
         System.exit(0);
     }
+
 
     private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
             if (tempWarehouse != null) {
-                System.out.println("Warehouse data successfully retrieved.");
+                JOptionPane.showMessageDialog(
+                        mainFrame,
+                        "Warehouse data successfully retrieved.",
+                        "Data Loaded",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
                 warehouse = tempWarehouse;
             } else {
-                System.out.println("No saved data found. Creating new warehouse.");
+                JOptionPane.showMessageDialog(
+                        mainFrame,
+                        "No saved data found. Creating a new warehouse.",
+                        "Data Not Found",
+                        JOptionPane.WARNING_MESSAGE
+                );
                 warehouse = Warehouse.instance();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    mainFrame,
+                    "Error retrieving warehouse data: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            warehouse = Warehouse.instance();
         }
     }
 
     private void save() {
         if (Warehouse.save()) {
-            System.out.println("Warehouse data successfully saved.");
+            JOptionPane.showMessageDialog(
+                    mainFrame,
+                    "Warehouse data successfully saved.",
+                    "Save Successful",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
         } else {
-            System.out.println("Error saving warehouse data.");
+            JOptionPane.showMessageDialog(
+                    mainFrame,
+                    "Error saving warehouse data.",
+                    "Save Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 

@@ -2,109 +2,47 @@ package frontend;
 
 import backend.*;
 
-import java.util.Objects;
+import javax.swing.*;
 
 public class LoginState extends WarehouseState {
-    private static final int EXIT = 0;
-    private static final int CLIENT_LOGIN = 1;
-    private static final int CLERK_LOGIN = 2;
-    private static final int MANAGER_LOGIN = 3;
-    private static final int HELP = 4;
 
     public LoginState(WarehouseContext warehouseContext, Warehouse warehouse) {
         super(warehouseContext, warehouse);
     }
 
-    private int getCommand() {
-        return InputUtils.getCommand(EXIT, HELP, "Enter command (" + HELP + " for help): ");
-    }
-
-    private void help() {
-        System.out.println("Login Menu:");
-        System.out.println(EXIT + " to Exit");
-        System.out.println(CLIENT_LOGIN + " to Login as Client");
-        System.out.println(CLERK_LOGIN + " to Login as Clerk");
-        System.out.println(MANAGER_LOGIN + " to Login as Manager");
-        System.out.println(HELP + " for help");
-    }
-
     @Override
     public void run() {
-        int command;
-        help();
-        while ((command = getCommand()) != EXIT) {
-            switch (command) {
-                case CLIENT_LOGIN:
-                    loginAsClient();
-                    break;
-                case CLERK_LOGIN:
-                    loginAsClerk();
-                    break;
-                case MANAGER_LOGIN:
-                    loginAsManager();
-                    break;
-                case HELP:
-                    help();
-                    break;
-                default:
-                    System.out.println("Invalid choice");
-                    break;
-            }
-        }
-        warehouseContext.changeState(WarehouseContext.LOGOUT);
-    }
+        JFrame mainFrame = warehouseContext.getMainFrame();
 
-    private void loginAsClient() {
-        String clientID = InputUtils.getToken("Enter Client Username: ");
-        String clientPassword = InputUtils.getToken("Enter Client Password: ");
+        // Use MenuPanelBuilder to create the menu panel
+        MenuPanelBuilder menuBuilder = new MenuPanelBuilder("Login Menu");
 
-        try {
-            warehouse.getClient(clientID);
-        } catch (Exception e) {
-            System.out.println("Invalid Client Username");
-            return;
-        }
+        // Create the buttons and labels
+        ClientMenuButton clientButton = new ClientMenuButton();
+        JLabel clientLabel = new JLabel("Login as a client to place orders and view your account.");
 
-        if (!Objects.equals(clientID, clientPassword)) {
-            System.out.println("Invalid Client Password");
-            return;
-        }
+        ClerkMenuButton clerkButton = new ClerkMenuButton();
+        JLabel clerkLabel = new JLabel("Login as a clerk to manage clients and process orders.");
 
-        warehouseContext.setCurrentClientID(clientID);
-        warehouseContext.changeState(WarehouseContext.LOGIN_AS_CLIENT);
-    }
+        ManagerMenuButton managerButton = new ManagerMenuButton();
+        JLabel managerLabel = new JLabel("Login as a manager to manage inventory and oversee operations.");
 
-    private void loginAsClerk() {
-        String clerkID = InputUtils.getToken("Enter Clerk Username: ");
-        String clerkPassword = InputUtils.getToken("Enter Client Password: ");
+        JButton quitButton = new JButton("Exit");
+        JLabel quitLabel = new JLabel("Save and exit the system.");
+        quitButton.addActionListener(e -> warehouseContext.changeState(WarehouseContext.LOGOUT));
 
-        if (!Objects.equals(clerkID, "clerk")) {
-            System.out.println("Invalid Clerk Username");
-            return;
-        }
+        // Add buttons and labels to the menu
+        menuBuilder.addButtonAndLabel(clientButton, clientLabel);
+        menuBuilder.addButtonAndLabel(clerkButton, clerkLabel);
+        menuBuilder.addButtonAndLabel(managerButton, managerLabel);
+        menuBuilder.addButtonAndLabel(quitButton, quitLabel);
 
-        if (!Objects.equals(clerkPassword, "clerk")) {
-            System.out.println("Invalid Clerk Password");
-            return;
-        }
+        // Build the panel and add it to the main frame
+        JPanel panel = menuBuilder.build();
 
-        warehouseContext.changeState(WarehouseContext.LOGIN_AS_CLERK);
-    }
-
-    private void loginAsManager() {
-        String managerID = InputUtils.getToken("Enter Manager Username: ");
-        String managerPassword = InputUtils.getToken("Enter Manager Password: ");
-
-        if (!Objects.equals(managerID, "manager")) {
-            System.out.println("Invalid Clerk Username");
-            return;
-        }
-
-        if (!Objects.equals(managerPassword, "manager")) {
-            System.out.println("Invalid Manager Password");
-            return;
-        }
-
-        warehouseContext.changeState(WarehouseContext.LOGIN_AS_MANAGER);
+        mainFrame.getContentPane().removeAll();
+        mainFrame.getContentPane().add(panel);
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 }
