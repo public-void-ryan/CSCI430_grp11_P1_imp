@@ -1,7 +1,8 @@
+package backend;
+
 import java.io.*;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,10 +19,7 @@ public class Warehouse implements Serializable {
 
     public static Warehouse instance() {
         if (warehouse == null) {
-            warehouse = retrieve();
-            if (warehouse == null) {
-                warehouse = new Warehouse();
-            }
+            warehouse = new Warehouse();
         }
         return warehouse;
     }
